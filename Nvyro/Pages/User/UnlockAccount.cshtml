@@ -1,0 +1,38 @@
+﻿@page
+@model Nvyro.Pages.User.UnlockAccount
+@{
+}
+@using AspNetCore.ReCaptcha
+
+<div class="container full-wo-footer">
+    <form method="post">
+        <div class="row"  style="height:400px;">
+            <div class="col" style="display:flex;align-items:center;">
+                <div class="banner-button-title">
+                    <h2><b>N</b>VYRO</h2>
+                </div>
+            </div>
+            <div class="col">
+                <h2 class="mb-3">Unlock Account</h2>
+                <input asp-for="UnlockAccountModel.UserId" type="hidden" />
+                <div class="form-floating">
+                    <label>OTP Code</label>
+                    <input asp-for="UnlockAccountModel.OTP" class="form-control" aria-required="true" />
+                    <span asp-validation-for="UnlockAccountModel.OTP" class="text-danger"></span>
+                </div>
+               
+
+                <button type="submit" class="w-100 filled-button mt-2 "> Unlock </button>
+                <div class="d-flex justify-content-between mt-2" style="font-size:0.75rem;">
+                    <a asp-page="/User/Login">Login</a>
+                    <span>New to NVYRO?<a asp-page="/User/Register"> Sign Up</a> here</span>
+                </div>
+                @Html.ReCaptcha()
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

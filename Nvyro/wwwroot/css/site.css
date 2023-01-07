@@ -5,6 +5,211 @@ TemplateMo 546 Sixteen Clothing
 https://templatemo.com/tm-546-sixteen-clothing
 
 */
+/*Daryl*/
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button,
+input[type=number] {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+}
+.filled-button:disabled,
+.filled-button[disabled] {
+    background-color: #f33f3f87;
+    color: #666666;
+}
+.dashboard-edit-profile {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: #1a6692;
+}
+.dashboard-edit-profile:hover {
+    color: #11384e;
+}
+.dashboard-height{
+    min-height:450px;
+}
+.dashboard-card{
+    height:100%;
+}
+.dashboard-card img{
+    max-height: 60%;
+    object-fit:cover;
+    margin-top: 1rem;
+    border-radius:100%;
+}
+.dashboard-button:hover {
+    background-color:lightgray;
+    color:black;
+}
+.dashboard-button {
+    color: black;
+    background-color: inherit;
+    font-size: 1rem;
+    text-transform: capitalize;
+    font-weight: 300;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+.dashboard-button.active {
+    background-color: #f33f3f;
+    color:white;
+}
+.filled-button {
+    background-color: #f33f3f;
+    color: #fff;
+    font-size: 1rem;
+    text-transform: capitalize;
+    font-weight: 300;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: all 0.3s;
+    border:none;
+    cursor:pointer;
+}
+.filled-button-sm {
+    background-color: #f33f3f;
+    color: #fff;
+    font-size: 0.75rem;
+    text-transform: capitalize;
+    font-weight: 300;
+    padding: .25rem .5rem;
+    border-radius: 5px;
+    display: inline-block;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.filled-button:hover:not([disabled]) {
+    background-color: #121212;
+    color: #fff;
+}
+
+.banner-button {
+    border: none;
+    cursor: pointer;
+    padding:0;
+}
+.banner-button:hover {
+    box-shadow: 10px 10px 30px 10px #a4b6b6;
+    z-index:1;
+}
+.banner-button:hover .banner-button-title {
+    visibility: visible;
+    opacity: 1;
+}
+.banner-button-title {
+    overflow-wrap: break-word;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0.5s;
+    background-color:#0000008d;
+    color:white;
+    padding:1.5rem;
+}
+.banner-register-title {
+    overflow-wrap: break-word;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0.5s;
+    background-color: #0000008d;
+    color: white;
+    padding: 1.5rem;
+}
+.banner-container {
+    background-image: url("../assets/images/banner-title.jpg");
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 3rem;
+    height: 100%;
+    padding: 1.5rem;
+}
+.banner-title{
+    text-align:center;
+    font-size:2.5rem;
+
+}
+.full-wo-footer {
+   margin-top:76px;
+}
+button:disabled{
+    cursor:not-allowed;
+}
+#register-progress{
+    position:relative;
+    width:50%;
+    margin:0rem auto 48px auto;
+}
+#register-progress-bar {
+    position: absolute;
+    background: #1a6692;
+    height: 7px;
+    width: 0%;
+    top: 35%;
+    left: 0;
+}
+#register-progress-num {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+#register-progress-num::before {
+    content: "";
+    background-color: lightgray;
+    position: absolute;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    top:35%;
+    z-index: -1;
+}
+#register-progress-num .register-step {
+    border: 1.5px solid lightgray;
+    border-radius: 100%;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    font-weight: 700;
+    background-color: lightgray;
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+    color:white;
+}
+#register-progress-num .register-step.active {
+    border-color: #1a6692;
+    background-color: #1a6692;
+    color: #fff;
+}
+.dropdown-mystyle {
+    cursor:pointer;
+    width:100%;
+    max-height:17rem;
+    overflow-y:scroll;
+    scrollbar-width:thin;
+
+}
+.address-style {
+   text-overflow:ellipsis;
+   overflow:hidden;
+}
+/*End Daryl*/
 body {
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
@@ -212,8 +417,8 @@ a.filled-button {
 
 /* Header Style */
 header {
-    position: absolute;
-    z-index: 99999;
+    position: fixed;
+    z-index: 2;
     width: 100%;
     height: 80px;
     background-color: #232323;

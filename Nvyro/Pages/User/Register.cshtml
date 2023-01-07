@@ -1,0 +1,130 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model Nvyro.Pages.User.RegisterModel
+@{
+}
+<div class="full-wo-footer" >
+    <div id="register-selection-btn" class="row" style="height:400px;">
+        <button id="register-recycler"  type="button" class="col banner-button" style="background-image:url(/assets/images/recycler-user-banner.jpg);background-size:cover;">
+            <div class="banner-button-title">
+                <h2>I want to <b>Discard Recyclables</b></h2>
+            </div>
+        </button>
+        <button id="register-organization" type="button" class="col banner-button" style="background-image:url(/assets/images/org-banner.jpg);background-size:cover;">
+            <div class="banner-button-title">
+                <h2>I want to <b>Collect Recyclables</b></h2>
+            </div>
+        </button>
+    </div>
+    <div id="registerForm"  class="d-none container">
+        <form method="post">
+            @*//Start Progress Bar//*@
+            <div id="register-progress">
+                <div id="register-progress-bar"></div>
+                <ul id="register-progress-num">
+                    <li class="register-step active">1</li>
+                    <li class="register-step">2</li>
+                </ul>
+            </div>
+            @*//End Progress Bar//*@
+            <div class="row" style="height:400px;">
+                <div id="change-banner-register"class="col" style="background-image:url(/assets/images/recycler-user-banner.jpg);background-size:cover;display:flex;align-items:center;">
+                    <div class="banner-register-title ">
+                        <h2>I want to <b>Discard Recyclables</b></h2>
+                    </div>
+                </div>
+                <div class="col-6" id="registerPage1">
+                    <div class="form-floating">
+                        <label asp-for="regUser.Email"></label>
+                        <input id="register-email" asp-for="regUser.Email" class="form-control" aria-required="true" />
+                        <div id="register-email-validation">
+                            <div class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Invalid email format </div>
+                        </div>
+                    </div>
+                    <div class="form-floating">
+                        <label asp-for="regUser.Password"></label>
+                        <input type="password" id="register-password" asp-for="regUser.Password" class="form-control" aria-required="true" />
+                        <div id="register-password-validation">
+                            <div id="one-number" class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password requires at least one number  </div>
+                            <div id="one-upper" class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password requires at least one uppercase  </div>
+                            <div id="one-lower" class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password requires at least one lowercase  </div>
+                            <div id="one-special" class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password requires at least one special character  </div>
+                            <div id="eight-char" class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password requires at least 8 characters  </div>
+                        </div>
+                    </div>
+                    <div class="form-floating">
+                        <label for="register-confirm"> Confirm Password</label>
+                        <input type="password" id="register-confirm" class="form-control" aria-required="true" />
+                        <div id="register-confirm-validation">
+                            <div id="match-password" class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password matches  </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="registerPage2" class="col-6 d-none">
+                    <div class="row">
+                        <div class="form-floating col">
+                            <label id="register-name"></label>
+                            <input id="register-orgName" asp-for="regUser.FullName" class="form-control" aria-required="true" />
+                            <span asp-validation-for="regUser.FullName" class="text-danger"></span>
+                        </div>
+                        <input hidden id="register-role" asp-for="regUser.Role" class="form-control" aria-required="true" />
+                        <div class="form-floating col">
+                            <label asp-for="regUser.PhoneNumber"></label>
+                            <div class="input-group">
+                                <input disabled class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
+                                <input id="register-phone" asp-for="regUser.PhoneNumber" class="form-control" aria-required="true" />
+                            </div>
+                            <span asp-validation-for="regUser.PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-floating">
+                        <label>Search Address</label>
+                        <input id="search-full-address" class="form-control" aria-required="true"/>
+                        <div id="select-address" class="show" style="position:relative;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="register-unitNumber" class="form-floating invisible col">
+                            <label asp-for="regUser.UnitNumber"></label>
+                            <input asp-for="regUser.UnitNumber" class="form-control" aria-required="true" />
+                            <span asp-validation-for="regUser.UnitNumber" class="text-danger"></span>
+                        </div>
+                        <div id="register-blockNumber" class="form-floating invisible col">
+                            <label asp-for="regUser.BlockNumber"></label>
+                            <input asp-for="regUser.BlockNumber" class="form-control" aria-required="true" />
+                            <span asp-validation-for="regUser.BlockNumber" class="text-danger"></span>
+                        </div>
+                        <div id="register-postalCode" class="form-floating invisible col">
+                            <label asp-for="regUser.PostalCode"></label>
+                            <input asp-for="regUser.PostalCode" class="form-control" aria-required="true" />
+                            <span asp-validation-for="regUser.PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div id="register-roadName" class="form-floating invisible">
+                        <label asp-for="regUser.RoadName"></label>
+                        <input asp-for="regUser.RoadName" class="form-control" aria-required="true" />
+                        <span asp-validation-for="regUser.RoadName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-between mt-2">
+                <div id="back-register-selection" class="col-3 d-none">
+                    <button type="button" id="register-back-main" class="w-100 btn btn-lg btn-primary"><i class="fa-solid fa-arrow-left "></i> Back </button>
+                </div>
+                <div id="register-btn-back" class="col-3 invisible">
+                    <button type="button" id="register-back" class="w-100 btn btn-lg btn-primary"><i class="fa-solid fa-arrow-left "></i> Back </button>
+                </div>
+                <div id="register-btn-next" class="col-3">
+                    <button type="button" id="register-next" class="w-100 btn btn-lg btn-primary" disabled>Next <i class="fa-solid fa-arrow-right"></i></button>
+                    <button type="submit" id="register-submit" class="w-100 btn btn-lg btn-primary d-none" disabled> Submit </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/UserManagement.js"></script>
+}

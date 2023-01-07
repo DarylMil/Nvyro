@@ -1,0 +1,116 @@
+﻿@page
+@model Nvyro.Pages.Admin.Dashboard
+@{
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Reward Management </a>
+      <a class="dashboard-button " href="#"><i class="fa-solid fa-users"></i> User Managerment </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Menu area End-->
+<form method="post">
+<div class="mt-4 mx-0 row dashboard-height">
+        <!-- LEFT CARD -->
+        <div class="col-4 pl-0" style="padding-right:1rem;">
+            <div class="card dashboard-card col-12 mb-3">
+                <img class="card-img-top" style="" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+
+                <div class="card-body">
+                    <h5 class="card-title">@Model.AppUser.FullName</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" >
+                        @Model.AppUser.Roles
+                    </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        @Model.AppUser.Email
+                    </h6>
+                    
+                    <hr />
+                    <button type="button" id="edit-profile-btn" class="dashboard-edit-profile">Edit Profile</button>
+                    <button type="submit" disabled id="save-changes-btn" class="filled-button-sm mt-3 invisible">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <!-- END LEFT CARD -->
+        <!-- RIGHT CARD -->
+        <div class="col-8 pr-0" style="padding-left:0;">
+            <!-- DETAILS -->
+            <div class="card col-12 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Details</h5>
+       
+                    <div class="row mb-3">
+                        <div class="form-floating col">
+                            <label id="register-name">@(Model.AppUser.Roles=="Organizer"?"Organization Name":Model.AppUser.Roles=="Recycler"?"Full Name":"Admin Name")</label>
+                            <input disabled id="register-orgName" asp-for="AppUser.FullName" class="form-control" aria-required="true" />
+                            <span asp-validation-for="AppUser.FullName" class="text-danger"></span>
+                        </div>
+                        <input hidden asp-for="AppUser.Email" value="@Model.AppUser.Email"/>
+                        <input hidden asp-for="AppUser.Roles" value="@Model.AppUser.Roles"/>
+                        <div class="form-floating col">
+                            <label asp-for="AppUser.PhoneNumber"></label>
+                            <div class="input-group">
+                                <input disabled class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
+                                <input disabled id="register-phone" asp-for="AppUser.PhoneNumber" class="form-control" aria-required="true" />
+                            </div>
+                            <span asp-validation-for="AppUser.PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- END DETAILS -->
+
+            <!-- ADDRESS -->
+            <div class="card col-12">
+                <div class="card-body">
+
+                    <h5 class="card-title">Address</h5>
+                    <div class="row mb-3">
+                        <div class="form-floating col-12">
+                            <label>Search Address</label>
+                            <input disabled id="search-full-address" class="form-control" aria-required="true"/>
+                            <div id="select-address" class="show" style="position:relative;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+
+                        <div class="form-floating  col">
+                            <label asp-for="AppUser.UnitNumber"></label>
+                            <input id="register-unitNumber" asp-for="AppUser.UnitNumber" class="form-control" aria-required="true" disabled />
+                            <span asp-validation-for="AppUser.UnitNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating  col">
+                            <label asp-for="AppUser.BlockNumber"></label>
+                            <input id="register-blockNumber" asp-for="AppUser.BlockNumber" class="form-control" aria-required="true" disabled  />
+                            <span asp-validation-for="AppUser.BlockNumber" class="text-danger"></span>
+                        </div>
+                        <div  class="form-floating  col">
+                            <label asp-for="AppUser.PostalCode"></label>
+                            <input id="register-postalCode" asp-for="AppUser.PostalCode" class="form-control" aria-required="true" disabled  />
+                            <span asp-validation-for="AppUser.PostalCode" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <label asp-for="AppUser.RoadName"></label>
+                        <input id="register-roadName" asp-for="AppUser.RoadName" class="form-control" aria-required="true" disabled />
+                        <span asp-validation-for="AppUser.RoadName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- END ADDRESS -->
+
+        </div>
+     <!-- END RIGHT CARD -->
+</div>
+</form>
+@section Scripts
+{
+    <script src="~/js/UserDashboard.js"></script>
+}
