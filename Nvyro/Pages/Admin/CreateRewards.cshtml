@@ -1,0 +1,116 @@
+﻿@page
+@model Nvyro.Pages.Admin.CreateRewardsModel
+@{
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="dashboard-button" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="dashboard-button active" asp-page="/Admin/CreateRewards"><i class="fa-solid fa-coins"></i> Reward Management </a>
+      <a class="dashboard-button" href="#"><i class="fa-solid fa-users"></i> User Managerment </a>
+    </div>
+  </div>
+</nav>
+</nav>
+    <div class="banner header-text">
+      <div class="owl-banner owl-carousel">
+        <div class="banner-item-01">
+          <div class="text-content">
+            <h4>Best Offer</h4>
+            <h2>New Arrivals On Sale</h2>
+          </div>
+        </div>
+        <div class="banner-item-02">
+          <div class="text-content">
+            <h4>Flash Deals</h4>
+            <h2>Get your best products</h2>
+          </div>
+        </div>
+        <div class="banner-item-03">
+          <div class="text-content">
+            <h4>Last Minute</h4>
+            <h2>Grab last minute deals</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Banner Ends Here -->
+    <form class="mt-3" method="post">
+    <div class="row mb-3">
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardID"></label>
+    <div class="col-sm-10">
+    <input class="form-control" asp-for="Rewards.RewardID"
+    oninput="this.value = this.value.toUpperCase()" />
+    <span asp-validation-for="Rewards.RewardID" class="text-danger"></span>
+    </div>
+    </div>
+    <div class="row mb-3">
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardName"></label>
+    <div class="col-sm-10">
+    <input class="form-control" asp-for="Rewards.RewardName"
+    oninput="this.value = this.value.toUpperCase()" />
+    <span asp-validation-for="Rewards.RewardName" class="text-danger"></span>
+    </div>
+    </div>
+     <div class="row mb-3">
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardDescription"></label>
+    <div class="col-sm-10">
+    <input class="form-control" asp-for="Rewards.RewardDescription"
+    oninput="this.value = this.value.toUpperCase()" />
+    <span asp-validation-for="Rewards.RewardDescription" class="text-danger"></span>
+    </div>
+    </div>
+     <div class="row mb-3">
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.availableQuantity"></label>
+    <div class="col-sm-10">
+    <input class="form-control" asp-for="Rewards.availableQuantity"
+    oninput="this.value = this.value.toUpperCase()" />
+    <span asp-validation-for="Rewards.availableQuantity" class="text-danger"></span>
+    </div>
+    </div>
+    <div class="row mb-3">
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardPicURL"></label>
+    <div class="col-sm-10">
+    <input class="form-control" asp-for="Rewards.RewardPicURL" />
+    <span asp-validation-for="Rewards.RewardPicURL" class="text-danger"></span>
+    </div>
+    </div>
+        <div class="row mb-3">
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.requiredPoints"></label>
+    <div class="col-sm-10">
+    <input class="form-control" asp-for="Rewards.requiredPoints"
+    oninput="this.value = this.value.toUpperCase()" />
+    <span asp-validation-for="Rewards.requiredPoints" class="text-danger"></span>
+    </div>
+    </div>
+    <div>
+    <input type="submit" value="Add" class="btn btn-primary"/>
+    </div>
+    </form>
+    <div class="latest-products">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-heading">
+              <h2>Rewards</h2>
+            </div>
+          </div>
+          @foreach (var item in Model.RewardsList)
+          {
+          <div class="col-md-4">
+            <div class="product-item">
+              <a href="#"><img src=@item.RewardPicURL alt=""></a>
+              <div class="down-content">
+                <a href="#"><h4>@item.RewardName</h4></a>
+                <h6>Quantity = @item.availableQuantity</h6>
+                <p>@item.RewardDescription</p>
+                <span>@item.requiredPoints</span>
+                <a class="dashboard-button" asp-page="/User/Rewards">Redeem</a>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    <script src="js/owl.js"></
