@@ -1,46 +1,91 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Nvyro.Models;
 using Nvyro.Services;
+using Nvyro.Models;
+using Nvyro.Models.DTO;
 
 namespace Nvyro.Pages
 {
     public class RewardsAddModel : PageModel
     {
         private readonly RewardService _rewardService;
-        public RewardsAddModel(RewardService rewardService)
+
+        private readonly UserManager<ApplicationUser> _userManager;
+        public RewardsAddModel(RewardService rewardService, UserManager<ApplicationUser> userManager)
         {
             _rewardService = rewardService;
+            _userManager = userManager;
         }
         public List<Reward> RewardsList { get; set; } = new();
         [BindProperty]
         public Reward Rewards { get; set; } = new();
 
+        [BindProperty]
+        public UpdateUserModel AppUser { get; set; } = new UpdateUserModel();
 
-
-        public void OnGet()
+        public async Task OnGetAsync()
         {
+
+            var existingUser = await _userManager.GetUserAsync(User);
+
+            Console.WriteLine(existingUser.Points);
+
+            existingUser.Points = 100;
+
+            AppUser.Points = existingUser.Points;
+
+
             RewardsList = _rewardService.GetAll();
+
+
         }
         public IActionResult OnPost()
         {
-            if (ModelState.IsValid)
+            Console.WriteLine("Redeem Activate 1.0");
+            Console.WriteLine("Current Points : {0}", AppUser.Points);
+
+            Reward? reward = _rewardService.GetRewardById(Rewards.RewardID.ToString());
+
+            Console.WriteLine(reward);
+
+
+            Console.WriteLine("Redeem Activate 2");
+            if (AppUser.Points <= int.Parse(reward.requiredPoints))
             {
-                Reward? reward = _rewardService.GetRewardById(Rewards.RewardID.ToString());
-                if (reward != null)
+                Rewards.RewardName = reward.RewardName;
+                Rewards.RewardDescription = reward.RewardDescription;
+                Rewards.requiredPoints = reward.requiredPoints;
+                Rewards.RewardPicURL = reward.RewardPicURL;
+                
+
+                int newQuantity = int.Parse(reward.availableQuantity) - 1;
+
+                if(newQuantity > 0)
                 {
-                    TempData["FlashMessage.Type"] = "danger";
-                    TempData["FlashMessage.Text"] = string.Format(
-                    "Reward ID {0} alreay exists", Rewards.RewardID);
-                    return Page();
+                    Rewards.availableQuantity = newQuantity.ToString();
+
+                    _rewardService.UpdateReward(Rewards);
                 }
                 else
                 {
-                    _rewardService.AddReward(Rewards);
-                    return Redirect("/User/Rewards");
+                    _rewardService.RemoveReward(Rewards.RewardID);
                 }
+
+
+                Console.WriteLine("Redeem Success");
+                Console.WriteLine(reward.RewardDescription);
+               
+                return Redirect("/User/Rewards");
             }
-            return Page();
+            else
+            {
+                Console.WriteLine("Redeem Fail");
+                return Redirect("/User/Rewards");
+            }
+            return Redirect("/User/Rewards");
         }
     }
 }

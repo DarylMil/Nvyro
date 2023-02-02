@@ -43,7 +43,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="section-heading">
-              <h2>Rewards</h2>
+              <h2>Rewards : Points Available @Model.AppUser.Points </h2>
             </div>
           </div>
           @foreach (var item in Model.RewardsList)
@@ -54,9 +54,12 @@
               <div class="down-content">
                 <a href="#"><h4>@item.RewardName</h4></a>
                 <h6>Quantity = @item.availableQuantity</h6>
-                <p>@item.RewardDescription</p>
                 <span>@item.requiredPoints</span>
-                <a class="dashboard-button" asp-page="/User/Rewards">Redeem</a>
+                <form action="" method="post">
+                    <p>Enter Voucher ID : @item.RewardID to proceed:</p>
+                    <input class="form-control" asp-for="Rewards.RewardID"/>
+                    <button type="submit" id="submit" class="btn btn-primary">Redeem</button>
+                </form>
               </div>
             </div>
           </div>

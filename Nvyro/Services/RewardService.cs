@@ -34,5 +34,12 @@ namespace Nvyro.Services
             _context.Reward.Remove(reward);
             _context.SaveChanges();
         }
+
+        public void UpdateReward(Reward reward)
+        {
+            _context.ChangeTracker.Clear();
+            _context.Reward.Update(reward);
+            _context.SaveChanges();
+        }
     }
 }
