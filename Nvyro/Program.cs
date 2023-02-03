@@ -5,6 +5,7 @@ using Nvyro.Data;
 using Nvyro.Models;
 using Nvyro.Services;
 using AspNetCore.ReCaptcha;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 //var connectionString = builder.Configuration.GetConnectionString("MyDbContextConnection") ?? throw new InvalidOperationException("Connection string 'MyDbContextConnection' not found.");
@@ -25,7 +26,13 @@ builder.Services.AddNotyf(config =>
 });
 
 builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddReCaptcha(builder.Configuration.GetSection("GoogleRecaptcha"));
+builder.Services.AddReCaptcha(options =>
+{
+    options.SiteKey = builder.Configuration["GoogleRecaptcha:GoogleCaptchaSitKey"];
+    options.SecretKey = builder.Configuration["GoogleRecaptcha:GoogleCaptchaSecretKey"];
+    options.Version = ReCaptchaVersion.V3;
+    options.ScoreThreshold = 0.5;
+});
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options=>{
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedEmail = true;
@@ -35,14 +42,16 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options=>{
 
 }).AddEntityFrameworkStores<MyDbContext>().AddDefaultTokenProviders();
 
+
 builder.Services.ConfigureApplicationCookie(Config =>
 {
     Config.LoginPath = "/User/Login";
 });
 
-builder.Services.AddSingleton<EmailSender>();
-builder.Services.AddScoped<UserAuthenticationService>();
+builder.Services.AddTransient<EmailSender>();
+builder.Services.Configure<EmailOptions>(builder.Configuration);
 
+builder.Services.AddScoped<UserAuthenticationService>();
 
 
 var app = builder.Build();

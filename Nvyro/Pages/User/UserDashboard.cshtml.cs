@@ -19,18 +19,27 @@ namespace Nvyro.Pages.User
         private readonly UserAuthenticationService _userAuthService;
         private readonly INotyfService _toastNotification;
 
-        public UserDashboardModel(UserManager<ApplicationUser> userManager, 
+        private IWebHostEnvironment _environment;
+
+        [BindProperty]
+        public IFormFile? Upload { get; set; }
+
+        public UserDashboardModel(UserManager<ApplicationUser> userManager, IWebHostEnvironment environment,
             UserAuthenticationService userAuthService, INotyfService toastNotification)
         {
             _userAuthService = userAuthService;
             _toastNotification = toastNotification;
             _userManager = userManager;
+            _environment = environment;
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            
             var existingUser = await _userManager.GetUserAsync(User);
+            if(await _userManager.IsInRoleAsync(existingUser, "Admin"))
+            {
+                return RedirectToPage("/Admin/Dashboard");
+            }
             var allRoles = await _userManager.GetRolesAsync(existingUser);
 
             Console.WriteLine(existingUser.Email);
@@ -55,6 +64,7 @@ namespace Nvyro.Pages.User
                     AppUser.Roles += " | ";
                 }
             }
+            return Page();
         }
         public async Task<IActionResult> OnPostAsync() {
             
@@ -67,7 +77,7 @@ namespace Nvyro.Pages.User
             else
             {
                 _toastNotification.Success(status.Message);
-                return Page();
+                return RedirectToPage("./UserDashboard");
             }
         }
     }

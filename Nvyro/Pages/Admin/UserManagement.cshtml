@@ -1,0 +1,231 @@
+﻿@page
+@model Nvyro.Pages.Admin.UserManagementModel
+@{
+    var index = 0;
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="dashboard-button " asp-page="/Admin/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Reward Management </a>
+      <a class="dashboard-button active" asp-page="./UserManagement"><i class="fa-solid fa-users"></i> User Management </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Menu area End-->
+
+    <div class="mt-4 card px-3">
+        <table class="table table-hover" style="table-layout:fixed;">
+               <thead>
+                   <tr>
+                        <th scope="col" style="border-top:none;vertical-align:middle;width:17%;">Full Name</th>
+                        <th scope="col" style="border-top:none;vertical-align:middle;width:22%;">Email</th>
+                        <th scope="col" style="border-top:none;vertical-align:middle;width:10%;">Phone Number</th>
+                        <th scope="col" style="border-top:none;vertical-align:middle;width:13%;">Role</th>
+                        <th scope="col" style="border-top:none;vertical-align:middle;width:11%;">Disabled</th>
+                        <th scope="col" style="border-top:none;vertical-align:middle;width:11%;">Locked</th>
+                        <th scope="col" style="border-top:none;vertical-align:middle;width:16%;">Action</th>
+                   </tr>
+               </thead>
+               <tbody id="table-body">
+                @foreach(var user in Model.ListOfUsers)
+                {
+                    
+                    <tr id="@user.User.Id" class="usermodal-font">
+                        <th scope="row" class="modal-clickable user-center">
+                            <div style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;overflow:hidden;">
+                                @user.User.FullName
+                            </div>
+                        </th>
+                        <td class="modal-clickable user-center">
+                            <div style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;overflow:hidden;">
+                                @user.User.Email
+                            </div>
+                        </td>
+                        <td class="modal-clickable user-center">
+                            @user.User.PhoneNumber
+                        </td>
+
+                        <td class="user-center">
+                            <div class="dropdown">
+                              <button class="btn btn-outline-secondary dropdown-toggle usermodal-font" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width:100%">
+                                @if(user.Roles.Count > 0)
+                                {
+                                    @user.Roles[0];
+                                }
+                            </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="min-width:0;width:115px;">
+                                @foreach(var role in UserManagementModel.AllRoles)
+                                {
+                                    <li class="dropdown-item usermodal-font modal-dropdownitems">@role</li>
+                                }
+                              </ul>
+                            </div>
+                            
+                        </td>
+                        <td class="user-center">
+
+                            
+                            <div class=" dropdown">
+                                <button style="width:100%;" class="btn btn-outline-secondary dropdown-toggle usermodal-font" type="button" data-bs-toggle="dropdown" >@(user.User.IsDisabled?"Yes":"No") </button>
+                                <ul class="dropdown-menu" aria-labelledby="modal-isdisabled" style="min-width:59px;">
+                                    <li class="dropdown-item modal-dropdownitems usermodal-font" value="yes">Yes</li>
+                                    <li class="dropdown-item modal-dropdownitems usermodal-font" value="no">No</li>
+                                </ul>
+                            </div>  
+                        </td>
+                        <td class="user-center">
+                            
+                            
+                            <div class=" dropdown">
+                                <button style="width:100%;" class="btn btn-outline-secondary dropdown-toggle usermodal-font" type="button" data-bs-toggle="dropdown" >@(user.User.LockoutEnd == null ? "No" : user.User.LockoutEnd < DateTime.UtcNow?"No":"Yes") </button>
+                                <ul class="dropdown-menu" aria-labelledby="modal-isdisabled" style="min-width:59px;">
+                                    <li class="dropdown-item modal-dropdownitems usermodal-font" value="yes">Yes</li>
+                                    <li class="dropdown-item modal-dropdownitems usermodal-font" value="no">No</li>
+                                </ul>
+                            </div>
+                       
+                        </td>
+                        <td class="user-center">
+                            <button class="btn btn-outline-secondary usermodal-font"><i class="fa-solid fa-floppy-disk"></i> Save </button>
+                            <button class="btn btn-outline-secondary usermodal-font"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#232323;">
+                <h5 class="modal-title" style="color:white;">Edit User</h5>
+                <button id="modal-close-btn" class="usermodal-btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mx-0 row">
+                    <!-- LEFT CARD -->
+                    <div class="col-4 pl-0" style="padding-right:1rem;">
+                        <div class="card dashboard-card col-12 mb-3">
+                            <img id="modal-img" class="card-img-top" style="" src="" alt="Card image cap">
+                            <div class="form-floating ">
+                                <label>Roles</label>
+                                <div class="dropdown">
+                                    <button id="modal-role" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width:100%"></button>
+                                    <ul id="modal-role-dropdown" class="dropdown-menu" style="min-width:0;width:100%;">
+                                    @foreach(var role in UserManagementModel.AllRoles)
+                                    {
+                                        <li class="dropdown-item usermodal-font modal-dropdownitems">@role</li>
+                                    }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-floating ">
+                                <label>Email</label>
+                                <input id="modal-email" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END LEFT CARD -->
+                    <!-- RIGHT CARD -->
+                    <div class="col-8 pr-0" style="padding-left:0;">
+                        <!-- DETAILS -->
+                        <div class="card col-12 mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Details</h5>
+                                <div class="row">
+                                    <div class="form-floating col">
+                                        <label id="modal-label-name"></label>
+                                        <input id="modal-fullname" class="form-control" value="" />
+                                    </div>
+
+                                    <div class="form-floating col">
+                                        <label>Phone Number</label>
+                                        <div class="input-group">
+                                            <input disabled class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
+                                            <input id="modal-phone" class="form-control" aria-required="true" value="" maxlength="8" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END DETAILS -->
+
+                        <!-- ADDRESS -->
+                        <div class="card col-12">
+                            <div class="card-body">
+
+                                <h5 class="card-title">Address</h5>
+                                <div class="row">
+                                    <div class="form-floating col-12">
+                                        <label>Search Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                            <input id="search-full-address" style="border-left:0;"class="form-control" aria-required="true" placeholder="start typing to search.." />
+                                        </div>
+                                        <div id="select-address" class="show" style="position:relative;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="form-floating  col">
+                                        <label>Unit Number</label>
+                                        <input id="modal-unitNumber" class="form-control" aria-required="true" />
+                                    </div>
+                                    <div class="form-floating  col">
+                                        <label>Block Number</label>
+                                        <input id="modal-blockNumber" class="form-control" aria-required="true"   />
+                                    </div>
+                                    <div  class="form-floating  col">
+                                        <label>Postal Code</label>
+                                        <input id="modal-postalCode" class="form-control" aria-required="true"   />
+                                    </div>
+
+                                </div>
+                                <div class="form-floating">
+                                    <label>Road Name</label>
+                                    <input id="modal-roadName"class="form-control" aria-required="true"  />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END ADDRESS -->
+
+                    </div>
+                    <!-- END RIGHT CARD -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input hidden id="hidden-id" />
+                <button id="modal-btnsave" class="btn btn-outline-secondary"><i class="fa-solid fa-floppy-disk"></i> Save </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmation-save" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Save?</h5>
+        <button type="button" class="usermodal-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to save the changes?
+      </div>
+      <div class="modal-footer">
+        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="confirmation" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/UserDashboard.js"></script>
+    <script src="~/js/AdminDashboard.js"></script>
+
+}

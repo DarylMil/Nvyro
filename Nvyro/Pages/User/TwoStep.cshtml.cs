@@ -44,6 +44,7 @@ namespace Nvyro.Pages.User
                 return RedirectToPage("/User/Login");
             }
             var token = _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+            Console.WriteLine(token.Result);
             await _emailSender.SendEmailAsync(user.Email, "2FA Token", 
                 $"Your One Time Password (OTP) is: <br><h2>{token.Result}</h2><br>The password is only valid for 6 minutes.");
             return Page();

@@ -25,7 +25,9 @@
         <!-- LEFT CARD -->
         <div class="col-4 pl-0" style="padding-right:1rem;">
             <div class="card dashboard-card col-12 mb-3">
-                <img class="card-img-top" style="" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+                
+                <input id="dashboard-image-input" hidden type="file" accept="image/jpg, image/png" asp-for="Upload" onchange="showImgPreview(this)" />
+                <img id="dashboard-image" class="card-img-top" style="cursor:pointer;" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
 
                 <div class="card-body">
                     <h5 class="card-title">@Model.AppUser.FullName</h5>
@@ -80,7 +82,10 @@
                     <div class="row mb-3">
                         <div class="form-floating col-12">
                             <label>Search Address</label>
-                            <input disabled id="search-full-address" class="form-control" aria-required="true"/>
+                            <div class="input-group">
+                                <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                <input id="search-full-address" disabled style="border-left:0;"class="form-control" aria-required="true" placeholder="start typing to search.." />
+                            </div>
                             <div id="select-address" class="show" style="position:relative;">
                             </div>
                         </div>
@@ -117,7 +122,19 @@
      <!-- END RIGHT CARD -->
 </div>
 </form>
+<script>
+    function showImgPreview(input) {
+    if (input.files[0]) {
+        var uploadimg = new FileReader();
+        uploadimg.onload = function(displayimg) {
+            $("#dashboard-image").attr('src', displayimg.target.result);
+        }
+        uploadimg.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 @section Scripts
 {
     <script src="~/js/UserDashboard.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }

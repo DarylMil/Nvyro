@@ -41,7 +41,7 @@ namespace Nvyro.Pages.User
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                _toastNotification.Error($"Unable to load user the user");
+                _toastNotification.Error($"Unable to load the user");
                 return Page(); 
             }
 
@@ -69,7 +69,39 @@ namespace Nvyro.Pages.User
                     _toastNotification.Error("Incorrect Login Credentials");
                     return Page();
                 }
+                if (!user.EmailConfirmed)
+                {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                    var callbackUrl = Url.Page(
+                   "/User/Login",
+                   pageHandler: null,
+                   values: new { userId = user.Id, code = code },
+                   protocol: Request.Scheme);
+
+                    var sendResult = await _emailSender.SendEmailAsync(user.Email, "Welcome to NVYRO",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (sendResult)
+                    {
+                        _toastNotification.Information("Please Follow Instructions Sent To Your Email");
+                        return Page();
+                    }
+                    else
+                    {
+                        _toastNotification.Error("Error Sending Email. Please Try Again.");
+                        return Page();
+                    }
+                }
+
+                if (user.IsDisabled)
+                {
+                    _toastNotification.Error("Your Account Has Been Disabled. Please Contact System Admin.");
+                    return Page();
+                }
                 var signInRes = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, false, true);
+                
                 if ( signInRes.IsLockedOut)
                 {
                     _toastNotification.Error("Account Is Locked");

@@ -15,7 +15,7 @@ namespace Nvyro.Controllers
         {
             _userAuthService = userAuthService;
         }
-        [HttpPost("1")]
+        [HttpPost("register/1")]
         public async Task<IActionResult> OnNextPost([FromBody]InitialRequest iR)
         { 
             try

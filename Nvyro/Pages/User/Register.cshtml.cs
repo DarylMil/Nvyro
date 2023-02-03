@@ -89,22 +89,28 @@ namespace Nvyro.Pages.User
                 
                 //var result = await _userAuthService.AddUser(regUser); //put model.Role in html page
 
-                var userId = await _userManager.GetUserIdAsync(newUser);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
               
                 var callbackUrl = Url.Page(
                     "/User/Login",
                     pageHandler: null,
-                    values: new { userId = userId, code = code, returnUrl = returnUrl },
+                    values: new { userId = newUser.Id, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(regUser.Email, "Welcome to NVYRO",
+                var sendResult = await _emailSender.SendEmailAsync(regUser.Email, "Welcome to NVYRO",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                
+                if (sendResult)
+                {
                     _toastNotification.Success("User Created Successfully. Please verify it");
                     return RedirectToPage("/User/RegisterConfirmation", new { email = regUser.Email, returnUrl = returnUrl });
+                }
+                else
+                {
+                    _toastNotification.Success("User Created Successfully. However, failed to send email. Please try logging in.");
+                    return RedirectToPage("/User/RegisterConfirmation", new { email = regUser.Email, returnUrl = returnUrl });
+                }
             }
             catch(ArgumentNullException nullEx)
             {
