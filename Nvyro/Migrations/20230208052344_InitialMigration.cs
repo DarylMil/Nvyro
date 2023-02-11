@@ -37,6 +37,8 @@ namespace Nvyro.Migrations
                     ProfilePicURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Points = table.Column<int>(type: "int", nullable: false),
+                    LastActivityTimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -60,9 +62,9 @@ namespace Nvyro.Migrations
                 name: "RecycleCategory",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CategoryName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    IsDisabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -175,35 +177,6 @@ namespace Nvyro.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserRecycleCategory",
-                columns: table => new
-                {
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RecycleCategoriesCategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserRecycleCategory", x => new { x.ApplicationUserId, x.RecycleCategoriesCategoryId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserRecycleCategory_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserRecycleCategory_RecycleCategory_RecycleCategoriesCategoryId",
-                        column: x => x.RecycleCategoriesCategoryId,
-                        principalTable: "RecycleCategory",
-                        principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserRecycleCategory_RecycleCategoriesCategoryId",
-                table: "ApplicationUserRecycleCategory",
-                column: "RecycleCategoriesCategoryId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -246,9 +219,6 @@ namespace Nvyro.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ApplicationUserRecycleCategory");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

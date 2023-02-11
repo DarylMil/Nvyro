@@ -46,13 +46,22 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options=>{
 builder.Services.ConfigureApplicationCookie(Config =>
 {
     Config.LoginPath = "/User/Login";
+    Config.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    Config.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+    Config.SlidingExpiration = true;
+    Config.AccessDeniedPath = "/Errors/403";
+});
+
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["GoogleAuth:ClientId"];
+    googleOptions.ClientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
 });
 
 builder.Services.AddTransient<EmailSender>();
 builder.Services.Configure<EmailOptions>(builder.Configuration);
 
-builder.Services.AddScoped<UserAuthenticationService>();
-
+builder.Services.AddScoped<CategoryService>();
 
 var app = builder.Build();
 

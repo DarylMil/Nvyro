@@ -90,6 +90,7 @@
             registerBlock.prop("disabled", false);
             registerPostal.prop("disabled", false);
             registerRoad.prop("disabled", false);
+            $("#dashboard-image").css("cursor", "pointer");
         } else {
             cancelOrEdit = 0;
             $("#edit-profile-btn").text("Edit Profile");
@@ -101,6 +102,7 @@
             registerBlock.prop("disabled", true);
             registerPostal.prop("disabled", true);
             registerRoad.prop("disabled", true);
+            $("#dashboard-image").css("cursor", "none");
         }
     });
     //saveChangesBtn.click(() => {
@@ -184,7 +186,10 @@
     });
 
     $("#dashboard-image").on("click", () => {
+        if (cancelOrEdit == 1) {
+            $("#dashboard-image-input").trigger("click");
+        }
         console.log("dashboard-image")
-        $("#dashboard-image-input").trigger("click")
     });
+
 });

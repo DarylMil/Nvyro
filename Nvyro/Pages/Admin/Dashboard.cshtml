@@ -8,17 +8,23 @@
       <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
       <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Reward Management </a>
       <a class="dashboard-button " asp-page="./UserManagement"><i class="fa-solid fa-users"></i> User Management </a>
+      <a class="dashboard-button" asp-page="./Statistics"><i class="fa-solid fa-chart-pie"></i> Statistics</a>
+      <a class="dashboard-button" asp-page="./Categories"><i class="fa-solid fa-recycle"></i> Categories</a>
     </div>
   </div>
 </nav>
 
 <!-- Main Menu area End-->
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 <div class="mt-4 mx-0 row dashboard-height">
         <!-- LEFT CARD -->
         <div class="col-4 pl-0" style="padding-right:1rem;">
             <div class="card dashboard-card col-12 mb-3">
-                <img class="card-img-top" style="" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+
+                <input id="dashboard-image-input" hidden type="file" accept="image/jpg, image/png" asp-for="Upload" onchange="showImgPreview(this)" />
+                <div class="dashboard-img-container mt-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Click Edit Profile To Change Profile Pic">
+                    <img id="dashboard-image" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+                </div>
 
                 <div class="card-body">
                     <h5 class="card-title">@Model.AppUser.FullName</h5>
@@ -73,7 +79,10 @@
                     <div class="row mb-3">
                         <div class="form-floating col-12">
                             <label>Search Address</label>
-                            <input disabled id="search-full-address" class="form-control" aria-required="true"/>
+                            <div class="input-group">
+                                <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                <input id="search-full-address" disabled style="border-left:0;"class="form-control" aria-required="true" placeholder="start typing to search.." />
+                            </div>
                             <div id="select-address" class="show" style="position:relative;">
                             </div>
                         </div>
@@ -110,6 +119,18 @@
      <!-- END RIGHT CARD -->
 </div>
 </form>
+<script>
+
+    function showImgPreview(input) {
+    if (input.files[0]) {
+        var uploadimg = new FileReader();
+        uploadimg.onload = function(displayimg) {
+            $("#dashboard-image").attr('src', displayimg.target.result);
+        }
+        uploadimg.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 @section Scripts
 {
     <script src="~/js/UserDashboard.js"></script>

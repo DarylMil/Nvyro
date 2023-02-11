@@ -22,21 +22,6 @@ namespace Nvyro.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ApplicationUserRecycleCategory", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("RecycleCategoriesCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUserId", "RecycleCategoriesCategoryId");
-
-                    b.HasIndex("RecycleCategoriesCategoryId");
-
-                    b.ToTable("ApplicationUserRecycleCategory");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -187,6 +172,9 @@ namespace Nvyro.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -201,6 +189,9 @@ namespace Nvyro.Migrations
 
                     b.Property<bool>("IsDisabled")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastActivityTimeStamp")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -273,35 +264,20 @@ namespace Nvyro.Migrations
 
             modelBuilder.Entity("Nvyro.Models.RecycleCategory", b =>
                 {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<bool>("IsDisabled")
+                        .HasColumnType("bit");
+
                     b.HasKey("CategoryId");
 
                     b.ToTable("RecycleCategory");
-                });
-
-            modelBuilder.Entity("ApplicationUserRecycleCategory", b =>
-                {
-                    b.HasOne("Nvyro.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nvyro.Models.RecycleCategory", null)
-                        .WithMany()
-                        .HasForeignKey("RecycleCategoriesCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

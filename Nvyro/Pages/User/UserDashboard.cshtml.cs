@@ -16,7 +16,6 @@ namespace Nvyro.Pages.User
         public UpdateUserModel AppUser { get; set; } = new UpdateUserModel();
 
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly UserAuthenticationService _userAuthService;
         private readonly INotyfService _toastNotification;
 
         private IWebHostEnvironment _environment;
@@ -25,9 +24,8 @@ namespace Nvyro.Pages.User
         public IFormFile? Upload { get; set; }
 
         public UserDashboardModel(UserManager<ApplicationUser> userManager, IWebHostEnvironment environment,
-            UserAuthenticationService userAuthService, INotyfService toastNotification)
+            INotyfService toastNotification)
         {
-            _userAuthService = userAuthService;
             _toastNotification = toastNotification;
             _userManager = userManager;
             _environment = environment;
@@ -53,7 +51,6 @@ namespace Nvyro.Pages.User
             AppUser.IsDisabled = existingUser.IsDisabled;
             AppUser.ProfilePicURL = existingUser.ProfilePicURL;
             AppUser.FullName = existingUser.FullName;
-            AppUser.RecycleCategories = existingUser.RecycleCategories;
             AppUser.Points = existingUser.Points;
 
             for (var i=0; i < allRoles.Count; i++)
@@ -67,18 +64,60 @@ namespace Nvyro.Pages.User
             return Page();
         }
         public async Task<IActionResult> OnPostAsync() {
-            
-            var status = await _userAuthService.UpdateUserAsync(User,AppUser);
-            if (status.StatusCode == 0)
+            if (ModelState.IsValid)
             {
-                _toastNotification.Error(status.Message);
-                return Page();
-            }
-            else
-            {
-                _toastNotification.Success(status.Message);
+                var existingUser = await _userManager.GetUserAsync(User);
+                if(existingUser == null)
+                {
+                    _toastNotification.Error("User Not Found");
+                    return RedirectToPage("./Login");
+                }
+                var imgUrl = "";
+                if (Upload != null)
+                {
+                    if(Upload.ContentType=="image/jpeg" || Upload.ContentType == "image/jpg" || Upload.ContentType == "image/png")
+                    {
+                        var uploadsFolder = "uploads/images";
+                        var imageFile = Guid.NewGuid() + Path.GetExtension(Upload.FileName);
+                        var imagePath = Path.Combine(_environment.ContentRootPath, "wwwroot", uploadsFolder, imageFile);
+                        using var fileStream = new FileStream(imagePath, FileMode.Create);
+                        await Upload.CopyToAsync(fileStream);
+                        imgUrl = string.Format("/{0}/{1}", uploadsFolder, imageFile);
+                    }
+                    else
+                    {
+                        _toastNotification.Error("Upload Only Jpeg Or Png File Types.");
+                        return Page();
+                    }
+                }
+                else
+                {
+                    imgUrl = null;
+                }
+                existingUser.Email = AppUser.Email;
+                existingUser.PostalCode = AppUser.PostalCode;
+                existingUser.BlockNumber = AppUser.BlockNumber;
+                existingUser.UnitNumber = AppUser.UnitNumber;
+                existingUser.RoadName = AppUser.RoadName;
+                existingUser.PhoneNumber = AppUser.PhoneNumber;
+                existingUser.IsDisabled = AppUser.IsDisabled;
+                existingUser.ProfilePicURL = imgUrl;
+                existingUser.FullName = AppUser.FullName;
+                existingUser.Points = AppUser.Points;
+
+                var res = await _userManager.UpdateAsync(existingUser);
+                if (res.Succeeded)
+                {
+                    _toastNotification.Success("Profile Updated Successfully");
+                }
+                else
+                {
+                    _toastNotification.Error("Profile Update Failed");
+                }
                 return RedirectToPage("./UserDashboard");
             }
+            _toastNotification.Error("Profile Update Failed");
+            return Page();
         }
     }
 }

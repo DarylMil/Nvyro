@@ -59,6 +59,8 @@ namespace Nvyro.Pages.User
             var result = await _signInManager.TwoFactorSignInAsync("Email", TwoStepModel.TwoFactorCode, false, false);
             if (result.Succeeded)
             {
+                user.LastActivityTimeStamp = DateTime.Now;
+                await _userManager.UpdateAsync(user);
                 //checked if the user is admin
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
                 if (isAdmin)

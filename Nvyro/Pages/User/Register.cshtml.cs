@@ -17,17 +17,15 @@ namespace Nvyro.Pages.User
     {
         [BindProperty]
         public RegistrationModel regUser { get; set; }
-        private readonly UserAuthenticationService _userAuthService;
         private readonly INotyfService _toastNotification;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly EmailSender _emailSender;
 
-        public RegisterModel(UserAuthenticationService userAuthService, INotyfService toastNotification,UserManager<ApplicationUser> userManager,
+        public RegisterModel(INotyfService toastNotification,UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, EmailSender emailSender)
         {
-            _userAuthService = userAuthService;
             _toastNotification = toastNotification;
             _userManager = userManager;
             _signInManager = signInManager;

@@ -154,6 +154,84 @@ namespace Nvyro.Controllers
                 message = $"Fail to update the user."
             });
         }
+        [HttpGet("charts")]
+        public async Task<IActionResult> GetChartsAsync()
+        {
+            var recyclers = await _userManager.GetUsersInRoleAsync("Recycler");
+            var organizers = await _userManager.GetUsersInRoleAsync("Organizer");
+
+            var currentDate = DateTime.Now;
+            
+            var activeRec6mAgo = recyclers.Where(u => currentDate.AddMonths(-6) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-5)).Count();
+            var activeOrg6mAgo = organizers.Where(u => currentDate.AddMonths(-6) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-5)).Count();
+
+            var activeRec5mAgo = recyclers.Where(u => currentDate.AddMonths(-5) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-4)).Count();
+            var activeOrg5mAgo = organizers.Where(u => currentDate.AddMonths(-5) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-4)).Count();
+
+            var activeRec4mAgo = recyclers.Where(u => currentDate.AddMonths(-4) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-3)).Count();
+            var activeOrg4mAgo = organizers.Where(u => currentDate.AddMonths(-4) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-3)).Count();
+
+            var activeRec3mAgo = recyclers.Where(u => currentDate.AddMonths(-3) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-2)).Count();
+            var activeOrg3mAgo = organizers.Where(u => currentDate.AddMonths(-3) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-2)).Count();
+
+            var activeRec2mAgo = recyclers.Where(u => currentDate.AddMonths(-2) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-1)).Count();
+            var activeOrg2mAgo = organizers.Where(u => currentDate.AddMonths(-2) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-1)).Count();
+
+            var activeRec1mAgo = recyclers.Where(u => currentDate.AddMonths(-1) <= u.LastActivityTimeStamp).Count();
+            var activeOrg1mAgo = organizers.Where(u => currentDate.AddMonths(-1) <= u.LastActivityTimeStamp).Count();
+
+            var newRec6mAgo = recyclers.Where(u => currentDate.AddMonths(-6) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-5)).Count();
+            var newOrg6mAgo = organizers.Where(u => currentDate.AddMonths(-6) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-5)).Count();
+
+            var newRec5mAgo = recyclers.Where(u => currentDate.AddMonths(-5) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-4)).Count();
+            var newOrg5mAgo = organizers.Where(u => currentDate.AddMonths(-5) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-4)).Count();
+
+            var newRec4mAgo = recyclers.Where(u => currentDate.AddMonths(-4) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-3)).Count();
+            var newOrg4mAgo = organizers.Where(u => currentDate.AddMonths(-4) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-3)).Count();
+
+            var newRec3mAgo = recyclers.Where(u => currentDate.AddMonths(-3) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-2)).Count();
+            var newOrg3mAgo = organizers.Where(u => currentDate.AddMonths(-3) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-2)).Count();
+
+            var newRec2mAgo = recyclers.Where(u => currentDate.AddMonths(-2) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-1)).Count();
+            var newOrg2mAgo = organizers.Where(u => currentDate.AddMonths(-2) <= u.CreatedDate && u.CreatedDate < currentDate.AddMonths(-1)).Count();
+
+            var newRec1mAgo = recyclers.Where(u => currentDate.AddMonths(-1) <= u.CreatedDate).Count();
+            var newOrg1mAgo = organizers.Where(u => currentDate.AddMonths(-1) <= u.CreatedDate).Count();
+
+
+            return Ok(new
+            {
+                success=true,
+                data =new {
+                    activeRec6mAgo,
+                    activeOrg6mAgo,
+                    activeRec5mAgo,
+                    activeOrg5mAgo,
+                    activeRec4mAgo,
+                    activeOrg4mAgo,
+                    activeRec3mAgo,
+                    activeOrg3mAgo,
+                    activeRec2mAgo,
+                    activeOrg2mAgo,
+                    activeRec1mAgo,
+                    activeOrg1mAgo,
+                    newRec1mAgo,
+                    newRec2mAgo,
+                    newRec3mAgo,
+                    newRec4mAgo,
+                    newRec5mAgo,
+                    newRec6mAgo,
+                    newOrg1mAgo,
+                    newOrg2mAgo,
+                    newOrg3mAgo,
+                    newOrg4mAgo,
+                    newOrg5mAgo,
+                    newOrg6mAgo
+                }
+
+            });
+        }
+
         public class UpdateRequestBody
         {
             public string? ProfilePicUrl { get; set; }

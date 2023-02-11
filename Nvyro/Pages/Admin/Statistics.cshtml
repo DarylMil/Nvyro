@@ -1,0 +1,176 @@
+﻿@page
+@model Nvyro.Pages.Admin.StatisticsModel
+@{
+}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="dashboard-button" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+            <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Reward Management </a>
+            <a class="dashboard-button " asp-page="./UserManagement"><i class="fa-solid fa-users"></i> User Management </a>
+            <a class="dashboard-button active" asp-page="./Statistics"><i class="fa-solid fa-chart-pie"></i> Statistics</a>
+            <a class="dashboard-button" asp-page="./Categories"><i class="fa-solid fa-recycle"></i> Categories</a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container mt-4">
+    <h5>Active Users</h5>
+    <div class="row">
+        <div class="col" >
+            <canvas id="myChart"></canvas>
+        </div>
+        <div  class="col">
+            <canvas class="col" id="myChart2"></canvas>
+        </div>
+    </div>
+    <h5 class=" mt-4">New Users</h5>
+    <div class="row">
+        <canvas id="myChart3"></canvas>
+    </div>
+</div>
+
+@section Scripts{
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+    const ctx2 = document.getElementById('myChart2');
+    const ctx3 = document.getElementById('myChart3');
+
+    const MONTHS = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    $(document).ready(()=>{
+        const DATA_COUNT = 6;
+        var today = new Date();
+        var last6Months = [];
+        for (var i = 5; i >= 0; i--) {
+          var currentMonth = new Date(today.getFullYear(), today.getMonth() - i, 1);
+          last6Months.push(MONTHS[currentMonth.getMonth()]);
+        }
+        const labels = last6Months;
+
+        $.get("/api/admin/charts",(result)=>{
+            if(result.success){
+                var data = result.data;
+                console.log(data)
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels:labels,
+                        datasets: [{
+                            label: 'No. of Active Recyclers',
+                            data: [data.activeRec6mAgo, data.activeRec5mAgo, data.activeRec4mAgo, data.activeRec3mAgo, data.activeRec2mAgo, data.activeRec1mAgo],
+                            backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                            ],
+                            borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                        }
+                    }
+                });
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels:labels,
+                        datasets: [{
+                            label: 'No. of Active Organizers',
+                            data: [data.activeOrg6mAgo, data.activeOrg5mAgo, data.activeOrg4mAgo, data.activeOrg3mAgo, data.activeOrg2mAgo, data.activeOrg1mAgo],
+                            backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                            ],
+                            borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                        }
+                    }
+                });
+                 new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels:labels,
+                        datasets: [{
+                            label: 'No. of New Organizers',
+                            data: [data.newOrg6mAgo, data.newOrg5mAgo, data.newOrg4mAgo, data.newOrg3mAgo, data.newOrg2mAgo, data.newOrg1mAgo],
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            backgroundColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        },{
+                            label:'No. of New Recyclers' ,
+                            data:[data.newRec6mAgo,data.newRec5mAgo,data.newRec4mAgo,data.newRec3mAgo,data.newRec2mAgo,data.newRec1mAgo],
+                            fill: false,
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgb(255, 99, 132)',
+                            tension: 0.1
+                        }],
+                    },
+                    options: {
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                        }
+                    }
+                });
+            }
+        });
+
+    })
+</script>
+
+}

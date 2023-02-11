@@ -5,7 +5,7 @@ namespace Nvyro.Models.DTO
     public class AdminUserManagement
     {
         public ApplicationUser User { get; set; } = new ApplicationUser();
-        public IList<string> Roles { get; set; } = new List<string>();
+        public string Role { get; set; } = string.Empty;
         
     }
 }

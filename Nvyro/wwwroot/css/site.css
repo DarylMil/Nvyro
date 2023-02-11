@@ -6,6 +6,30 @@ https://templatemo.com/tm-546-sixteen-clothing
 
 */
 /*Daryl*/
+#left-dropdown .dropdown-menu.show {
+    left: -76px !important;
+}
+.page-item.active .page-link {
+    background-color: #f33f3f;
+    border-color: #f33f3f;
+}
+.btn-outline-theme {
+    border-color: #f33f3f;
+    color: #f33f3f;
+    background-color:transparent;
+}
+.btn-outline-theme:hover:not(.disabled) {
+    background: #f33f3f;
+    color: white;
+    border-color: #f33f3f;
+}
+.btn-outline-theme:focus {
+    box-shadow: 0 0 0 0 #f33f3f;
+}
+.btn-outline-theme:active{
+    background-color: #f33f3f;
+    color:white;
+}
 .table td.user-center, th.user-center{
     vertical-align:middle;
 }
@@ -66,9 +90,9 @@ input[type=number] {
     height:100%;
 }
 .dashboard-card img{
-    height: 300px;
+    height: 270px;
+    width:270px;
     object-fit:cover;
-    margin-top: 1rem;
     border-radius:100%;
 }
 .dashboard-button:hover {
@@ -92,6 +116,12 @@ input[type=number] {
     background-color: #f33f3f;
     color:white;
 }
+.dashboard-img-container{
+    height:272px;
+    width:272px;
+    align-self:center;
+    border-radius:100%;
+}
 .filled-button {
     background-color: #f33f3f;
     color: #fff;
@@ -105,6 +135,7 @@ input[type=number] {
     border:none;
     cursor:pointer;
 }
+
 .filled-button-sm {
     background-color: #f33f3f;
     color: #fff;

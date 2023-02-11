@@ -73,9 +73,7 @@
             if (data.success) {
                 var myUser = data.user;
                 var roles = data.roles[0];
-                console.log(myUser)
-                console.log(roles)
-                $("#modal-img").attr("src", myUser.ProfilePicURL != null ? myUser.ProfilePicURL : "/assets/images/default-profile-pic.jpg");
+                $("#modal-img").attr("src", myUser.profilePicURL != null ? myUser.profilePicURL : "/assets/images/default-profile-pic.jpg");
                 $("#modal-label-name").text(roles == "Organizer" ? "Organization Name" : roles == "Recycler" ? "Full Name" : "Admin Name");
                 $("#modal-fullname").val(myUser.fullName);
                 modalRole.text(roles);
@@ -86,6 +84,8 @@
                 $("#modal-blockNumber").val(myUser.blockNumber);
                 $("#modal-postalCode").val(myUser.postalCode);
                 $("#modal-roadName").val(myUser.roadName);
+                $("#modal-account-creation").val(new Date(myUser.createdDate).toLocaleDateString());
+                $("#modal-account-activity").val(new Date(myUser.lastActivityTimeStamp).getFullYear() < 1900 ? "Never" : new Date(myUser.lastActivityTimeStamp).toLocaleDateString());
                 hiddenId.val(myUser.id);
 
                 myModal.toggle()
@@ -93,11 +93,13 @@
         });
     };
 
-    const confimSaveBtn = (userId) => {
-        console.log("confirmsavebtn")
+    const confimSaveBtn = (userId, ele) => {
+        
         var tableRole = $(`#${userId} td`)[2].innerText.trim();
         var tableDisabled = $(`#${userId} td`)[3].innerText.trim();
         var tableLocked = $(`#${userId} td`)[4].innerText.trim();
+
+        console.log(tableRole, tableDisabled, tableLocked)
 
         $.ajax({
             url: `/api/admin/quick/${userId}`,
@@ -122,6 +124,7 @@
                     childrenObject[2].querySelector("button").innerText = updatedUser.locked ? "Yes" : "No";
                 }
                 myModalConfirmation.toggle();
+                ele.lastElementChild.firstElementChild.disabled = true;
             },
             error: (data) => {
                 console.log(data);
@@ -129,8 +132,12 @@
         });
     };
 
-    const tableSaveBtn = (userId) => {
-        document.getElementById("confirmation").addEventListener("click", () => confimSaveBtn(userId));
+
+
+    const tableSaveBtn = (userId, ele) => {
+        $('#confirmation').replaceWith($('#confirmation').clone());
+        $('#cancel').replaceWith($('#cancel').clone());
+        document.getElementById("confirmation").addEventListener("click", () => confimSaveBtn(userId, ele));
         document.getElementById("cancel").addEventListener("click", () => myModalConfirmation.toggle());
         myModalConfirmation.toggle();
         
@@ -141,19 +148,23 @@
     tr.forEach((x) => {
         var listOfTableItems = x.querySelectorAll("td");
         listOfTableItems[2].querySelector("ul").addEventListener("click", (e) => {
+            x.lastElementChild.firstElementChild.disabled = false;
+            console.log(x.lastElementChild.firstElementChild)
             var liValue = e.target.innerText;
             listOfTableItems[2].querySelector("button").innerText = liValue;
         });
         listOfTableItems[3].querySelector("ul").addEventListener("click", (e) => {
+            x.lastElementChild.firstElementChild.disabled = false;
             var liValue = e.target.innerText;
             listOfTableItems[3].querySelector("button").innerText = liValue;
         });
         listOfTableItems[4].querySelector("ul").addEventListener("click", (e) => {
+            x.lastElementChild.firstElementChild.disabled = false;
             var liValue = e.target.innerText;
             listOfTableItems[4].querySelector("button").innerText = liValue;
         });
         //Save Button
-        listOfTableItems[5].children[0].addEventListener("click", () => tableSaveBtn(x.id));
+        listOfTableItems[5].children[0].addEventListener("click", () => tableSaveBtn(x.id, x));
         listOfTableItems[5].children[1].addEventListener("click", () => {
             getUser(x.id);
         });
@@ -162,4 +173,5 @@
         });
     });
 
+    
 });

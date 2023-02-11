@@ -118,7 +118,7 @@
     });
     const nextBtnFunction = () => {
         $.ajax({
-            url: `/api/user/register/1/false`,
+            url: `/api/user/register/1/true`,
             headers: {
                 "Accept": "application/json",
                 "Content-Type": 'application/json',

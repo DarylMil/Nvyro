@@ -20,14 +20,16 @@
   </div>
 </nav>
 <!-- Main Menu area End-->
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 <div class="mt-4 mx-0 row dashboard-height">
         <!-- LEFT CARD -->
         <div class="col-4 pl-0" style="padding-right:1rem;">
             <div class="card dashboard-card col-12 mb-3">
                 
                 <input id="dashboard-image-input" hidden type="file" accept="image/jpg, image/png" asp-for="Upload" onchange="showImgPreview(this)" />
-                <img id="dashboard-image" class="card-img-top" style="cursor:pointer;" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+                <div class="dashboard-img-container mt-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Click Edit Profile To Change Profile Pic">
+                    <img id="dashboard-image" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+                </div>
 
                 <div class="card-body">
                     <h5 class="card-title">@Model.AppUser.FullName</h5>
@@ -39,7 +41,7 @@
                     </h6>
                     
                     <hr />
-                    <button type="button" id="edit-profile-btn" class="dashboard-edit-profile">Edit Profile</button>
+                    <button data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Click Edit Profile To Change Profile Pic"  type="button" id="edit-profile-btn" class="dashboard-edit-profile">Edit Profile</button>
                     <button type="submit" disabled id="save-changes-btn" class="filled-button-sm mt-3 invisible">Save Changes</button>
                 </div>
             </div>
@@ -123,6 +125,7 @@
 </div>
 </form>
 <script>
+
     function showImgPreview(input) {
     if (input.files[0]) {
         var uploadimg = new FileReader();
