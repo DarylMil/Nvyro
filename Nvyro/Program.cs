@@ -57,6 +57,8 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
     googleOptions.ClientId = builder.Configuration["GoogleAuth:ClientId"];
     googleOptions.ClientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
 });
+builder.Services.AddScoped<UserAuthenticationService>();
+builder.Services.AddScoped<RewardService>();
 
 builder.Services.AddTransient<EmailSender>();
 builder.Services.Configure<EmailOptions>(builder.Configuration);
