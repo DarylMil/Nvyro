@@ -280,6 +280,36 @@ namespace Nvyro.Migrations
                     b.ToTable("RecycleCategory");
                 });
 
+            modelBuilder.Entity("Nvyro.Models.Reward", b =>
+                {
+                    b.Property<string>("RewardID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RewardDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RewardName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("RewardPicURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("availableQuantity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("requiredPoints")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RewardID");
+
+                    b.ToTable("Reward");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
