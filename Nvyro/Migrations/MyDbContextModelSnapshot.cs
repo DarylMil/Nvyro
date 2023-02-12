@@ -277,7 +277,7 @@ namespace Nvyro.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("RecycleCategory");
+                    b.ToTable("RecycleCategory", (string)null);
                 });
 
             modelBuilder.Entity("Nvyro.Models.Reward", b =>
@@ -307,7 +307,7 @@ namespace Nvyro.Migrations
 
                     b.HasKey("RewardID");
 
-                    b.ToTable("Reward");
+                    b.ToTable("Reward", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
