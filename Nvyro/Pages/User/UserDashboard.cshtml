@@ -11,7 +11,7 @@
     <div class="navbar-nav">
       <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
       <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Rewards</a>
-      <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Events</a>
+            <a class="dashboard-button " asp-page="/OrganizerEvent/Index"><i class="fa-solid fa-calendar-days"></i> Events</a>
             @if (@Model.AppUser.Roles.Contains("Organizer"))
             {
                 <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Recylables </a>
