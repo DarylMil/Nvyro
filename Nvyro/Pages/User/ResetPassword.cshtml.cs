@@ -47,12 +47,12 @@ namespace Nvyro.Pages.User
             {
                 return Page();
             }
-
+            
             var user = await _userManager.FindByEmailAsync(ResetPasswordModel.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                _toastNotification.Information("Reset Password Success");
+                _toastNotification.Error("Reset Password Fail");
                 return RedirectToPage("./Login");
             }
 
@@ -60,10 +60,10 @@ namespace Nvyro.Pages.User
             
             if (result.Succeeded)
             {
-                _toastNotification.Information("Reset Password Success");
+                _toastNotification.Success("Reset Password Success");
                 return RedirectToPage("./Login");
             }
-            _toastNotification.Information("Token Invalid or Expired");
+            _toastNotification.Error("Reset Password Fail");
             return Page();
         }
     }

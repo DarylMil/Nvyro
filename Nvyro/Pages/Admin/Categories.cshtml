@@ -1,0 +1,184 @@
+﻿@page
+@model Nvyro.Pages.Admin.CategoriesModel
+@{
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="dashboard-button" asp-page="./Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="dashboard-button"  asp-page="/Admin/CreateRewards"><i class="fa-solid fa-coins"></i> Reward Management </a>
+      <a class="dashboard-button " asp-page="./UserManagement"><i class="fa-solid fa-users"></i> User Management </a>
+      <a class="dashboard-button" asp-page="./Statistics"><i class="fa-solid fa-chart-pie"></i> Statistics</a>
+      <a class="dashboard-button active" asp-page="./Categories"><i class="fa-solid fa-recycle"></i> Categories</a>
+    </div>
+  </div>
+</nav>
+
+<div class=" row mt-4 mb-2">
+    <div class="col">
+        <form method = "post" asp-page-handler="Search" class="row">
+            <div class="input-group col-10">
+                <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input name="searchQuery" id="search-users" style="border-left:0;"class="form-control" aria-required="true" placeholder="search categories" />
+            </div>
+            <button class="btn btn-outline-theme col-2" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="btn-group col" style="justify-content:flex-end;">
+        
+        <button type="button" class="btn btn-outline-theme" data-toggle="modal" data-target="#add-category"><i class="fa-regular fa-square-plus"></i> </button>
+        
+    </div>
+</div>
+
+<div class="card px-3 mb-2">
+    <table class="table table-hover" style="table-layout:fixed;">
+        <thead>
+            <tr>
+                <th scope="col" style="border-top:none;vertical-align:middle;width:75%">Category Name</th>
+                <th scope="col" style="border-top:none;vertical-align:middle;width:25%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <form asp-page-handler="Disable" method="post">
+            @foreach(var r in @CategoriesModel.RecycleCategories)
+            {
+                    <tr class="usermodal-font @(r.IsDisabled?"table-dark":"")">
+                        <td class="user-center">@r.CategoryName</td>
+                        <td class="user-center">
+                            @if(r.IsDisabled){
+                                <button name="catId" value="@r.CategoryId" class="btn btn-outline-success usermodal-font">
+                                    <i class="fa-solid fa-check"></i> <span>Enable</span>
+                                </button>
+                            }
+                            else
+                            {
+                                <button name="catId" value="@r.CategoryId" class="btn btn-outline-danger usermodal-font">
+                                    <i class="fa-solid fa-ban"></i> <span>Disable</span>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+            }
+            </form>
+        </tbody>
+    </table>
+</div>
+
+<!--Bottom Controls (Pagination)-->
+<div class="row">
+    <div class="col">Viewing @(@CategoriesModel.RecycleCategories.Count > 0 ? (@CategoriesModel.CurrentPage * @CategoriesModel.PageSize) - (@CategoriesModel.PageSize -1):0) to @(@CategoriesModel.RecycleCategories.Count * @CategoriesModel.CurrentPage >= @CategoriesModel.CurrentPage * @CategoriesModel.PageSize ? @CategoriesModel.CurrentPage * @CategoriesModel.PageSize: @CategoriesModel.AllRecycleCategories.Count) of @(@CategoriesModel.AllRecycleCategories.Count) rows. 
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn filled-button dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding:0.5rem 0.75rem;">
+                @CategoriesModel.PageSize
+            </button>            
+            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="min-width:0;text-align:center;">
+            <form method="post" asp-page-handler="PageSize">
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="1">1</button></li>
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="5">5</button></li>
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="10">10</button></li>
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="25">25</button></li>
+            </form>
+            </ul>
+        </div>
+        rows per page.
+    </div>
+    <nav id="pagination-nav" aria-label="Table Pagination" class="col">
+        <ul class="pagination justify-content-end">
+        <li id="pagination-first" class="page-item @(@CategoriesModel.CurrentPage == 1 ?"disabled":"")">
+            <a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@(@CategoriesModel.CurrentPage-1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <!-- First Page-->
+        <li class="page-item  @(@CategoriesModel.CurrentPage==1?"active":"")"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="1">1</a></li>  
+
+        <!-- Middle Pages-->
+        @if(@CategoriesModel.PageCount > 7)
+        { 
+            @if(@CategoriesModel.CurrentPage > 4)
+            {
+                <!--Show dots-->
+                <li class="page-item"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@(@CategoriesModel.PageCount - 3 < @CategoriesModel.CurrentPage? @CategoriesModel.CurrentPage - (6 - (@CategoriesModel.PageCount-@CategoriesModel.CurrentPage)): @CategoriesModel.CurrentPage-3)" >...</a></li>    
+            }
+        
+            @if( (@CategoriesModel.CurrentPage <= 3))
+            {
+                <!--first 5 pages-->
+                @for(int i=2; i <= @CategoriesModel.PageCount -1 && i <= 6;i++)
+                {
+                    <li class="page-item  @(@CategoriesModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@i" >@i</a></li>
+                }
+            }
+            else if(@CategoriesModel.CurrentPage + 3 >= @CategoriesModel.PageCount)
+            {
+                <!--last 5 pages-->
+                @for(int i = @CategoriesModel.PageCount - 5; i<= @CategoriesModel.PageCount -1;i++ )
+                {
+                    <li class="page-item  @(@CategoriesModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@i" >@i</a></li>
+                
+                }
+            }
+            else
+            {   
+                <!-- middle 5 pages-->
+                @for(int i = @CategoriesModel.CurrentPage - 2; i<= @CategoriesModel.PageCount -1 && i <= @CategoriesModel.CurrentPage + 2;i++ )
+                {
+                    <li class="page-item  @(@CategoriesModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@i">@i</a></li>
+                
+                }
+            }
+
+            @if(@CategoriesModel.PageCount - 3 > @CategoriesModel.CurrentPage)
+            {
+                <!--Show dots-->
+                <li class="page-item"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@(@CategoriesModel.CurrentPage < 4?6+1:@CategoriesModel.CurrentPage+3)" >...</a></li>    
+            }
+        }
+        else
+        {
+            @for(int i=2; i <= @CategoriesModel.PageCount -1 && i <= 6;i++)
+            {
+                <li class="page-item @(@CategoriesModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@i">@i</a></li>
+            }
+        }
+
+        <!-- END of Middle Pages-->
+        <!-- Last Page-->
+        @if(@CategoriesModel.PageCount > 1){
+            <li class="page-item @(@CategoriesModel.CurrentPage==@CategoriesModel.PageCount?"active":"")"><a class="page-link btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@CategoriesModel.PageCount">@CategoriesModel.PageCount</a></li>  
+        }
+
+        <li id="pagination-last" class="page-item @(@CategoriesModel.CurrentPage == @CategoriesModel.PageCount ?"disabled":"")">
+            <a class="page-link  btn-outline-theme" asp-page="./Categories" asp-route-pageNumber="@(@CategoriesModel.CurrentPage+1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        </ul>
+    </nav>
+</div>
+
+<!--Add Category Modal-->
+<div id="add-category" class="modal fade" tabindex="-1" aria-hidden="true">
+    <form method="post" asp-page-handler="Create">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#232323;">
+                <h5 class="modal-title" style="color:white;">Create New Category</h5>
+                <button type="button" class="usermodal-btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <div class="form-floating">
+                    <label asp-for="RecycleCategory.CategoryName">Category Name</label>
+                    <input asp-for="RecycleCategory.CategoryName" id="modal-unitNumber" class="form-control" aria-required="true" />
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="confirmation" type="submit" class="btn btn-primary">Add New</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

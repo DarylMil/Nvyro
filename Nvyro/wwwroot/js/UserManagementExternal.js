@@ -118,7 +118,7 @@
     });
     const nextBtnFunction = () => {
         $.ajax({
-            url: `/api/user/register/1/false`,
+            url: `/api/user/register/1/true`,
             headers: {
                 "Accept": "application/json",
                 "Content-Type": 'application/json',
@@ -292,7 +292,7 @@
         if ($("#search-full-address").val().length > 0) {
             searchTrigger = setTimeout(() => {
                 $.ajax({
-                    url: `https://developers.onemap.sg/commonapi/search?searchVal=${$('#searchz-full-address').val()}&returnGeom=N&getAddrDetails=Y`,
+                    url: `https://developers.onemap.sg/commonapi/search?searchVal=${$('#search-full-address').val()}&returnGeom=N&getAddrDetails=Y`,
                     success: function (result) {
                         dataResults = [];
                         //Set result to a variable for writing

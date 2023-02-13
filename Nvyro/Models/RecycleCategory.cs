@@ -5,9 +5,9 @@ namespace Nvyro.Models
     public class RecycleCategory
     {
         [Key]
-        public int CategoryId { get; set; } 
+        public string CategoryId { get; set; } = Guid.NewGuid().ToString();
         [Required, MaxLength(30)]
         public string CategoryName { get; set; } = string.Empty;
-        public List<ApplicationUser>? ApplicationUser { get; set; }
+        public bool IsDisabled { get; set; } = false;
     }
 }

@@ -21,6 +21,9 @@ namespace Nvyro.Data
         public DbSet<RecycleCategory> RecycleCategory { get; set; }
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<Reward> Reward { get; set; }
+
+
 
     }
 }

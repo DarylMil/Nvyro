@@ -1,0 +1,70 @@
+﻿@page
+@model RewardsAddModel
+@{
+    ViewData["Title"] = "Rewards";
+}
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="dashboard-button" asp-page="/User/UserDashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="dashboard-button active" asp-page="/User/Rewards"><i class="fa-solid fa-coins"></i> Rewards</a>
+      <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Events</a>
+        </div>
+  </div>
+</nav>
+    <div class="banner header-text">
+      <div class="owl-banner owl-carousel">
+        <div class="banner-item-01">
+          <div class="text-content">
+            <h4>Best Offer</h4>
+            <h2>New Arrivals On Sale</h2>
+          </div>
+        </div>
+        <div class="banner-item-02">
+          <div class="text-content">
+            <h4>Flash Deals</h4>
+            <h2>Get your best products</h2>
+          </div>
+        </div>
+        <div class="banner-item-03">
+          <div class="text-content">
+            <h4>Last Minute</h4>
+            <h2>Grab last minute deals</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Banner Ends Here -->
+    <div class="latest-products">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-heading">
+              <h2>Rewards : Points Available @Model.AppUser.Points </h2>
+            </div>
+          </div>
+          @foreach (var item in Model.RewardsList)
+          {
+          <div class="col-md-4">
+            <div class="product-item">
+              <a href="#"><img src=@item.RewardPicURL alt=""></a>
+              <div class="down-content">
+                <a href="#"><h4>@item.RewardName</h4></a>
+                <h6>Quantity = @item.availableQuantity</h6>
+                <span>@item.requiredPoints</span>
+                <form action="" method="post">
+                    <p>Enter Voucher ID : @item.RewardID to proceed:</p>
+                    <input class="form-control" asp-for="Rewards.RewardID"/>
+                    <button type="submit" id="submit" class="btn btn-primary">Redeem</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    <script src="js/owl.js"></script>

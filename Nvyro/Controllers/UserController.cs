@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Nvyro.Models;
 using Nvyro.Services;
 using System.Collections;
@@ -10,18 +11,20 @@ namespace Nvyro.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserAuthenticationService _userAuthService;
-        public UserController(UserAuthenticationService userAuthService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
-            _userAuthService = userAuthService;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
-        [HttpPost("1")]
-        public async Task<IActionResult> OnNextPost([FromBody]InitialRequest iR)
+        [HttpPost("register/1/{isExternal}")]
+        public async Task<IActionResult> OnNextPost([FromBody] InitialRequest iR, bool isExternal = false)
         { 
             try
             {
-                var res = await _userAuthService.GetUser(iR.Email);
-                if (res.StatusCode == 1)
+                var res = await _userManager.FindByEmailAsync(iR.Email);
+                if (res!=null)
                 {
                     return Ok(new
                     {
@@ -31,6 +34,13 @@ namespace Nvyro.Controllers
                 }
                 else
                 {
+                    if (isExternal)
+                    {
+                        return Ok(new
+                        {
+                            success = true
+                        });
+                    }
                     var errors = new ArrayList();
                     var hasNumber = new Regex(@"[0-9]+");
                     var hasUpperChar = new Regex(@"[A-Z]+");
@@ -89,8 +99,8 @@ namespace Nvyro.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await _userAuthService.LogoutAsync();
-            return Redirect("/Index");
+            await _signInManager.SignOutAsync();
+            return Redirect("/");
         }
     }
     public class InitialRequest

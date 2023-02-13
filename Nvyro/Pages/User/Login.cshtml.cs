@@ -1,5 +1,6 @@
 using AspNetCore.ReCaptcha;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -22,6 +23,8 @@ namespace Nvyro.Pages.User
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly EmailSender _emailSender;
 
+        public string ReturnUrl { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
         public LoginModel(INotyfService toastNotification, UserManager<ApplicationUser> userManager, EmailSender emailSender,
             SignInManager<ApplicationUser> signInManager)
         {
@@ -33,6 +36,11 @@ namespace Nvyro.Pages.User
 
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
+            ReturnUrl = Url.Content("~/");
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (userId == null || code == null)
             {
                 return Page();
@@ -41,7 +49,7 @@ namespace Nvyro.Pages.User
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                _toastNotification.Error($"Unable to load user the user");
+                _toastNotification.Error($"Unable to load the user");
                 return Page(); 
             }
 
@@ -60,6 +68,9 @@ namespace Nvyro.Pages.User
         {
             try
             {
+                ReturnUrl = Url.Content("~/");
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
                 var status = new Status();
 
                 var user = await _userManager.FindByEmailAsync(Login.Email);
@@ -69,10 +80,42 @@ namespace Nvyro.Pages.User
                     _toastNotification.Error("Incorrect Login Credentials");
                     return Page();
                 }
+                if (!user.EmailConfirmed)
+                {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                    var callbackUrl = Url.Page(
+                   "/User/Login",
+                   pageHandler: null,
+                   values: new { userId = user.Id, code = code },
+                   protocol: Request.Scheme);
+
+                    var sendResult = await _emailSender.SendEmailAsync(user.Email, "Welcome to NVYRO",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (sendResult)
+                    {
+                        _toastNotification.Information("Please Follow Instructions Sent To Your Email");
+                        return Page();
+                    }
+                    else
+                    {
+                        _toastNotification.Error("Error Sending Email. Please Try Again.");
+                        return Page();
+                    }
+                }
+
+                if (user.IsDisabled)
+                {
+                    _toastNotification.Error("Your Account Has Been Disabled. Please Contact System Admin.");
+                    return Page();
+                }
                 var signInRes = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, false, true);
+                
                 if ( signInRes.IsLockedOut)
                 {
-                    _toastNotification.Error("Account Is Locked");
+                    _toastNotification.Error("Account Locked. Please Follow Instructions Sent To Your Email To Unlock.");
                     var code = await _userManager.GenerateUserTokenAsync(user, "Email","UnlockAccount");
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var url = Url.Page("/User/UnlockAccount", pageHandler: null, values:new { code=code, id = user.Id } ,protocol: Request.Scheme);

@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    console.log("OI!")
+    
     const registerPostal = $("#register-postalCode");
     const registerBlock = $("#register-blockNumber");
     const registerRoad = $("#register-roadName");
@@ -8,6 +8,8 @@
     const registerOrgName = $("#register-orgName");
     const saveChangesBtn = $("#save-changes-btn");
 
+    var cancelOrEdit = 0;
+
     var searchTrigger = null;
     var dataResults = [];
     $(document).click(() => {
@@ -15,17 +17,19 @@
     });
     $("#search-full-address").on("input", (e) => {
         clearTimeout(searchTrigger);
-        if ($("#search-full-address").val() > 0) {
+        if ($("#search-full-address").val().length > 0) {
             searchTrigger = setTimeout(() => {
                 $.ajax({
                     url: `https://developers.onemap.sg/commonapi/search?searchVal=${$('#search-full-address').val()}&returnGeom=N&getAddrDetails=Y`,
                     success: function (result) {
+                        console.log(result)
                         dataResults = [];
                         //Set result to a variable for writing
-                        console.log(result.results.length>0);
+                        console.log(result.results);
                         var allResults = result.results;
                         $("#select-address").html("");
                         if (allResults.length > 0) {
+                            console.log(allResults.length);
                             $("#select-address").html("<ul class='dropdown-menu show dropdown-mystyle' ></ul>");
                             allResults.forEach((data, index) => {
                                 dataResults.push(data)
@@ -74,15 +78,32 @@
     });
 
     $("#edit-profile-btn").click(() => {
-        saveChangesBtn.removeClass("invisible");
-        saveChangesBtn.prop("disabled",false);
-        registerOrgName.prop("disabled", false);
-        registerPhone.prop("disabled", false);
-        $("#search-full-address").prop("disabled", false);
-        registerUnit.prop("disabled", false);
-        registerBlock.prop("disabled", false);
-        registerPostal.prop("disabled", false);
-        registerRoad.prop("disabled", false);
+        if (cancelOrEdit == 0) {
+            cancelOrEdit = 1;
+            $("#edit-profile-btn").text("Cancel");
+            saveChangesBtn.removeClass("invisible");
+            saveChangesBtn.prop("disabled",false);
+            registerOrgName.prop("disabled", false);
+            registerPhone.prop("disabled", false);
+            $("#search-full-address").prop("disabled", false);
+            registerUnit.prop("disabled", false);
+            registerBlock.prop("disabled", false);
+            registerPostal.prop("disabled", false);
+            registerRoad.prop("disabled", false);
+            $("#dashboard-image").css("cursor", "pointer");
+        } else {
+            cancelOrEdit = 0;
+            $("#edit-profile-btn").text("Edit Profile");
+            saveChangesBtn.addClass("invisible");
+            registerOrgName.prop("disabled", true);
+            registerPhone.prop("disabled", true);
+            $("#search-full-address").prop("disabled", true);
+            registerUnit.prop("disabled", true);
+            registerBlock.prop("disabled", true);
+            registerPostal.prop("disabled", true);
+            registerRoad.prop("disabled", true);
+            $("#dashboard-image").css("cursor", "none");
+        }
     });
     //saveChangesBtn.click(() => {
     //    saveChangesBtn.addClass("invisible");
@@ -162,6 +183,13 @@
         } else {
             saveChangesBtn.prop("disabled", true);
         }
+    });
+
+    $("#dashboard-image").on("click", () => {
+        if (cancelOrEdit == 1) {
+            $("#dashboard-image-input").trigger("click");
+        }
+        console.log("dashboard-image")
     });
 
 });

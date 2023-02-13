@@ -4,14 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Nvyro.Models.DTO
 {
-    public class RegistrationModel
+    public class RegisterExternalModels
     {
         [Required, MaxLength(50)]
         [EmailAddress]
         public string Email { get; set; } = "";
-        [Required, RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;'<>,.?/_]).{8,}$", ErrorMessage="Minimum length of 8. Contains 1 uppercase, 1 lowercase, 1 special character and 1 digit.")]
-        [Column(TypeName = "nvarchar(max)")]
-        public string Password { get; set; } = "";
         [Required, MaxLength(6)]
         [DisplayName("Postal Code")]
         public string PostalCode { get; set; } = string.Empty;

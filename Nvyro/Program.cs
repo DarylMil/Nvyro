@@ -5,6 +5,7 @@ using Nvyro.Data;
 using Nvyro.Models;
 using Nvyro.Services;
 using AspNetCore.ReCaptcha;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 //var connectionString = builder.Configuration.GetConnectionString("MyDbContextConnection") ?? throw new InvalidOperationException("Connection string 'MyDbContextConnection' not found.");
@@ -25,7 +26,13 @@ builder.Services.AddNotyf(config =>
 });
 
 builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddReCaptcha(builder.Configuration.GetSection("GoogleRecaptcha"));
+builder.Services.AddReCaptcha(options =>
+{
+    options.SiteKey = builder.Configuration["GoogleRecaptcha:GoogleCaptchaSitKey"];
+    options.SecretKey = builder.Configuration["GoogleRecaptcha:GoogleCaptchaSecretKey"];
+    options.Version = ReCaptchaVersion.V3;
+    options.ScoreThreshold = 0.5;
+});
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options=>{
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedEmail = true;
@@ -35,16 +42,29 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options=>{
 
 }).AddEntityFrameworkStores<MyDbContext>().AddDefaultTokenProviders();
 
+
 builder.Services.ConfigureApplicationCookie(Config =>
 {
     Config.LoginPath = "/User/Login";
+    Config.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    Config.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+    Config.SlidingExpiration = true;
+    Config.AccessDeniedPath = "/Errors/403";
 });
 
-builder.Services.AddSingleton<EmailSender>();
-builder.Services.AddScoped<UserAuthenticationService>();
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["GoogleAuth:ClientId"];
+    googleOptions.ClientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
+});
+builder.Services.AddScoped<RewardService>();
+
 builder.Services.AddScoped<EventService>();
 
+builder.Services.AddTransient<EmailSender>();
+builder.Services.Configure<EmailOptions>(builder.Configuration);
 
+builder.Services.AddScoped<CategoryService>();
 
 var app = builder.Build();
 

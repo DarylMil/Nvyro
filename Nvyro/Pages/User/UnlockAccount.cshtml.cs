@@ -77,7 +77,7 @@ namespace Nvyro.Pages.User
                 if (result)
                 {
                     _toastNotification.Success("Succesfully Unlock Account");
-                    await _userManager.SetLockoutEndDateAsync(user, DateTime.Now - TimeSpan.FromHours(1));
+                    await _userManager.SetLockoutEndDateAsync(user, DateTime.MinValue);
                     return RedirectToPage("/User/Login");
                 }
                 _toastNotification.Error("Unlock Account Unsuccesfull");

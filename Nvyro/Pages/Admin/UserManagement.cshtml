@@ -1,0 +1,368 @@
+﻿@page
+@model Nvyro.Pages.Admin.UserManagementModel
+@{
+    var index = 0;
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="dashboard-button " asp-page="/Admin/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="dashboard-button "  asp-page="/Admin/CreateRewards"><i class="fa-solid fa-coins"></i> Reward Management </a>
+      <a class="dashboard-button active" asp-page="./UserManagement"><i class="fa-solid fa-users"></i> User Management </a>
+      <a class="dashboard-button" asp-page="./Statistics"><i class="fa-solid fa-chart-pie"></i> Statistics</a>
+      <a class="dashboard-button" asp-page="./Categories"><i class="fa-solid fa-recycle"></i> Categories</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Menu area End-->
+
+<div class=" row mt-4 mb-2">
+    <div class="col">
+        <form method = "post" asp-page-handler="Search" class="row">
+            <div class="input-group col-10">
+                <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input name="searchQuery" id="search-users" style="border-left:0;"class="form-control" aria-required="true" placeholder="search users by full name / email" />
+            </div>
+            <button class="btn btn-outline-theme col-2" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div id="left-dropdown" class="btn-group col" style="justify-content:flex-end;">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle  btn-outline-theme" data-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-filter"></i></button>
+            <div class="dropdown-menu" style="min-width:0;" aria-labelledby="btnGroupDrop1">
+                <div style="text-align:center; font-size:0.65rem; font-weight:bold;">Filter By:</div>
+                <ul>
+                    @foreach(var role in UserManagementModel.AllRoles)
+                    {
+                        <li class="dropdown-item usermodal-font modal-dropdownitems">
+                            <a class="dropdown-item @(@UserManagementModel.Filter==@role?"active":"")" asp-page="/Admin/UserManagement" asp-route-handler ="Filter" asp-route-role="@role">@role</a>
+                        </li>
+                    }
+                    <li class="dropdown-item usermodal-font modal-dropdownitems">
+                        <a class="dropdown-item @(@UserManagementModel.Filter=="None"?"active":"")" asp-page="/Admin/UserManagement" asp-route-handler ="Filter" asp-route-role="None">None</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card px-3 mb-2">
+    <table class="table table-hover" style="table-layout:fixed;">
+            <thead>
+                <tr>
+                    <th scope="col" style="border-top:none;vertical-align:middle;width:17%;">Full Name</th>
+                    <th scope="col" style="border-top:none;vertical-align:middle;width:21.5%;">Email</th>
+                    <th scope="col" style="border-top:none;vertical-align:middle;width:10%;">Phone Number</th>
+                    <th scope="col" style="border-top:none;vertical-align:middle;width:13%;">Role</th>
+                    <th scope="col" style="border-top:none;vertical-align:middle;width:11%;">Disabled</th>
+                    <th scope="col" style="border-top:none;vertical-align:middle;width:11%;">Locked</th>
+                    <th scope="col" style="border-top:none;vertical-align:middle;width:16.5%;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            @foreach(var user in Model.ListOfUsers)
+            {
+                    
+                <tr id="@user.User.Id" class="usermodal-font">
+                    <th scope="row" class="modal-clickable user-center">
+                        <div style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;overflow:hidden;">
+                            @user.User.FullName
+                        </div>
+                    </th>
+                    <td class="modal-clickable user-center">
+                        <div style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;overflow:hidden;">
+                            @user.User.Email
+                        </div>
+                    </td>
+                    <td class="modal-clickable user-center">
+                        @user.User.PhoneNumber
+                    </td>
+
+                    <td class="user-center">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle usermodal-font" type="button" data-toggle="dropdown" aria-expanded="false" style="width:100%">@user.Role</button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="min-width:0;width:115px;">
+                            @foreach(var role in UserManagementModel.AllRoles)
+                            {
+                                <li class="dropdown-item usermodal-font modal-dropdownitems">@role</li>
+                            }
+                            </ul>
+                        </div>
+                            
+                    </td>
+                    <td class="user-center">
+
+                            
+                        <div class=" dropdown">
+                            <button style="width:100%;" class="btn btn-outline-secondary dropdown-toggle usermodal-font" type="button" data-toggle="dropdown" >@(user.User.IsDisabled?"Yes":"No")</button>
+                            <ul class="dropdown-menu" aria-labelledby="modal-isdisabled" style="min-width:0px;width:100%;">
+                                <li class="dropdown-item modal-dropdownitems usermodal-font" value="yes">Yes</li>
+                                <li class="dropdown-item modal-dropdownitems usermodal-font" value="no">No</li>
+                            </ul>
+                        </div>  
+                    </td>
+                    <td class="user-center">
+                            
+                            
+                        <div class=" dropdown">
+                            <button style="width:100%;" class="btn btn-outline-secondary dropdown-toggle usermodal-font" type="button" data-toggle="dropdown" >@(user.User.LockoutEnd == null ? "No" : user.User.LockoutEnd < DateTime.UtcNow?"No":"Yes")</button>
+                            <ul class="dropdown-menu" aria-labelledby="modal-isdisabled" style="min-width:0px;width:100%;">
+                                <li class="dropdown-item modal-dropdownitems usermodal-font" value="yes">Yes</li>
+                                <li class="dropdown-item modal-dropdownitems usermodal-font" value="no">No</li>
+                            </ul>
+                        </div>
+                       
+                    </td>
+                    <td class="user-center">
+                        <button disabled class="btn btn-outline-success usermodal-font"><i class="fa-solid fa-floppy-disk"></i> Save </button>
+                        <button class="btn btn-outline-secondary usermodal-font"><i class="fa-solid fa-expand"></i> View</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col">Viewing @(Model.ListOfUsers.Count> 0 ? (@UserManagementModel.CurrentPage * @UserManagementModel.PageSize) - (@UserManagementModel.PageSize -1):0) to @(Model.ListOfUsers.Count * @UserManagementModel.CurrentPage >= @UserManagementModel.CurrentPage * @UserManagementModel.PageSize?@UserManagementModel.CurrentPage * @UserManagementModel.PageSize: @UserManagementModel.TotalListOfUsers.Count) of @(@UserManagementModel.TotalListOfUsers.Count) rows. 
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn filled-button dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding:0.5rem 0.75rem;">
+                @UserManagementModel.PageSize
+            </button>            
+            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="min-width:0;text-align:center;">
+            <form method="post" asp-page-handler="PageSize">
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="1">1</button></li>
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="10">10</button></li>
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="25">25</button></li>
+                <li><button class="dropdown-item" style="cursor:pointer;" type="submit" name="pageSize" value="50">50</button></li>
+            </form>
+            </ul>
+        </div>
+        rows per page.
+    </div>
+    <nav id="pagination-nav" aria-label="Table Pagination" class="col">
+        <ul class="pagination justify-content-end">
+        <li id="pagination-first" class="page-item @(@UserManagementModel.CurrentPage == 1 ?"disabled":"")">
+            <a class="page-link btn-outline-theme" asp-page="./UserManagement" asp-route-pageNumber="@(@UserManagementModel.CurrentPage-1)" asp-route-refresh="false" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <!-- First Page-->
+        <li class="page-item  @(@UserManagementModel.CurrentPage==1?"active":"")"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="1" asp-route-refresh="false">1</a></li>  
+
+        <!-- Middle Pages-->
+        @if(@UserManagementModel.PageCount > 7)
+        { 
+            @if(@UserManagementModel.CurrentPage > 4)
+            {
+                <!--Show dots-->
+                <li class="page-item"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="@(@UserManagementModel.PageCount - 3 < @UserManagementModel.CurrentPage ? @UserManagementModel.CurrentPage - (6 - @UserManagementModel.PageCount - @UserManagementModel.CurrentPage): @UserManagementModel.CurrentPage-3)" asp-route-refresh="false">...</a></li>    
+            }
+        
+            @if( (@UserManagementModel.CurrentPage <= 3))
+            {
+                <!--first 5 pages-->
+                @for(int i=2; i <= @UserManagementModel.PageCount -1 && i <= 6;i++)
+                {
+                    <li class="page-item  @(@UserManagementModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="@i" asp-route-refresh="false" >@i</a></li>
+                }
+            }
+            else if(@UserManagementModel.CurrentPage + 3 >= @UserManagementModel.PageCount)
+            {
+                <!--last 5 pages-->
+                @for(int i = @UserManagementModel.PageCount - 5; i<= @UserManagementModel.PageCount -1;i++ )
+                {
+                    <li class="page-item  @(@UserManagementModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="@i" asp-route-refresh="false" >@i</a></li>
+                
+                }
+            }
+            else
+            {   
+                <!-- middle 5 pages-->
+                @for(int i = @UserManagementModel.CurrentPage - 2; i<= @UserManagementModel.PageCount -1 && i <= @UserManagementModel.CurrentPage + 2;i++ )
+                {
+                    <li class="page-item  @(@UserManagementModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="@i" asp-route-refresh="false">@i</a></li>
+                
+                }
+            }
+
+            @if(@UserManagementModel.PageCount - 3 > @UserManagementModel.CurrentPage)
+            {
+                <!--Show dots-->
+                <li class="page-item"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="@(@UserManagementModel.CurrentPage < 4?6+1:@UserManagementModel.CurrentPage+3)" asp-route-refresh="false">...</a></li>    
+            }
+        }
+        else
+        {
+            @for(int i=2; i <= @UserManagementModel.PageCount -1 && i <= 6;i++)
+            {
+                <li class="page-item @(@UserManagementModel.CurrentPage==@i?"active":"")"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="@i" asp-route-refresh="false">@i</a></li>
+            }
+        }
+
+        <!-- END of Middle Pages-->
+        <!-- Last Page-->
+        @if(@UserManagementModel.PageCount > 1){
+            <li class="page-item @(@UserManagementModel.CurrentPage==@UserManagementModel.PageCount?"active":"")"><a class="page-link btn-outline-theme" asp-page="/Admin/UserManagement" asp-route-pageNumber="@UserManagementModel.PageCount" asp-route-refresh="false">@UserManagementModel.PageCount</a></li>  
+        }
+
+        <li id="pagination-last" class="page-item @(@UserManagementModel.CurrentPage == @UserManagementModel.PageCount ?"disabled":"")">
+            <a class="page-link  btn-outline-theme" asp-page="./UserManagement" asp-route-pageNumber="@(@UserManagementModel.CurrentPage+1) "asp-route-refresh="false" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#232323;">
+                <h5 class="modal-title" style="color:white;">User Details</h5>
+                <button id="modal-close-btn" class="usermodal-btn-close" type="button" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mx-0 row">
+                    <!-- LEFT CARD -->
+                    <div class="col-4 pl-0" style="padding-right:1rem;">
+                        <div class="card dashboard-card col-12 mb-3">
+                            <div class="dashboard-img-container mt-4" style="height:40%;width:100%;" >
+                                <img id="modal-img" class="card-img-top" src="" style="height:100%;width:100%;" alt="Card image cap">
+                            </div>
+                            <div class="form-floating ">
+                                <label>Roles</label>
+                                <div>
+                                    <button id="modal-role" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="width:100%"></button>
+                                    <ul id="modal-role-dropdown" class="dropdown-menu" style="min-width:0;width:87%;">
+                                    @foreach(var role in UserManagementModel.AllRoles)
+                                    {
+                                        <li class="dropdown-item usermodal-font modal-dropdownitems">@role</li>
+                                    }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-floating ">
+                                <label>Email</label>
+                                <input disabled id="modal-email" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END LEFT CARD -->
+                    <!-- RIGHT CARD -->
+                    <div class="col-8 pr-0" style="padding-left:0;">
+                        <!-- DETAILS -->
+                        <div class="card col-12 mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Details</h5>
+                                <div class="row">
+                                    <div class="form-floating col">
+                                        <label id="modal-label-name"></label>
+                                        <input disabled id="modal-fullname" class="form-control" value="" />
+                                    </div>
+
+                                    <div class="form-floating col">
+                                        <label>Phone Number</label>
+                                        <div class="input-group">
+                                            <input disabled class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
+                                            <input disabled id="modal-phone" class="form-control" aria-required="true" value="" maxlength="8" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END DETAILS -->
+
+                        <!-- ADDRESS -->
+                        <div class="card col-12 mb-3">
+                            <div class="card-body">
+
+                                <h5 class="card-title">Address</h5>
+                                @*<div class="row">
+                                    <div class="form-floating col-12">
+                                        <label>Search Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                            <input id="search-full-address" style="border-left:0;"class="form-control" aria-required="true" placeholder="start typing to search.." />
+                                        </div>
+                                        <div id="select-address" class="show" style="position:relative;">
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <div class="row">
+
+                                    <div class="form-floating  col">
+                                        <label>Unit Number</label>
+                                        <input disabled id="modal-unitNumber" class="form-control" aria-required="true" />
+                                    </div>
+                                    <div class="form-floating  col">
+                                        <label>Block Number</label>
+                                        <input disabled id="modal-blockNumber" class="form-control" aria-required="true"   />
+                                    </div>
+                                    <div  class="form-floating  col">
+                                        <label>Postal Code</label>
+                                        <input disabled id="modal-postalCode" class="form-control" aria-required="true"   />
+                                    </div>
+
+                                </div>
+                                <div class="form-floating">
+                                    <label>Road Name</label>
+                                    <input disabled id="modal-roadName"class="form-control" aria-required="true"  />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END ADDRESS -->
+                        <!-- Account Activity -->
+                         <div class="card col-12">
+                            <div class="card-body">
+                                <h5 class="card-title">Account Activity</h5>
+                                <div class="row">
+                                    <div class="form-floating  col">
+                                        <label>Creation Date</label>
+                                        <input disabled id="modal-account-creation" class="form-control" aria-required="true" />
+                                    </div>
+                                    <div class="form-floating  col">
+                                        <label>Last Login Date</label>
+                                        <input disabled id="modal-account-activity" class="form-control" aria-required="true"   />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Account Activity-->
+                    </div>
+                    <!-- END RIGHT CARD -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input hidden id="hidden-id" />
+                <button id="modal-btnsave" class="btn btn-outline-secondary"><i class="fa-solid fa-floppy-disk"></i> Save </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmation-save" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Save?</h5>
+        <button type="button" class="usermodal-btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to save the changes?
+      </div>
+      <div class="modal-footer">
+        <button id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="confirmation" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/UserDashboard.js"></script>
+    <script src="~/js/AdminDashboard.js"></script>
+    
+}
