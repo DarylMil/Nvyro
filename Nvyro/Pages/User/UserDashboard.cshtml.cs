@@ -92,7 +92,7 @@ namespace Nvyro.Pages.User
                 }
                 else
                 {
-                    imgUrl = null;
+                    imgUrl = existingUser.ProfilePicURL;
                 }
                 existingUser.Email = AppUser.Email;
                 existingUser.PostalCode = AppUser.PostalCode;
