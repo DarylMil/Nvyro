@@ -59,6 +59,8 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 });
 builder.Services.AddScoped<RewardService>();
 
+builder.Services.AddScoped<EventService>();
+
 builder.Services.AddTransient<EmailSender>();
 builder.Services.Configure<EmailOptions>(builder.Configuration);
 

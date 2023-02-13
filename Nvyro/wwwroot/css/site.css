@@ -741,7 +741,7 @@ header {
     }
 
     .product-item .down-content p {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .product-item .down-content ul li {
@@ -1377,4 +1377,10 @@ footer {
         right: 0;
         bottom: 0;
     }
+}
+
+
+/*Denise's Css*/
+.table-striped > tr:nth-child(odd) {
+    background-color: red;
 }
