@@ -9,9 +9,7 @@ namespace Nvyro.Services
         private readonly MyDbContext? _context;
 
 
-        private readonly MyDbContext _context;
-
-        public EventService(MyDbContext context)
+        public EventService(MyDbContext context, RequestService requestService)
         {
             _context = context;
             _requestService = requestService;

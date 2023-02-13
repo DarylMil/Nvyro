@@ -41,8 +41,8 @@ namespace Nvyro.Pages.Requests
             var RequestExists = _RequestService.FindRequestifExist(newRequest.PostalCodeAndUnit, existingUser.Id);
             if (RequestExists == null)
             {
-                var EventTitle = currentEvent.EventTitle;
-                Event? Event = _EventService.GetEventByTitle(EventTitle);
+                var EventId = currentEvent.Id;
+                Event? Event = _EventService.GetEventById(EventId);
                 currentEvent = Event;
 
                 if (ModelState.IsValid)
@@ -90,7 +90,7 @@ namespace Nvyro.Pages.Requests
                 Page();
             }
         }
-        public async Task OnGetAsync(string EventTitle)
+        public async Task OnGetAsync(int EventId)
         {
             var existingUser = await _userManager.GetUserAsync(User);
             if (existingUser == null)
@@ -104,7 +104,7 @@ namespace Nvyro.Pages.Requests
                 newRequest.UnitNumber = existingUser.UnitNumber;
                 newRequest.RoadName = existingUser.RoadName;
 
-                Event? Event = _EventService.GetEventByTitle(EventTitle);
+                Event? Event = _EventService.GetEventById(EventId);
                 currentEvent = Event;
             }            
         }

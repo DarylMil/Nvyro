@@ -11,18 +11,18 @@
                 <img style="" src="">
 
                 <div class="card-body">
-                    <h5 class="card-title" >Event Location : @Model.currentEvent.EventTitle</h5>
+                    @*<h5 class="card-title" >Event Location : @Model.currentEvent.EventTitle</h5>*@
                     <h6 class="card-subtitle mb-2 text-muted">
                         Event Details
                     </h6>
                     <hr />
                     <br /><br />
-                    <h5 class="card-title">Postal Code : @Model.currentEvent.PostalCode</h5>
+@*                    <h5 class="card-title">Postal Code : @Model.currentEvent.</h5>
                     <input asp-for="currentEvent.PostalCode" class="form-control" aria-required="true" hidden />
                     <h5 class="card-title">Start Date : @Model.currentEvent.StartDate.ToString("dd-MM-yyyy")</h5>
                     <input asp-for="currentEvent.StartDate" class="form-control" aria-required="true" hidden />
                     <h5 class="card-title">End Date : @Model.currentEvent.EndDate.ToString("dd-MM-yyyy")</h5>
-                    <input asp-for="currentEvent.EndDate" class="form-control" aria-required="true" hidden />
+                    <input asp-for="currentEvent.EndDate" class="form-control" aria-required="true" hidden />*@
 
                 </div>
             </div>

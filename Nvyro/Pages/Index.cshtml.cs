@@ -23,7 +23,7 @@ namespace Nvyro.Pages
 
         public void OnGet()
         {
-            Allevents = _eventService.GetAllEvents();
+            Allevents = _eventService.GetAll();
         }
 
     
