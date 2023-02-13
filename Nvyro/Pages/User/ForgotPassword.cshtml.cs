@@ -45,14 +45,15 @@ namespace Nvyro.Pages.User
                     pageHandler: null,
                     values: new { code , email = user.Email},
                     protocol: Request.Scheme);
-
+                Console.WriteLine(callbackUrl);
                 await _emailSender.SendEmailAsync(
                     user.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 _toastNotification.Information("A reset email has been sent to your email address.");
-                return RedirectToPage("./ForgotPassword");
+                //return RedirectToPage("./ForgotPassword");
+                return Page();
             }
 
             return Page();

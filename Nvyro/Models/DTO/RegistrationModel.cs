@@ -9,7 +9,7 @@ namespace Nvyro.Models.DTO
         [Required, MaxLength(50)]
         [EmailAddress]
         public string Email { get; set; } = "";
-        [Required, RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$^+=!*()@%&]).{8,}$", ErrorMessage="Minimum length of 8. Contains 1 uppercase, 1 lowercase, 1 special character and 1 digit.")]
+        [Required, RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;'<>,.?/_]).{8,}$", ErrorMessage="Minimum length of 8. Contains 1 uppercase, 1 lowercase, 1 special character and 1 digit.")]
         [Column(TypeName = "nvarchar(max)")]
         public string Password { get; set; } = "";
         [Required, MaxLength(6)]

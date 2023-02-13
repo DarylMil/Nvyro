@@ -17,17 +17,15 @@ namespace Nvyro.Pages.User
     {
         [BindProperty]
         public RegistrationModel regUser { get; set; }
-        private readonly UserAuthenticationService _userAuthService;
         private readonly INotyfService _toastNotification;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly EmailSender _emailSender;
 
-        public RegisterModel(UserAuthenticationService userAuthService, INotyfService toastNotification,UserManager<ApplicationUser> userManager,
+        public RegisterModel(INotyfService toastNotification,UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, EmailSender emailSender)
         {
-            _userAuthService = userAuthService;
             _toastNotification = toastNotification;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -89,22 +87,28 @@ namespace Nvyro.Pages.User
                 
                 //var result = await _userAuthService.AddUser(regUser); //put model.Role in html page
 
-                var userId = await _userManager.GetUserIdAsync(newUser);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
               
                 var callbackUrl = Url.Page(
                     "/User/Login",
                     pageHandler: null,
-                    values: new { userId = userId, code = code, returnUrl = returnUrl },
+                    values: new { userId = newUser.Id, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(regUser.Email, "Welcome to NVYRO",
+                var sendResult = await _emailSender.SendEmailAsync(regUser.Email, "Welcome to NVYRO",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                
+                if (sendResult)
+                {
                     _toastNotification.Success("User Created Successfully. Please verify it");
                     return RedirectToPage("/User/RegisterConfirmation", new { email = regUser.Email, returnUrl = returnUrl });
+                }
+                else
+                {
+                    _toastNotification.Success("User Created Successfully. However, failed to send email. Please try logging in.");
+                    return RedirectToPage("/User/RegisterConfirmation", new { email = regUser.Email, returnUrl = returnUrl });
+                }
             }
             catch(ArgumentNullException nullEx)
             {

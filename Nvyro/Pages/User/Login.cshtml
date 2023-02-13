@@ -5,11 +5,11 @@
 @using AspNetCore.ReCaptcha
 
 <div class="container full-wo-footer">
-    <form method="post">
-        <div class="row"  style="height:400px;">
-            <div class="col" style="background-image:url(/assets/images/login-banner.jpg);background-size:cover;display:flex;align-items:center;">
-            </div>
-            <div class="col">
+    <div class="row" style="height:400px;">
+        <div class="col" style="background-image:url(/assets/images/login-banner.jpg);background-size:cover;display:flex;align-items:center;">
+        </div>
+        <div class="col">
+            <form method="post">
                 <h2 class="mb-3">Login</h2>
                 <div class="form-floating">
                     <label asp-for="Login.Email"></label>
@@ -27,21 +27,33 @@
                     <a asp-page="/User/ForgotPassword">Forgot Password</a>
                     <span>New to NVYRO?<a asp-page="/User/Register"> Sign Up</a> here</span>
                 </div>
-                <hr />
-                <div class="row">
-                  <div class="col-md-3" style="min-width:100%;">
-                    <a class="btn btn-outline-dark" href="/users/googleauth" role="button" style="text-transform:none;border-color:lightgray;width:100%;">
-                      <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-                      Login with Google
-                    </a>
-                  </div>
-                </div>
                 @Html.ReCaptcha()
+            </form>
+            <hr />
+            <div class="row">
+                <div class="col-md-3" style="min-width:100%;">
+
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button name="provider" value="@provider.Name" class="btn btn-outline-dark" type="submit" style="text-transform:none;border-color:lightgray;width:100%;">
+                                        <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                                        Login with @provider.Name
+                                    </button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+
+                </div>
             </div>
+
         </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
 }

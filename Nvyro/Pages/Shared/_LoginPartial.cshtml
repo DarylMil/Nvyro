@@ -3,13 +3,20 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var role = false;
+    if(user!=null){
+        role = await UserManager.IsInRoleAsync(user, "Admin");
+     }
+}
+
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    var user = await UserManager.GetUserAsync(User);
     <li class="nav-item">
-        <a id="manage" class="nav-link" asp-page="/User/UserDashboard" title="Profile">Hello @(user !=null ? @user.FullName:""!)</a>
+        <a id="manage" class="nav-link" asp-page=@(role ? "/Admin/Dashboard" : "/User/UserDashboard") title="Profile">Hello @(user !=null ? @user.FullName:"")!</a>
     </li>
     <li class="nav-item">
         @*<form id="logoutForm" class="form-inline" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">*@

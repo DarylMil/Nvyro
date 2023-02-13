@@ -10,23 +10,27 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
-      <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Rewards</a>
-      <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Events</a>
+      <a class="dashboard-button" asp-page="/User/Rewards"><i class="fa-solid fa-coins"></i> Rewards</a>
+ 
+
+      <a class="dashboard-button " asp-page="/OrganizerEvent/Index"><i class="fa-solid fa-calendar-days"></i> Events</a>
+
       <a class="dashboard-button" href="/Requests/UserRequestView">Your Requests</a>
-            @if (@Model.AppUser.Roles.Contains("Organizer"))
-            {
-                <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Recylables </a>
-            }
+
         </div>
   </div>
 </nav>
 <!-- Main Menu area End-->
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 <div class="mt-4 mx-0 row dashboard-height">
         <!-- LEFT CARD -->
         <div class="col-4 pl-0" style="padding-right:1rem;">
             <div class="card dashboard-card col-12 mb-3">
-                <img class="card-img-top" style="" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+                
+                <input id="dashboard-image-input" hidden type="file" accept="image/jpg, image/png" asp-for="Upload" onchange="showImgPreview(this)" />
+                <div class="dashboard-img-container mt-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Click Edit Profile To Change Profile Pic">
+                    <img id="dashboard-image" src="@(Model.AppUser.ProfilePicURL!=null ? Model.AppUser.ProfilePicURL :"/assets/images/default-profile-pic.jpg")" alt="Card image cap">
+                </div>
 
                 <div class="card-body">
                     <h5 class="card-title">@Model.AppUser.FullName</h5>
@@ -38,7 +42,7 @@
                     </h6>
                     
                     <hr />
-                    <button type="button" id="edit-profile-btn" class="dashboard-edit-profile">Edit Profile</button>
+                    <button data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Click Edit Profile To Change Profile Pic"  type="button" id="edit-profile-btn" class="dashboard-edit-profile">Edit Profile</button>
                     <button type="submit" disabled id="save-changes-btn" class="filled-button-sm mt-3 invisible">Save Changes</button>
                 </div>
             </div>
@@ -81,7 +85,10 @@
                     <div class="row mb-3">
                         <div class="form-floating col-12">
                             <label>Search Address</label>
-                            <input disabled id="search-full-address" class="form-control" aria-required="true"/>
+                            <div class="input-group">
+                                <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                <input id="search-full-address" disabled style="border-left:0;"class="form-control" aria-required="true" placeholder="start typing to search.." />
+                            </div>
                             <div id="select-address" class="show" style="position:relative;">
                             </div>
                         </div>
@@ -118,7 +125,20 @@
      <!-- END RIGHT CARD -->
 </div>
 </form>
+<script>
+
+    function showImgPreview(input) {
+    if (input.files[0]) {
+        var uploadimg = new FileReader();
+        uploadimg.onload = function(displayimg) {
+            $("#dashboard-image").attr('src', displayimg.target.result);
+        }
+        uploadimg.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 @section Scripts
 {
     <script src="~/js/UserDashboard.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }

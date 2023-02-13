@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nvyro.Models;
 
 namespace Nvyro.Data
@@ -17,6 +19,10 @@ namespace Nvyro.Data
             optionsBuilder.UseSqlServer(connectionString);
         }
         public DbSet<RecycleCategory> RecycleCategory { get; set; }
+        public DbSet<Event> Events { get; set; }
+
+        public DbSet<Reward> Reward { get; set; }
+
         public DbSet<Event> Events { get; set; }
 
         public DbSet<Request> Requests { get; set; }

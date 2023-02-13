@@ -2,7 +2,7 @@
     
 
     // START OF ORGANIZER REGISTRATION//
-    const registerNextBtn = $("#register-next");
+    const registerNextBtn = $("#register-next");    
     const registerBackBtn = $("#register-back");
     const registerSubmitBtn = $("#register-submit");
     const registerEmailInput = $("#register-email");
@@ -30,11 +30,11 @@
     $(document).click(() => {
         $("#select-address").children("ul").removeClass("show");
     });
-
+    console.log(registerEmailInput.val().trim());
     registerEmailInput.on("input", (e) => {
 
         var emailInput = registerEmailInput.val().trim();
-        var reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        var reg = /^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*@((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$/;
         if (emailInput.match(reg)) {
             validEmail = true;
             $("#register-email-validation").html(`<div class="text-success"> <i class="fa-solid fa-check" style="color:green;"></i> Valid email format </div>`);
@@ -73,10 +73,10 @@
             oneNumber = false;
             $("#one-number").html(`<div class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password requires at least one number </div>`);
         }
-        if (pwdInput.search(/^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/) >= 0) {
+        if (pwdInput.search(/^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;'<>,.?/_₹]).*$/) >= 0) {
             oneSpecial = true;
             $("#one-special").html(`<div class="text-success"> <i class="fa-solid fa-check" style="color:green;"></i> Password requires at least one special character </div>`);
-        } else if (pwdInput.search(/^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/) < 0) {
+        } else if (pwdInput.search(/^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;'<>,.?/_₹]).*$/) < 0) {
             oneSpecial = false;
             $("#one-special").html(`<div class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> Password requires at least one special character </div>`);
         }
@@ -118,7 +118,7 @@
     });
     const nextBtnFunction = () => {
         $.ajax({
-            url: '/api/user/1',
+            url: `/api/user/register/1/false`,
             headers: {
                 "Accept": "application/json",
                 "Content-Type": 'application/json',
@@ -139,19 +139,6 @@
                     }
                     $("#register-email-validation").html(`<div class="text-danger"> <i class="fa-solid fa-xmark" style="color:red;"></i> This Email ${registerEmailInput.val()} already exist </div>`);
                     updateProgress();
-
-                    //errors.forEach((x) => {
-                    //    if (x.type == "Password") {
-
-                    //        $("#register-password-validation").append(
-                    //            `<div class="text-danger">${x.message}</div>`
-                    //        );
-                    //    } else {
-                    //        $("#register-email-validation").append(
-                    //            `<div class="text-danger">${x.message}</div>`
-                    //        );
-                    //    }
-                    //});
                 } else {
                     registerActive++;
                     $("#registerPage1").addClass("d-none");
@@ -301,7 +288,8 @@
     var dataResults = [];
     $("#search-full-address").on("input", (e) => {
         clearTimeout(searchTrigger);
-        if ($("#search-full-address").val() > 0) {
+        console.log($("#search-full-address").val().length)
+        if ($("#search-full-address").val().length > 0) {
             searchTrigger = setTimeout(() => {
                 $.ajax({
                     url: `https://developers.onemap.sg/commonapi/search?searchVal=${$('#search-full-address').val()}&returnGeom=N&getAddrDetails=Y`,

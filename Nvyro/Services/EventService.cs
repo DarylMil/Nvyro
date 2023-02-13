@@ -8,22 +8,37 @@ namespace Nvyro.Services
         private readonly RequestService _requestService;
         private readonly MyDbContext? _context;
 
-        public EventService(MyDbContext context, RequestService requestService)
+
+        private readonly MyDbContext _context;
+
+        public EventService(MyDbContext context)
         {
             _context = context;
             _requestService = requestService;
         }
 
-        public List<Event> GetAllEvents()
+        public List<Event> GetAll()
         {
-            return _context.Events.ToList();
+            return _context.Events.OrderBy(x => x.Id).ToList();
         }
 
-        public Event? GetEventByTitle(string EventTitle)
+        public Event? GetEventById(int id)
         {
-            Event foundevent = _context.Events.FirstOrDefault(x => x.EventTitle.Equals(EventTitle));
-            return foundevent;
+            Event? events = _context.Events.FirstOrDefault(x => x.Id.Equals(id));
+            return events;
         }
-            
+
+        public void AddEvent(Event events)
+        {
+            _context.Events.Add(events);
+            _context.SaveChanges();
+        }
+
+        public void UpdateEvent(Event events)
+        {
+            _context.Events.Update(events);
+            _context.SaveChanges();
+        }
+
     }
 }

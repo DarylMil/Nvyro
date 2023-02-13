@@ -32,8 +32,11 @@ namespace Nvyro.Models
         public string? ProfilePicURL { get; set; }
         [Required, MaxLength(50)]
         public string FullName { get; set; } = string.Empty;
-        public List<RecycleCategory>? RecycleCategories { get; set; }
         public int Points { get; set; } = 0;
         public List<Request>? Requests { get; set; }
+        [Required]
+        public DateTime LastActivityTimeStamp { get; set; } = DateTime.MinValue;
+        [Required]
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 }
