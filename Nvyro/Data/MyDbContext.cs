@@ -17,6 +17,11 @@ namespace Nvyro.Data
             optionsBuilder.UseSqlServer(connectionString);
         }
         public DbSet<RecycleCategory> RecycleCategory { get; set; }
+        public DbSet<Event> Events { get; set; }
+
+        public DbSet<Request> Requests { get; set; }
+
+        public DbSet<Request_Images> Request_Images { get; set; }
 
 
     }

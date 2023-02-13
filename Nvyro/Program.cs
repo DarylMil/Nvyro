@@ -42,6 +42,10 @@ builder.Services.ConfigureApplicationCookie(Config =>
 
 builder.Services.AddSingleton<EmailSender>();
 builder.Services.AddScoped<UserAuthenticationService>();
+builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<RequestService>();
 
 
 

@@ -34,5 +34,6 @@ namespace Nvyro.Models
         public string FullName { get; set; } = string.Empty;
         public List<RecycleCategory>? RecycleCategories { get; set; }
         public int Points { get; set; } = 0;
+        public List<Request>? Requests { get; set; }
     }
 }
