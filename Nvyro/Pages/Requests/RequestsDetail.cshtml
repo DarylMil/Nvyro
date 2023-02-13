@@ -1,0 +1,280 @@
+﻿@page
+@model Nvyro.Pages.Requests.RequestsDetailModel;
+@{
+
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="dashboard-button active" asp-page="/User/UserDashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+            <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Rewards</a>
+            <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Events</a>
+            <a class="dashboard-button" href="/Requests/UserRequestView">Your Requests</a>
+        </div>
+    </div>
+</nav>
+<br />
+<div class="profile-head">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Request Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Your images</a>
+        </li>
+    </ul>
+</div>
+<div class="tab-content profile-tab" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <form id="Form" method="post">
+            <div class="mt-4 mx-0 row dashboard-height">
+                <!-- LEFT CARD -->
+                <div class="col-4 pl-0" style="padding-right:1rem;">
+                    <div class="card dashboard-card col-12 mb-3">
+                        <img style="" src="">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Event Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                Event Details
+                            </h6>
+
+
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+                <!-- END LEFT CARD -->
+                <!-- RIGHT CARD -->
+                <div class="col-8 pr-0" style="padding-left:0;">
+                    <!-- DETAILS -->
+                    <div class="card-body">
+                        <h5 class="card-title">Your Details</h5>
+                        @*<h5 style="font-size : 13px;" class="card-title">Check if your details are correct</h5>*@
+                        @*<h5 style="font-size : 13px;" class="card-title">Not using your account to book ? Click < id="Clear" style="background:white;" class="btn-secondary btn" onclick="clear()" >here.</></h5>*@
+                        <hr />
+
+                        <div class="row mb-3">
+                            @*                    <div class="form-floating col">
+                            <label>Full Name</label>
+                            <input class="form-control" aria-required="true" />
+                            <span class="text-danger"></span>
+                            </div>
+                            <div class="form-floating col">
+                            <label>Phone Number</label>
+                            <div class="input-group">
+                            <input class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
+                            <input class="form-control" aria-required="true" />
+                            </div>
+                            <span class="text-danger"></span>
+                            </div>*@
+                            @*<div class="form-floating col">
+                            <label id="register-name">@(Model.AppUser.Roles == "Organizer" ? "Organization Name" : Model.AppUser.Roles == "Recycler" ? "Full Name" : "Admin Name")</label>
+                            <input id="register-orgName" asp-for="AppUser.FullName" class="form-control" aria-required="true" />
+                            <span asp-validation-for="AppUser.FullName" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating col">
+                            <label asp-for="AppUser.PhoneNumber"></label>
+                            <div class="input-group">
+                            <input class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
+                            <input  id="register-phone" asp-for="AppUser.PhoneNumber" class="form-control" aria-required="true" />
+                            </div>
+                            <span asp-validation-for="AppUser.PhoneNumber" class="text-danger"></span>
+                            </div>*@
+                        </div>
+
+                        <h5 class="card-title">Address</h5>
+                        @*                <div class="row mb-3">
+                        <div class="form-floating col-12">
+                        <label>Search Address</label>
+                        <input disabled id="search-full-address" class="form-control" aria-required="true" />
+                        <div id="select-address" class="show" style="position:relative;">
+                        </div>
+                        </div>
+                        </div>*@
+                        <div class="row mb-3">
+
+                            @*                    <div class="form-floating  col">
+                            <label asp-for="AppUser.UnitNumber"></label>
+                            <input id="register-unitNumber" asp-for="AppUser.UnitNumber" class="form-control" aria-required="true" />
+                            <span asp-validation-for="AppUser.UnitNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating  col">
+                            <label asp-for="AppUser.BlockNumber"></label>
+                            <input id="register-blockNumber" asp-for="AppUser.BlockNumber" class="form-control" aria-required="true" />
+                            <span asp-validation-for="AppUser.BlockNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating  col">
+                            <label asp-for="AppUser.PostalCode"></label>
+                            <input id="register-postalCode" asp-for="AppUser.PostalCode" class="form-control" aria-required="true"/>
+                            <span asp-validation-for="AppUser.PostalCode" class="text-danger"></span>
+                            </div>*@
+                            <div class="form-floating  col">
+                                <label>Unit Number</label>
+                                <input asp-for="MyRequest.UnitNumber" class="form-control" aria-required="true" />
+                                <span asp-validation-for="MyRequest.UnitNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating  col">
+                                <label>Block Number</label>
+                                <input asp-for="MyRequest.BlockNumber" class="form-control" aria-required="true" />
+                                <span asp-validation-for="MyRequest.BlockNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating  col">
+                                <label>Postal Code</label>
+                                <input asp-for="MyRequest.PostalCode" class="form-control" aria-required="true" />
+                                <span asp-validation-for="MyRequest.PostalCode" class="text-danger"></span>
+                            </div>
+@*                            <div class="form-floating  col">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <input type="file" accept="image/*" asp-for="MyRequest.ImageURL" class="form-control" onchange="showImgPreview(this)" />
+                                        <span asp-validation-for="MyRequest.ImageURL" class="text-danger"></span>
+                                    </div>
+                                    <img id="imgPreview" class="rounded-circle"
+                                         style="height:300px;width:300px;object-fit:cover"
+                                         src="@(string.IsNullOrEmpty(Model.MyRequest.ImageURL) ?"/uploads/user.png" : Model.MyRequest.ImageURL)"
+                                         onerror="this.src='/uploads/user.png'" />
+                                    <input class="form-control d-none" asp-for="MyRequest.ImageURL" />
+                                </div>
+                            </div>*@
+                            <div class="form-floating  col">
+                                <input asp-for="MyRequest.Id" class="form-control" aria-required="true" hidden />
+                            </div>
+
+                        </div>
+                        <input type="submit" value="Save Changes" class="btn btn-primary" />
+                        <input style="background-color: gray" type="submit" value="Delete Request" asp-page-handler="Delete" class="btn btn-primary" />
+                    </div>
+                    <!-- END ADDRESS -->
+
+                </div>
+
+                <!-- END RIGHT CARD -->
+            </div>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+    
+    
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+
+    <style>
+        .emp-profile {
+            padding: 3%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: #fff;
+        }
+
+        .profile-img {
+            text-align: center;
+        }
+
+            .profile-img img {
+                width: 70%;
+                height: 100%;
+            }
+
+            .profile-img .file {
+                position: relative;
+                overflow: hidden;
+                margin-top: -20%;
+                width: 70%;
+                border: none;
+                border-radius: 0;
+                font-size: 15px;
+                background: #212529b8;
+            }
+
+                .profile-img .file input {
+                    position: absolute;
+                    opacity: 0;
+                    right: 0;
+                    top: 0;
+                }
+
+        .profile-head h5 {
+            color: #333;
+        }
+
+        .profile-head h6 {
+            color: #0062cc;
+        }
+
+        .profile-edit-btn {
+            border: none;
+            border-radius: 1.5rem;
+            width: 70%;
+            padding: 2%;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+        }
+
+        .proile-rating {
+            font-size: 12px;
+            color: #818182;
+            margin-top: 5%;
+        }
+
+            .proile-rating span {
+                color: #495057;
+                font-size: 15px;
+                font-weight: 600;
+            }
+
+        .profile-head .nav-tabs {
+            margin-bottom: 5%;
+        }
+
+            .profile-head .nav-tabs .nav-link {
+                font-weight: 600;
+                border: none;
+            }
+
+                .profile-head .nav-tabs .nav-link.active {
+                    border: none;
+                    border-bottom: 2px solid #0062cc;
+                }
+
+        .profile-work {
+            padding: 14%;
+            margin-top: -15%;
+        }
+
+            .profile-work p {
+                font-size: 12px;
+                color: #818182;
+                font-weight: 600;
+                margin-top: 10%;
+            }
+
+            .profile-work a {
+                text-decoration: none;
+                color: #495057;
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .profile-work ul {
+                list-style: none;
+            }
+
+        .profile-tab label {
+            font-weight: 600;
+        }
+
+        .profile-tab p {
+            font-weight: 600;
+            color: #0062cc;
+        }
+    </style>

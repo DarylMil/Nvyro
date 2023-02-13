@@ -59,5 +59,7 @@ namespace Nvyro.Models
         [Required(ErrorMessage = "Event description cannot be empty"), Display(Name = "Description", Prompt = "Enter event description here"), MaxLength(1000)]
         public string Description { get; set; } = string.Empty;
 
+        public List<Request>? Requests { get; set; }
+        public List<Recyclables>? Recyclable { get; set; }
     }
 }
