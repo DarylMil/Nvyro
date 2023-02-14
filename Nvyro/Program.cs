@@ -86,6 +86,7 @@ app.UseRouting();
 app.UseAuthentication();;
 
 app.UseAuthorization();
+app.UseStatusCodePagesWithRedirects("/Errors/{0}");
 
 app.UseNToastNotify();
 app.UseNotyf();

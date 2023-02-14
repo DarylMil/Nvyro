@@ -30,6 +30,9 @@
 
     <div id="left-dropdown" class="btn-group col" style="justify-content:flex-end;">
         <div class="btn-group" role="group">
+            <form asp-page-handler="DownloadExcel" method="POST">
+                <button class="btn btn-outline-theme" style="border-top-right-radius:0;border-right:0;border-bottom-right-radius:0;" type="submit"><i class="fa-solid fa-download"></i></button>
+            </form>
             <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle  btn-outline-theme" data-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-filter"></i></button>
             <div class="dropdown-menu" style="min-width:0;" aria-labelledby="btnGroupDrop1">
                 <div style="text-align:center; font-size:0.65rem; font-weight:bold;">Filter By:</div>
