@@ -18,6 +18,6 @@ namespace Nvyro.Data
         }
         public DbSet<RecycleCategory> RecycleCategory { get; set; }
 
-
+        public DbSet<Post> Posts { get; set; }
     }
 }

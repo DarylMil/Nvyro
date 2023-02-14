@@ -43,6 +43,7 @@ builder.Services.ConfigureApplicationCookie(Config =>
 builder.Services.AddSingleton<EmailSender>();
 builder.Services.AddScoped<UserAuthenticationService>();
 
+builder.Services.AddScoped<PostService>();
 
 
 var app = builder.Build();
