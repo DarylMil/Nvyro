@@ -1,11 +1,10 @@
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nvyro.Models.DTO;
+using NToastNotify;
 using Nvyro.Models;
 using Nvyro.Services;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+
 
 
 namespace Nvyro.Pages.Forum
@@ -13,9 +12,13 @@ namespace Nvyro.Pages.Forum
     public class AddModel : PageModel
     {
         private readonly PostService _postService;
-        public AddModel(PostService postService)
+        private readonly INotyfService _toastNotification;
+        private IWebHostEnvironment _environment;
+        public AddModel(PostService postService, INotyfService toastNotification, IWebHostEnvironment environment)
         {
             _postService = postService;
+            _toastNotification = toastNotification;
+            _environment = environment;
         }
 
         [BindProperty]
@@ -26,6 +29,7 @@ namespace Nvyro.Pages.Forum
             if (ModelState.IsValid)
             {
                 _postService.AddPost(Post);
+                _toastNotification.Success("Post created!");
                 return Redirect("/Forum/ForuMain");
             }
             return Page();

@@ -4,6 +4,7 @@ namespace Nvyro.Models
 {
     public class Post
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

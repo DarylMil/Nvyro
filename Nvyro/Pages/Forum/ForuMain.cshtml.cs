@@ -1,12 +1,8 @@
-using AspNetCoreHero.ToastNotification.Abstractions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nvyro.Models.DTO;
 using Nvyro.Models;
 using Nvyro.Services;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Extensions.Hosting;
+
 
 namespace Nvyro.Pages.Forum
 {
@@ -24,10 +20,5 @@ namespace Nvyro.Pages.Forum
             Posts = _postService.GetAll();
         }
 
-        public IActionResult Delete(string id)
-        {
-            _postService.DeletePost(_postService.GetPostById(id));
-            return RedirectToAction("ForuMain");
-        }
     }
 }
