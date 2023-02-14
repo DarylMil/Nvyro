@@ -50,14 +50,13 @@ namespace Nvyro.Pages.Forum
             return Page();
         }
 
-        //public IActionResult OnDelete(int id)
+        //public IActionResult OnDelete(string id)
         //{
-        //    Post? post = _postService.Posts.FirstOrDefault(
-        //    x => x.Id.Equals(id));
+        //    var post = _postService.GetPostById(id);
+
         //    if (post != null)
         //    {
-        //        _postService.Posts.Remove(post);
-        //        _postService.SaveChanges();
+        //        _postService.DeletePost(post);
         //        _toastNotification.Success("Post successfully deleted");
         //        return Redirect("/Forum/ForuMain");
         //    }
@@ -70,10 +69,11 @@ namespace Nvyro.Pages.Forum
 
         public IActionResult OnDelete(string id)
         {
-            int parsedId;
-            if (int.TryParse(id, out parsedId))
+            Post? post = _postService.GetPostById(id);
+
+            if (post != null)
             {
-                _postService.DeletePost(parsedId);
+                _postService.DeletePost(post);
                 _toastNotification.Success("Post successfully deleted");
                 return Redirect("/Forum/ForuMain");
             }
@@ -83,6 +83,7 @@ namespace Nvyro.Pages.Forum
                 return Redirect("/Forum/ForuMain");
             }
         }
+
     }
 }
 

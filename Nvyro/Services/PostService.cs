@@ -49,10 +49,8 @@ namespace Nvyro.Services
             _context.SaveChanges();
         }
 
-        public void DeletePost(int id)
+        public void DeletePost(Post post)
         {
-            Post? post = _context.Posts.FirstOrDefault(
-            x => x.Id.Equals(id));
             _context.Posts.Remove(post);
             _context.SaveChanges();
         }

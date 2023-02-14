@@ -37,7 +37,10 @@
         }
     </style>
     <button type="submit" class="btn btn-primary mt-3 pull-right">Submit</button>
-    <td><a asp-action="Delete" asp-route-id="//*@Model.Post.Id*" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post?');">Delete</a></td>
+    <form method="post">
+        <input type="hidden" name="id" value="@Model.Post.Id"/>
+        <a class="btn btn-danger mt-3 pull-right" value="Delete" asp-page-handler="delete" onclick="return confirm('Are you sure you want to delete this post?');">Delete</a>
+    </form>
     <a class="btn btn-secondary mt-3 pull-right" href="/Forum/ForuMain">Cancel</a>
 </form>
 
