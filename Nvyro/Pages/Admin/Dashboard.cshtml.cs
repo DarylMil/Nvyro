@@ -87,7 +87,7 @@ namespace Nvyro.Pages.Admin
                 }
                 else
                 {
-                    imgUrl = null;
+                    imgUrl = existingUser.ProfilePicURL;
                 }
             
                 existingUser.Email = AppUser.Email;

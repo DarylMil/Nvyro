@@ -1,0 +1,20 @@
+﻿@page
+@model Nvyro.Pages.Forum.ForumViewModel
+@{
+    ViewData["Title"] = "View Forum";
+}
+
+<h1 class="fw-bold text-center py-4 px-2">@ViewData["Title"]</h1>
+
+<div class="card m-3">
+    <div class="card-header">
+        <h2>@Model.Post.Title</h2>
+    </div>
+    <div class="card-body">
+        <p>@Html.Raw(Model.Post.Description)</p>
+    </div>
+</div>
+
+<div class="text-center">
+    <a asp-page="/Forum/ForuMain" class="btn btn-primary">Back to List</a>
+</div>

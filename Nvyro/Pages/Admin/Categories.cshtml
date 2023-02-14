@@ -41,10 +41,9 @@
             </tr>
         </thead>
         <tbody>
-            <form asp-page-handler="Disable" method="post">
             @foreach(var r in @CategoriesModel.RecycleCategories)
             {
-                    <tr class="usermodal-font @(r.IsDisabled?"table-dark":"")">
+                    <tr id="@r.CategoryId" class="usermodal-font @(r.IsDisabled?"table-dark":"")">
                         <td class="user-center">@r.CategoryName</td>
                         <td class="user-center">
                             @if(r.IsDisabled){
@@ -61,7 +60,6 @@
                         </td>
                     </tr>
             }
-            </form>
         </tbody>
     </table>
 </div>
@@ -172,6 +170,7 @@
                 <div class="form-floating">
                     <label asp-for="RecycleCategory.CategoryName">Category Name</label>
                     <input asp-for="RecycleCategory.CategoryName" id="modal-unitNumber" class="form-control" aria-required="true" />
+                    <span asp-validation-for="RecycleCategory.CategoryName" class="text-danger"></span>
                 </div>
                 </div>
                 <div class="modal-footer">
@@ -182,3 +181,51 @@
         </div>
     </form>
 </div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        var tr = $("tbody tr").toArray();
+        tr.forEach(x => {
+            x.children[1].querySelector("button").addEventListener("click",()=>{
+                console.log(x.id)
+                disablerButton(x.id);
+            });
+        });
+        
+        const disablerButton = (catId) => {
+            $.ajax({
+                type:"POST",
+                url:`/api/admin/disable/${catId}`,
+                dataType:"json",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": 'application/json',
+                },
+                data: JSON.stringify({
+
+                }),
+                success:(res)=>{
+                    if(res.success){
+                        var data = res.data;
+                        if(data == 1){
+                            $(`#${catId}`).removeClass("table-dark");
+                            $(`#${catId} button`).removeClass("btn-outline-success");
+                            $(`#${catId} button`).addClass("btn-outline-danger");
+                            $(`#${catId} button`).html('<i class="fa-solid fa-ban"></i> <span>Disable</span>');
+                        }else if(data == 2){
+                            $(`#${catId}`).addClass("table-dark");
+                            $(`#${catId} button`).removeClass("btn-outline-danger");
+                            $(`#${catId} button`).addClass("btn-outline-success");
+                            $(`#${catId} button`).html('<i class="fa-solid fa-check"></i> <span>Enable</span>');
+                        }
+                    }
+                },
+                error:(res)=>{
+
+                }
+            });
+        }
+
+    </script>
+}

@@ -33,6 +33,7 @@ namespace Nvyro.Models
         [Required, MaxLength(50)]
         public string FullName { get; set; } = string.Empty;
         public int Points { get; set; } = 0;
+        public List<Request>? Requests { get; set; }
         [Required]
         public DateTime LastActivityTimeStamp { get; set; } = DateTime.MinValue;
         [Required]

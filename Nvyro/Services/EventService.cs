@@ -5,13 +5,14 @@ namespace Nvyro.Services
 {
     public class EventService
     {
+        private readonly RequestService _requestService;
+        private readonly MyDbContext? _context;
 
 
-        private readonly MyDbContext _context;
-
-        public EventService(MyDbContext context)
+        public EventService(MyDbContext context, RequestService requestService)
         {
             _context = context;
+            _requestService = requestService;
         }
 
         public List<Event> GetAll()

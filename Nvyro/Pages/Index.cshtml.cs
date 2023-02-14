@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nvyro.Models;
 using Nvyro.Services;
 
+
 namespace Nvyro.Pages
 {
     public class IndexModel : PageModel
@@ -12,6 +13,7 @@ namespace Nvyro.Pages
 
         public IndexModel(EventService eventService)
         {
+            _eventService = eventService;
             _eventService = eventService;
         }
 

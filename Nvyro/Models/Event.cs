@@ -65,5 +65,7 @@ namespace Nvyro.Models
         [Required, Display(Name = "Recyclable category")]
         public RecycleCategory Categories { get; set; }
 
+        public List<Request>? Requests { get; set; }
+        public List<Recyclables>? Recyclable { get; set; }
     }
 }

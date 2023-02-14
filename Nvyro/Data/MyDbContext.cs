@@ -29,7 +29,10 @@ namespace Nvyro.Data
 
         public DbSet<Reward> Reward { get; set; }
 
+        public DbSet<Request> Requests { get; set; }
 
+        public DbSet<Request_Images> Request_Images { get; set; }
 
+        public DbSet<Post> Posts { get; set; }
     }
 }

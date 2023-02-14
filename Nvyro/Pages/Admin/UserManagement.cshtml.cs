@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Nvyro.Models;
 using Nvyro.Models.DTO;
+using System.Text;
 
 namespace Nvyro.Pages.Admin
 {
@@ -162,6 +163,34 @@ namespace Nvyro.Pages.Admin
                 }
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostDownloadExcelAsync()
+        {
+            var fileName = "Nvyro Users_" + Guid.NewGuid() + ".csv";
+
+            StringBuilder csv = new StringBuilder("Full Name,Email,Phone Number,Role,Disabled,Locked");
+        
+                foreach(var u in TotalListOfUsers)
+                {
+                    var roles = await _userManager.GetRolesAsync(u);
+                    var userRole = "";
+                    if (roles.Count > 0)
+                    {
+                        userRole = roles[0];
+                    }
+                    bool isLocked = u.LockoutEnd > DateTime.Now;
+                    csv.Append($"\n{u.FullName},{u.Email},{u.PhoneNumber},{userRole},{u.IsDisabled},{isLocked}");
+                };
+
+            var memoryStream = new MemoryStream();
+            var writer = new StreamWriter(memoryStream);
+            writer.Write(csv);
+            writer.Flush();
+            memoryStream.Position = 0;
+
+            return File(memoryStream, "text/csv", $"{fileName}");
+
         }
     }
 }
