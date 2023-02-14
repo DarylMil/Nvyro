@@ -19,6 +19,5 @@ namespace Nvyro.Pages.Forum
         {
             Posts = _postService.GetAll();
         }
-
     }
 }

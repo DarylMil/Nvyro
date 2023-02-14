@@ -43,45 +43,11 @@ namespace Nvyro.Pages.Forum
         {
             if (ModelState.IsValid)
             {
-                _postService.UpdatePost(Post);
-                _toastNotification.Success("Post successfully changed");
-                return Redirect("/Forum/ForuMain");
+                    _postService.UpdatePost(Post);
+                    _toastNotification.Success("Post successfully changed");
+                    return Redirect("/Forum/ForuMain");
             }
             return Page();
-        }
-
-        //public IActionResult OnDelete(string id)
-        //{
-        //    var post = _postService.GetPostById(id);
-
-        //    if (post != null)
-        //    {
-        //        _postService.DeletePost(post);
-        //        _toastNotification.Success("Post successfully deleted");
-        //        return Redirect("/Forum/ForuMain");
-        //    }
-        //    else
-        //    {
-        //        _toastNotification.Error("Post not found");
-        //        return Redirect("/Forum/ForuMain");
-        //    }
-        //}
-
-        public IActionResult OnDelete(string id)
-        {
-            Post? post = _postService.GetPostById(id);
-
-            if (post != null)
-            {
-                _postService.DeletePost(post);
-                _toastNotification.Success("Post successfully deleted");
-                return Redirect("/Forum/ForuMain");
-            }
-            else
-            {
-                _toastNotification.Error("Post not found");
-                return Redirect("/Forum/ForuMain");
-            }
         }
 
     }
