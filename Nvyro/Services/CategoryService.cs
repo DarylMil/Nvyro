@@ -23,6 +23,11 @@ namespace Nvyro.Services
                 return _context.RecycleCategory.Where(r => r.CategoryName.ToUpper().Contains(query));
             }
         }
+
+        public async Task<RecycleCategory> GetCategoryById(string id)
+        {
+            return await _context.RecycleCategory.FirstOrDefaultAsync(x => x.CategoryId == id);
+        }
         public async Task<int> AddRecycleCategoryAsync(RecycleCategory recycleCategory)
         {
             var isExist = _context.RecycleCategory.Where(r => r.CategoryName == recycleCategory.CategoryName);

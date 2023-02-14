@@ -1,20 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Nvyro.Models;
+using Nvyro.Services;
 
 namespace Nvyro.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly EventService _eventService;
+
+        public IndexModel(EventService eventService)
         {
-            _logger = logger;
+            _eventService = eventService;
         }
+
+        public List<Event> EventList { get; set; } = new();
 
         public void OnGet()
         {
-
+            EventList = _eventService.GetAll();
         }
     }
 }

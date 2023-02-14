@@ -18,6 +18,12 @@ namespace Nvyro.Data
             string connectionString = _configuration.GetConnectionString("MyConnection");
             optionsBuilder.UseSqlServer(connectionString);
         }
+
+/*        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Event>().HasMany(c => c.Categories).WithMany(o => o.).OnDelete(DeleteBehavior.Cascade);
+            base.OnModelCreating(builder);
+        }*/
         public DbSet<RecycleCategory> RecycleCategory { get; set; }
         public DbSet<Event> Events { get; set; }
 

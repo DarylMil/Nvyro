@@ -4,40 +4,39 @@
     ViewData["Title"] = "Event Details";
 }
 
-<h1 class="display-6">@ViewData["Title"]</h1>
-
-<form class="mt-3" method="post" enctype="multipart/form-data">
+@*<form class="mt-3" method="post" enctype="multipart/form-data">
  
-    <input class="form-control" asp-for="myEvent.Id" hidden/>
+    <input class="form-control" asp-for="myEvents.Id" hidden/>
+    <input class="form-control" asp-for="myEvents.UserId" hidden />
 
 
     <div class="row">
         <div class="col">
             <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" asp-for="myEvent.EventTitle"></label>
+                <label class="col-sm-2 col-form-label" asp-for="myEvents.EventTitle"></label>
                 <div class="col-sm-10">
-                    <input class="form-control" asp-for="myEvent.EventTitle" />
-                    <span asp-validation-for="myEvent.EventTitle" class="text-danger"></span>
+                    <input class="form-control" asp-for="myEvents.EventTitle" />
+                    <span asp-validation-for="myEvents.EventTitle" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label" asp-for="myEvent.StartDate"></label>
+                        <label class="col-sm-4 col-form-label" asp-for="myEvents.StartDate"></label>
                         <div class="col-sm-8">
-                            <input class="form-control" asp-for="myEvent.StartDate" />
-                            <span asp-validation-for="myEvent.StartDate" class="text-danger"></span>
+                            <input class="form-control" asp-for="myEvents.StartDate" />
+                            <span asp-validation-for="myEvents.StartDate" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label" asp-for="myEvent.EndDate"></label>
+                        <label class="col-sm-4 col-form-label" asp-for="myEvents.EndDate"></label>
                         <div class="col-sm-8">
-                            <input class="form-control" asp-for="myEvent.EndDate" />
-                            <span asp-validation-for="myEvent.EndDate" class="text-danger"></span>
+                            <input class="form-control" asp-for="myEvents.EndDate" />
+                            <span asp-validation-for="myEvents.EndDate" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -47,20 +46,20 @@
 
                 <div class="col">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label" asp-for="myEvent.StartTime"></label>
+                        <label class="col-sm-4 col-form-label" asp-for="myEvents.StartTime"></label>
                         <div class="col-sm-8">
-                            <input class="form-control" asp-for="myEvent.StartTime" />
-                            <span asp-validation-for="myEvent.StartTime" class="text-danger"></span>
+                            <input class="form-control" asp-for="myEvents.StartTime" />
+                            <span asp-validation-for="myEvents.StartTime" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label" asp-for="myEvent.EndTime"></label>
+                        <label class="col-sm-4 col-form-label" asp-for="myEvents.EndTime"></label>
                         <div class="col-sm-8">
-                            <input class="form-control" asp-for="myEvent.EndTime" />
-                            <span asp-validation-for="myEvent.EndTime" class="text-danger"></span>
+                            <input class="form-control" asp-for="myEvents.EndTime" />
+                            <span asp-validation-for="myEvents.EndTime" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -70,44 +69,44 @@
             <div class="row mb-3">
                 <div class="col-7">
                     <label>Start location Roadname</label>
-                    <input asp-for="myEvent.StartRoadName" class="form-control" aria-required="true" />
-                    <span asp-validation-for="myEvent.StartRoadName" class="text-danger"></span>
+                    <input asp-for="myEvents.StartRoadName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.StartRoadName" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="myEvent.StartBlockNumber"></label>
-                    <input asp-for="myEvent.StartBlockNumber" class="form-control" aria-required="true" />
-                    <span asp-validation-for="myEvent.StartBlockNumber" class="text-danger"></span>
+                    <label asp-for="myEvents.StartBlockNumber"></label>
+                    <input asp-for="myEvents.StartBlockNumber" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.StartBlockNumber" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="myEvent.StartPostalCode"></label>
-                    <input asp-for="myEvent.StartPostalCode" class="form-control" aria-required="true" />
-                    <span asp-validation-for="myEvent.StartPostalCode" class="text-danger"></span>
+                    <label asp-for="myEvents.StartPostalCode"></label>
+                    <input asp-for="myEvents.StartPostalCode" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.StartPostalCode" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-7">
                     <label>End location roadname</label>
-                    <input asp-for="myEvent.EndRoadName" class="form-control" aria-required="true" />
-                    <span asp-validation-for="myEvent.EndRoadName" class="text-danger"></span>
+                    <input asp-for="myEvents.EndRoadName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.EndRoadName" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="myEvent.EndBlockNumber"></label>
-                    <input asp-for="myEvent.EndBlockNumber" class="form-control" aria-required="true" />
-                    <span asp-validation-for="myEvent.EndBlockNumber" class="text-danger"></span>
+                    <label asp-for="myEvents.EndBlockNumber"></label>
+                    <input asp-for="myEvents.EndBlockNumber" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.EndBlockNumber" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="myEvent.EndPostalCode"></label>
-                    <input asp-for="myEvent.EndPostalCode" class="form-control" aria-required="true" />
-                    <span asp-validation-for="myEvent.EndPostalCode" class="text-danger"></span>
+                    <label asp-for="myEvents.EndPostalCode"></label>
+                    <input asp-for="myEvents.EndPostalCode" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.EndPostalCode" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-2 col-form-label" asp-for="myEvent.Description"></label>
+                <label class="col-sm-2 col-form-label" asp-for="myEvents.Description"></label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" asp-for="myEvent.Description" rows="3"></textarea>
-                    <span asp-validation-for="myEvent.Description" class="text-danger"></span>
+                    <textarea class="form-control" asp-for="myEvents.Description" rows="3"></textarea>
+                    <span asp-validation-for="myEvents.Description" class="text-danger"></span>
                 </div>
             </div>
 
@@ -120,9 +119,9 @@
                 <span asp-validation-for="Upload" class="text-danger"></span>
             </div>
             <img id="imgPreview" class="" style="height:300px;width:300px;object-fit:cover"
-                 src="@(string.IsNullOrEmpty(Model.myEvent.ImageURL) ? "/assets/EventImage/event.png" : Model.myEvent.ImageURL)" 
+                 src="@(string.IsNullOrEmpty(Model.myEvents.ImageURL) ? "/assets/EventImage/event.png" : Model.myEvents.ImageURL)" 
                  onerror="this.src='/assets/EventImage/event.png'" />
-                 <input class="form-control d-none" asp-for="myEvent.ImageURL" />
+                 <input class="form-control d-none" asp-for="myEvents.ImageURL" />
         </div>
 
     </div>
@@ -133,7 +132,149 @@
         <input type="submit" value="Update" class="btn btn-primary" />
         <a class="btn btn-secondary ms-2" href="/OrganizerEvent/Index">Cancel</a>
     </div>
-</form>
+</form>*@
+
+<div class="container-sm w-75 shadow mx-auto rounded">
+    <form class="mt-3" method="post" enctype="multipart/form-data">
+        <div style="background-color: #f33f3f" class="mb-3 rounded-top">
+            <h5 class="text-white p-3">Edit a recycling collection event</h2>
+        </div>
+        <input class="form-control" asp-for="myEvents.UserId" hidden />
+
+        <div id="addEventPage1">
+            <div class="row mx-3 mb-3">
+                <div class="col-3">
+                    <label class="form-label pt-2">Event Poster: </label>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <input type="file" accept="image/*" asp-for="Upload" class="" onchange="showImgPreview(this)" id="formFile" />
+                        <span asp-validation-for="Upload" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <img id="imgPreview" class="" style="height:150px;width:150px;object-fit:cover"
+                         src="@(string.IsNullOrEmpty(Model.myEvents.ImageURL) ? "/assets/EventImage/event.png" : Model.myEvents.ImageURL)"
+                         onerror="this.src='/assets/EventImage/event.png'" />
+                    <input class="form-control d-none" asp-for="myEvents.ImageURL" />
+                </div>
+            </div>
+
+            <div class="row mx-3 mb-3">
+                <label class="col-sm-3 form-label pt-2">Event title: </label>
+                <div class="col-sm-9">
+                    <input class="form-control" asp-for="myEvents.EventTitle" id="eventTitle" />
+                    <span asp-validation-for="myEvents.EventTitle" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="row mb-3 mx-3">
+                <label class="col-sm-3 form-label pt-2">Event category: </label>
+                <div class="col-sm-9">
+                    @Html.DropDownListFor(e => e.myEvents.Categories, new SelectList(EventDetailsModel.CategoryList, "CategoryId", "CategoryName"), "-- Select a category--", new {@class = "form-control"})
+                    <span asp-validation-for="myEvents.Categories" class="text-danger" clas></span>
+                </div>
+            </div>
+
+            <div class="row mx-3 mb-3">
+                <label class="col-sm-3 form-label pt-2">Event description: </label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" asp-for="myEvents.Description" rows="3" id="eventDesc"></textarea>
+                    <span asp-validation-for="myEvents.Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="addEventPage2" class="@*d-none*@">
+            <div class="row mb-3 mx-3">
+                <label class="col-sm-3 form-label pt-2">Event date(s): </label>
+                <div class="col-sm-4">
+                    <input class="form-control" asp-for="myEvents.StartDate" />
+                    <span asp-validation-for="myEvents.StartDate" class="text-danger"></span>
+                </div>
+                <p class="col-1 text-center font-weight-normal pt-2">To</p>
+                <div class="col-sm-4">
+                    <input class="form-control" asp-for="myEvents.EndDate" />
+                    <span asp-validation-for="myEvents.EndDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3 mx-3">
+                <label class="col-sm-3 form-label pt-2">Event timing: </label>
+                <div class="col-sm-4">
+                    <input class="form-control" asp-for="myEvents.StartTime" />
+                    <span asp-validation-for="myEvents.StartTime" class="text-danger"></span>
+                </div>
+                <p class="col-1 text-center font-weight-normal pt-2">To</p>
+                <div class="col-sm-4">
+                    <input class="form-control" asp-for="myEvents.EndTime" />
+                    <span asp-validation-for="myEvents.EndTime" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="row mb-3 mx-3">
+                <label class="col-sm-3 form-label pt-2">Search start address</label>
+                <div class="col-sm-9">
+                    <div class="input-group">
+                        <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input id="search-start-full-address" style="border-left:0;" class="form-control" aria-required="true" placeholder="Search for start address" />
+                    </div>
+                </div>
+                <div id="select-start-address" class="show">
+                </div>
+            </div>
+
+            <div class="row mb-3 mx-3">
+                <div class="col-7" id="start-roadname">
+                    <input asp-for="myEvents.StartRoadName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.StartRoadName" class="text-danger"></span>
+                </div>
+                <div class="col" id="start-block">
+                    <input asp-for="myEvents.StartBlockNumber" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.StartBlockNumber" class="text-danger"></span>
+                </div>
+                <div class="col" id="start-postal">
+                    <input asp-for="myEvents.StartPostalCode" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.StartPostalCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3 mx-3">
+                <label class="col-sm-3 form-label pt-2">Search end address</label>
+                <div class="col-sm-9">
+                    <div class="input-group">
+                        <span class="input-group-text" style="border-right:0;background:white;border-radius:.25rem 0 0 .25rem;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input id="search-end-full-address" style="border-left:0;" class="form-control" aria-required="true" placeholder="Search for end address" />
+                    </div>
+                </div>
+                <div id="select-end-address" class="show">
+                </div>
+            </div>
+
+            <div class="row mb-3 mx-3">
+                <div class="col-sm-7" id="end-roadname">
+                    <input asp-for="myEvents.EndRoadName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.EndRoadName" class="text-danger"></span>
+                </div>
+                <div class="col-sm" id="end-block">
+                    <input asp-for="myEvents.EndBlockNumber" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.EndBlockNumber" class="text-danger"></span>
+                </div>
+                <div class="col-sm" id="end-postal">
+                    <input asp-for="myEvents.EndPostalCode" class="form-control" aria-required="true" />
+                    <span asp-validation-for="myEvents.EndPostalCode" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3 mr-4 d-flex justify-content-end">
+                <a class="btn btn-danger col-2 mr-2 mb-3" href="/OrganizerEvent/Index">Cancel</a>
+                <input type="submit" value="Update" class="btn btn-primary col-2 mb-3" />
+        </div>
+    </form>
+</div>
 
 <script>
     function showImgPreview(input) {
@@ -150,5 +291,6 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="~/js/Events.js"></script>
     }
     }

@@ -14,47 +14,66 @@
     </div>
 </nav>
 
-<h4 style="margin: 10px">Events</h4>
+<div class="d-flex justify-content-end">
+    <a class="btn btn-primary mt-3" href="/OrganizerEvent/Add">Add Event</a>
+</div>
 
-<table class="table mt-3 table-striped " >
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.EventList[0].Id)</th>
-            <th>@Html.DisplayNameFor(model => model.EventList[0].ImageURL)</th>
-            <th>@Html.DisplayNameFor(model => model.EventList[0].EventTitle)</th>
-            <th>@Html.DisplayNameFor(model => model.EventList[0].StartDate)</th>
-            <th>@Html.DisplayNameFor(model => model.EventList[0].EndDate)</th>
-            <th>@Html.DisplayNameFor(model => model.EventList[0].StartTime)</th>
-            <th>@Html.DisplayNameFor(model => model.EventList[0].EndTime)</th>
-            <th>Start Location</th>
-            <th>End Location</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-                                @foreach (var item in Model.EventList)
-            {
-                                    <tr>
-                                    <td>@item.Id</td>
-                                    <td>@item.ImageURL</td>
-                                    <td>@item.EventTitle</td>
-                                    <td>@item.StartDate.ToShortDateString()</td>
-                                    <td>@item.EndDate.ToShortDateString()</td>
-                                    <td>@item.StartTime</td>
-                                    <td>@item.EndTime</td> 
-                                    <td>S(@item.StartPostalCode) <Br>
-                                        Block @item.StartBlockNumber <Br>
-                                        @item.StartRoadName</td>
-                                    <td>S(@item.EndPostalCode) <br> Block @item.EndBlockNumber <br> @item.EndRoadName</td>
-                                    <td>
-                                         <a asp-page="/OrganizerEvent/EventDetails" asp-route-id="@item.Id" class="text-decoration-none">Edit Event</a>
-                                    </td>
-                                    </tr>
+
+<div class="card mt-3">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.EventList[0].Id)</th>
+                <th>@Html.DisplayNameFor(model => model.EventList[0].ImageURL)</th>
+                <th>@Html.DisplayNameFor(model => model.EventList[0].EventTitle)</th>
+                <th>Event dates</th>
+                <th>Event timing</th>
+                <th>Collection location</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                    @if (Model.EventList.Count == 0)
+                {
+                        <tr>
+                            <td colspan="7">
+                                <div class="mx-auto" style="text-align: center;">
+                                    <h5>You do not have any events. Add your first event now !</h5>
+                                </div>
+                            </td>
+                        </tr>
+
+                }
+                else
+                {
+                        @foreach (var item in Model.EventList)
+                    {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>
+                                    <img id="imgPreview" class="" style="height:150px;width:100px;object-fit:cover"
+                                 src="@(string.IsNullOrEmpty(item.ImageURL) ? "/assets/EventImage/event.png" : item.ImageURL)"
+                                 onerror="this.src='/assets/EventImage/event.png'" />
+                                    <input class="form-control d-none" asp-for="@item.ImageURL" />
+                                </td>
+                                <td>@item.EventTitle</td>
+                                <td>@item.StartDate.ToShortDateString() To @item.EndDate.ToShortDateString()</td>
+                                <td>@item.StartTime to @item.EndTime</td>
+                                <td>
+                                    @item.StartBlockNumber, @item.StartRoadName, @item.StartPostalCode <br> To <br> @item.EndBlockNumber, @item.EndRoadName, @item.EndPostalCode
+                                </td>
+                                <td>
+                                    <a asp-page="/OrganizerEvent/EventDetails" asp-route-id="@item.Id" class="text-decoration-none text-dark">Edit Event</a>
+                                </td>
+                            </tr>
+                    }
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-<a class="btn btn-primary mt-3" href="/OrganizerEvent/Add">Add Event</a>
+</div>
+
 
