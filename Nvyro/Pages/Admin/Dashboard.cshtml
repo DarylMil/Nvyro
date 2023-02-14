@@ -119,17 +119,39 @@
      <!-- END RIGHT CARD -->
 </div>
 </form>
+<!--Wrong File Selected Modal-->
+<div id="add-picture" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#232323;">
+            <h5 class="modal-title" style="color:white;">Change Profile Picture</h5>
+            <button type="button" class="usermodal-btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Please only select Jpeg or Png file types.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-
     function showImgPreview(input) {
-    if (input.files[0]) {
-        var uploadimg = new FileReader();
-        uploadimg.onload = function(displayimg) {
-            $("#dashboard-image").attr('src', displayimg.target.result);
+        var file = input.files[0];
+        if (file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg") {
+            var uploadimg = new FileReader();
+            uploadimg.onload = function(displayimg) {
+            
+                $("#dashboard-image").attr('src', displayimg.target.result);
+            }
+            uploadimg.readAsDataURL(input.files[0]);
+        }else{
+            $('#add-picture').modal({
+                keyboard: false
+            }).modal('toggle');
         }
-        uploadimg.readAsDataURL(input.files[0]);
-        }
-    }
+    };
 </script>
 @section Scripts
 {

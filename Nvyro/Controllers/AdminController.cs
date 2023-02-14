@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nvyro.Models;
+using Nvyro.Services;
 
 namespace Nvyro.Controllers
 {
@@ -13,11 +14,13 @@ namespace Nvyro.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly INotyfService _toastNotification;
+        private readonly CategoryService _categoryService;
 
-        public AdminController(UserManager<ApplicationUser> userManager, INotyfService toastNotification)
+        public AdminController(UserManager<ApplicationUser> userManager, INotyfService toastNotification, CategoryService categoryService)
         {
             _userManager = userManager;
             _toastNotification = toastNotification;
+            _categoryService = categoryService;
         }
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserAsync(string userId)
@@ -154,6 +157,7 @@ namespace Nvyro.Controllers
                 message = $"Fail to update the user."
             });
         }
+
         [HttpGet("charts")]
         public async Task<IActionResult> GetChartsAsync()
         {
@@ -230,6 +234,39 @@ namespace Nvyro.Controllers
                 }
 
             });
+        }
+        [HttpPost("disable/{catId}")]
+        public async Task<IActionResult> PostDisablerAsync(string catId)
+        {
+            try
+            {
+                var isSuccess = await _categoryService.DisableRecycleCategoryAsync(catId);
+                if (isSuccess == 1)
+                {
+                    _toastNotification.Success($"Successfully Enabled Category");
+                }
+                else if (isSuccess == 2)
+                {
+                    _toastNotification.Success($"Successfully Disabled Category");
+                }
+                else
+                {
+                    _toastNotification.Error($"Failed To Disable Category");
+                }
+                return Ok(new
+                {
+                    success=true,
+                    data = isSuccess
+                });
+            }
+            catch (Exception)
+            {
+                _toastNotification.Error($"Failed To Disable Category");
+                return Ok(new
+                {
+                    success = false
+                });
+            }
         }
 
         public class UpdateRequestBody

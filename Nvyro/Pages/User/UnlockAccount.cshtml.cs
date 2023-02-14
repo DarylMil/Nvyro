@@ -54,6 +54,7 @@ namespace Nvyro.Pages.User
                 }
                 _toastNotification.Success("A One Time Password (OTP) is sent to your email address");
                 var token = _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+                Console.WriteLine(token.Result);
                 await _emailSender.SendEmailAsync(user.Email, "OTP Token",
                     $"Your One Time Password (OTP) is: <br><h2>{token.Result}</h2><br>The password is only valid for 6 minutes.");
                 return Page();
@@ -77,7 +78,7 @@ namespace Nvyro.Pages.User
                 if (result)
                 {
                     _toastNotification.Success("Succesfully Unlock Account");
-                    await _userManager.SetLockoutEndDateAsync(user, DateTime.MinValue);
+                    await _userManager.SetLockoutEndDateAsync(user, DateTime.Now - TimeSpan.FromDays(1));
                     return RedirectToPage("/User/Login");
                 }
                 _toastNotification.Error("Unlock Account Unsuccesfull");

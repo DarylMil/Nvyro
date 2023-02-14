@@ -102,7 +102,7 @@
             registerBlock.prop("disabled", true);
             registerPostal.prop("disabled", true);
             registerRoad.prop("disabled", true);
-            $("#dashboard-image").css("cursor", "none");
+            $("#dashboard-image").css("cursor", "default");
         }
     });
     //saveChangesBtn.click(() => {
