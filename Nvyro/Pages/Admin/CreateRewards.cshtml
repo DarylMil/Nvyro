@@ -36,8 +36,9 @@
         </div>
       </div>
     </div>
-    <!-- Banner Ends Here -->
-    <form class="mt-3" method="post">
+    <!-- Banner Ends Here -->   
+    <form method="post" enctype="multipart/form-data">
+     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row mb-3">
     <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardID">Reward ID: </label>
     <div class="col-sm-10">
@@ -71,13 +72,13 @@
     </div>
     </div>
     <div class="row mb-3">
-    <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardPicURL">URL (Picture): </label>
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.PhotoPath">Picture: </label>
     <div class="col-sm-10">
-    <input class="form-control" asp-for="Rewards.RewardPicURL" />
-    <span asp-validation-for="Rewards.RewardPicURL" class="text-danger"></span>
+    <input type="file" accept="image/*" asp-for="Rewards.PhotoPath" class="form-control" />
+	<span asp-validation-for="Rewards.PhotoPath" class="text-danger"></span>
     </div>
     </div>
-        <div class="row mb-3">
+    <div class="row mb-3">
     <label class="col-sm-2 col-form-label" asp-for="Rewards.requiredPoints">Point Requirement: </label>
     <div class="col-sm-10">
     <input class="form-control" asp-for="Rewards.requiredPoints"
@@ -139,4 +140,14 @@
         </div>
       </div>
     </div>
-    <script src="js/owl.js"></
+    <script>
+    function showImgPreview(input) {
+        if (input.files[0]) {
+            var uploadimg = new FileReader();
+            uploadimg.onload = function (displayimg) {
+                $("#imgPreview").attr('src', displayimg.target.result);
+            }
+            uploadimg.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>

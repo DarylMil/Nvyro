@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace Nvyro.Models
 {
-    public class Reward
+    public class AddReward
     {
-        [Key]
         public string RewardID { get; set; }
 
         [Required, MaxLength(30)]
@@ -22,8 +22,8 @@ namespace Nvyro.Models
         [Required]
         [DataType(DataType.Text)]
         public int requiredPoints { get; set; }
-        
+
         [Required]
-        public string? RewardPicURL { get; set; }
+        public IFormFile? PhotoPath { get; set; }
     }
 }

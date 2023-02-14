@@ -21,6 +21,7 @@ namespace Nvyro.Pages
             _emailSender = emailSender;
         }
         public List<Reward> RewardsList { get; set; } = new();
+        
         [BindProperty]
         public Reward Rewards { get; set; } = new();
 
@@ -50,14 +51,14 @@ namespace Nvyro.Pages
 
 
             Console.WriteLine("Redeem Activate 2");
-            if (AppUser.Points <= int.Parse(reward.requiredPoints))
+            if (AppUser.Points <= reward.requiredPoints)
             {
                 Rewards.RewardName = reward.RewardName;
                 Rewards.RewardDescription = reward.RewardDescription;
                 Rewards.requiredPoints = reward.requiredPoints;
                 Rewards.RewardPicURL = reward.RewardPicURL;
 
-                int newPoints = int.Parse(reward.requiredPoints);
+                int newPoints = reward.requiredPoints;
 
                 var updatedUser = await _userManager.FindByNameAsync(User.Identity.Name);
 
@@ -65,7 +66,7 @@ namespace Nvyro.Pages
 
                 _userManager.UpdateAsync(updatedUser);
 
-                int newQuantity = int.Parse(reward.availableQuantity) - 1;
+                int newQuantity = reward.availableQuantity - 1;
 
 
                 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -87,7 +88,7 @@ namespace Nvyro.Pages
 
                 if (newQuantity > 0)
                 {
-                    Rewards.availableQuantity = newQuantity.ToString();
+                    Rewards.availableQuantity = newQuantity;
 
                     _rewardService.UpdateReward(Rewards);
                 }
