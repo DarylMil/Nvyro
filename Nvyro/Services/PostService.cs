@@ -14,11 +14,26 @@ namespace Nvyro.Services
         {
             return _context.Posts.OrderBy(d => d.Title).ToList();
         }
+        //public Post? GetPostById(string id)
+        //{
+        //    Post? post = _context.Posts.FirstOrDefault(
+        //    x => x.Id.Equals(id));
+        //    return post;
+        //}
+
         public Post? GetPostById(string id)
         {
-            Post? post = _context.Posts.FirstOrDefault(
-            x => x.Id.Equals(id));
-            return post;
+            int parsedId;
+            if (int.TryParse(id, out parsedId))
+            {
+                Post? post = _context.Posts.FirstOrDefault(
+                x => x.Id.Equals(parsedId));
+                return post;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void AddPost(Post post)
@@ -34,7 +49,7 @@ namespace Nvyro.Services
             _context.SaveChanges();
         }
 
-        public void DeletePost(string id)
+        public void DeletePost(int id)
         {
             Post? post = _context.Posts.FirstOrDefault(
             x => x.Id.Equals(id));
