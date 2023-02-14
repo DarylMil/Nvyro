@@ -23,5 +23,11 @@ namespace Nvyro.Pages.Forum
         {
             Posts = _postService.GetAll();
         }
+
+        public IActionResult Delete(string id)
+        {
+            _postService.DeletePost(_postService.GetPostById(id));
+            return RedirectToAction("ForuMain");
+        }
     }
 }

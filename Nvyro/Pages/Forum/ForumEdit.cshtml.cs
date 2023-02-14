@@ -17,11 +17,11 @@ namespace Nvyro.Pages.Forum
         [BindProperty]
         public Post Post { get; set; }
 
-        //public IActionResult OnGet(string id)
-        //{
-        //    Post = _postService.GetPostById(id) ?? throw new ApplicationException("Post not found");
-        //    return Page();
-        //}
+        public IActionResult OnGet(string id)
+        {
+            Post = _postService.GetPostById(id);
+            return Page();
+        }
 
         public IActionResult OnPost()
         {

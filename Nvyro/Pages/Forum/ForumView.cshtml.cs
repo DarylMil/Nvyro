@@ -17,8 +17,8 @@ namespace Nvyro.Pages.Forum
 
         public IActionResult OnGet(string id)
         {
-            //Post = _postService.GetPostById(id) ?? throw new ApplicationException("Post not found");
-            //DoesNotReturn
+            Post? post = _postService.GetPostById(id);
+
             return Page();
         }
     }

@@ -23,11 +23,13 @@ namespace Nvyro.Services
 
         public void AddPost(Post post)
         {
+            post.PostDate = DateTime.Now;
             _context.Posts.Add(post);
             _context.SaveChanges();
         }
         public void UpdatePost(Post post)
         {
+            post.PostDate = DateTime.Now;
             _context.Posts.Update(post);
             _context.SaveChanges();
         }

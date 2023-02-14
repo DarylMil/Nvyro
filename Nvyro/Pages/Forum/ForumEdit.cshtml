@@ -9,7 +9,7 @@
 <form method="post">
     <div class="form-group">
         <label for="Title">Post Title</label>
-        <input asp-for="Post.Title" type="text" class="form-control" id="Title" placeholder="Insert Title">
+        <input asp-for="Post.Title" type="text" class="form-control" id="Title" placeholder="Insert Title" //*value="@Model.Post.Title"* >
         <span asp-validation-for="Post.Title" class="text-danger"></span>
     </div>
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"></script>
@@ -26,7 +26,7 @@
                 'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
         });
     </script>
-    <textarea asp-for="Post.Description" id="mytextarea" placeholder="Insert Description"></textarea>
+    <textarea asp-for="Post.Description" id="mytextarea" placeholder="Insert Description" //*value="@Model.Post.Description"*></textarea>
     <span asp-validation-for="Post.Description" class="text-danger"></span>
 
     <style>
