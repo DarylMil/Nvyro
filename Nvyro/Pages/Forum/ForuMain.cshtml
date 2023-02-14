@@ -6,7 +6,18 @@
 
 <h1 class="fw-bold text-center py-4 px-2">@ViewData["Title"]</h1>
 
-<h2 class="fw-bold">Browse Posts</h2>
+<h2 class="fw-bold">Browse Posts
+<div class="btn-group ml-auto">
+    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filter
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" asp-page="/Forum/ForuMain" asp-route-sortOrder="Alphabetical">By Alphabetical Order</a>
+        <a class="dropdown-item" asp-page="/Forum/ForuMain" asp-route-sortOrder="Latest">By Latest Date</a>
+        <a class="dropdown-item" asp-page="/Forum/ForuMain" asp-route-sortOrder="Latest">By Earliest Date</a>
+    </div>
+</div>
+</h2>
 <table class="table mt-3">
     <tbody>
        @{

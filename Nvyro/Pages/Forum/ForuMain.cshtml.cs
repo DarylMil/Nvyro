@@ -15,6 +15,8 @@ namespace Nvyro.Pages.Forum
 
         [BindProperty]
         public int id { get; set; }
+        public string sortOrder { get; set; }
+
         public ForumModel(PostService postService, INotyfService toastNotification, IWebHostEnvironment environment)
         {
             _postService = postService;
@@ -22,10 +24,33 @@ namespace Nvyro.Pages.Forum
             _environment = environment;
 
         }
+
+        [BindProperty]
         public List<Post> Posts { get; set; } = new();
-        public void OnGet()
+
+        //public void OnGet()
+        //{
+        //    Posts = _postService.GetAll();
+        //}
+
+        public void OnGet(string sortOrder)
         {
-            Posts = _postService.GetAll();
+            this.sortOrder = sortOrder;
+            switch (sortOrder)
+            {
+                case "Alphabetical":
+                    Posts = _postService.GetAll().OrderBy(p => p.Title).ToList();
+                    break;
+                case "Latest":
+                    Posts = _postService.GetAll().OrderByDescending(p => p.PostDate).ToList();
+                    break;
+                case "Earliest":
+                    Posts = _postService.GetAll().OrderBy(p => p.PostDate).ToList();
+                    break;
+                default:
+                    Posts = _postService.GetAll();
+                    break;
+            }
         }
 
         public IActionResult OnPostDelete(int id)
