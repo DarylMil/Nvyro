@@ -36,8 +36,9 @@
         </div>
       </div>
     </div>
-    <!-- Banner Ends Here -->
-    <form class="mt-3" method="post">
+    <!-- Banner Ends Here -->   
+    <form method="post" enctype="multipart/form-data">
+     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row mb-3">
     <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardID">Reward ID: </label>
     <div class="col-sm-10">
@@ -71,13 +72,13 @@
     </div>
     </div>
     <div class="row mb-3">
-    <label class="col-sm-2 col-form-label" asp-for="Rewards.RewardPicURL">URL (Picture): </label>
+    <label class="col-sm-2 col-form-label" asp-for="Rewards.PhotoPath">Picture: </label>
     <div class="col-sm-10">
-    <input class="form-control" asp-for="Rewards.RewardPicURL" />
-    <span asp-validation-for="Rewards.RewardPicURL" class="text-danger"></span>
+    <input type="file" accept="image/*" asp-for="Rewards.PhotoPath" class="form-control" />
+	<span asp-validation-for="Rewards.PhotoPath" class="text-danger"></span>
     </div>
     </div>
-        <div class="row mb-3">
+    <div class="row mb-3">
     <label class="col-sm-2 col-form-label" asp-for="Rewards.requiredPoints">Point Requirement: </label>
     <div class="col-sm-10">
     <input class="form-control" asp-for="Rewards.requiredPoints"
@@ -99,19 +100,49 @@
           </div>
           @foreach (var item in Model.RewardsList)
           {
-          <div class="col-md-4">
-            <div class="product-item">
-              <a href="#"><img src=@item.RewardPicURL alt=""></a>
-              <div class="down-content">
-                <a href="#"><h4>@item.RewardName</h4></a>
-                <h6>Quantity = @item.availableQuantity</h6>
-                <p>@item.RewardDescription</p>
-                <span>@item.requiredPoints</span>
+         // <div class="col-md-4">
+           // <div class="product-item">
+           //   <a href="#"><img src=@item.RewardPicURL alt=""></a>
+           //   <div class="down-content">
+            //    <a href="#"><h4>@item.RewardName</h4></a>
+             //   <h6>Quantity = @item.availableQuantity</h6>
+             //   <p>@item.RewardDescription</p>
+             //   <span>@item.requiredPoints</span>
+            //  </div>
+          //  </div>
+         // </div>
+              <div class="col-md-4">
+                <div class="card">
+                <img src=@item.RewardPicURL class="card-img-top" width="100%">
+                <div class="card-body pt-0 px-0">
+                  <div class="d-flex flex-row justify-content-between mb-0 px-3">
+                    <small class="text-muted mt-1">Reward</small>
+                    <h6>@item.RewardName</h6>
+                  </div>
+                  <hr class="mt-2 mx-3">
+                  <div class="d-flex flex-row justify-content-between px-3 pb-4">
+                    <div class="d-flex flex-column"><span class="text-muted">Description</span></div>
+                    <div class="d-flex flex-column"><h5 class="mb-0">@item.RewardDescription</h5></div>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between p-3 mid">
+                    <div class="d-flex flex-column"><small class="text-muted mb-1">Quantity</small><div class="d-flex flex-row"><div class="d-flex flex-column ml-1"><small class="ghj">@item.availableQuantity</small></div></div></div>
+                    <div class="d-flex flex-column"><small class="text-muted mb-2">Required Points</small><div class="d-flex flex-row"><small class="ml-1">@item.requiredPoints</small></div></div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+                </div>
           }
         </div>
       </div>
     </div>
-    <script src="js/owl.js"></
+    <script>
+    function showImgPreview(input) {
+        if (input.files[0]) {
+            var uploadimg = new FileReader();
+            uploadimg.onload = function (displayimg) {
+                $("#imgPreview").attr('src', displayimg.target.result);
+            }
+            uploadimg.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>

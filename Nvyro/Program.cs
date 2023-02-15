@@ -59,6 +59,7 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 });
 builder.Services.AddScoped<RewardService>();
 
+builder.Services.AddScoped<PostService>();
 
 
 builder.Services.AddScoped<EventService>();
@@ -86,6 +87,7 @@ app.UseRouting();
 app.UseAuthentication();;
 
 app.UseAuthorization();
+app.UseStatusCodePagesWithRedirects("/Errors/{0}");
 
 app.UseNToastNotify();
 app.UseNotyf();

@@ -9,5 +9,6 @@ namespace Nvyro.Models
         [Required, MaxLength(30)]
         public string CategoryName { get; set; } = string.Empty;
         public bool IsDisabled { get; set; } = false;
+
     }
 }

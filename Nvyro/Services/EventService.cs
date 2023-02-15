@@ -20,6 +20,12 @@ namespace Nvyro.Services
             return _context.Events.OrderBy(x => x.Id).ToList();
         }
 
+        public List<Event> GetAllByUserId(string userId)
+        {
+            return _context.Events.Where(x => x.UserId.Equals(userId)).OrderBy(x => x.StartDate).ToList();
+        }
+
+
         public Event? GetEventById(int id)
         {
             Event? events = _context.Events.FirstOrDefault(x => x.Id.Equals(id));
