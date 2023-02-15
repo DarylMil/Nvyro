@@ -18,6 +18,7 @@ namespace Nvyro.Data
             string connectionString = _configuration.GetConnectionString("MyConnection");
             optionsBuilder.UseSqlServer(connectionString);
         }
+
         public DbSet<RecycleCategory> RecycleCategory { get; set; }
         public DbSet<Event> Events { get; set; }
 

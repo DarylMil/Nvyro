@@ -21,7 +21,7 @@
                         <a href="#"><img src="assets/images/product_01.jpg" alt=""></a>
                         <div class="down-content">
                             <a><h4>@item.EventTitle</h4></a>
-                            @*<h6>@item.PostalCode</h6>*@
+                            <h6>@item.StartPostalCode - @item.EndPostalCode</h6>
                             <p>Start date : @item.StartDate</p>
                             <p>End date : @item.EndDate</p>
                             <ul class="stars">
@@ -32,7 +32,7 @@
                                 <li><i class="fa fa-star"></i></li>
                             </ul>
                             <a class="btn btn-primary mt-3"  asp-page="/Requests/Request_form"
-                   asp-route-EventTitle="@item.EventTitle">Request</a>
+                           asp-route-EventId="@item.Id">Request</a>
                         </div>
                     </div>
                 </div>

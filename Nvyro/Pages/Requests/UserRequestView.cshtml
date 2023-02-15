@@ -3,50 +3,17 @@
 @{
     ViewData["Title"] = "Your Requests";
 }
-@*<div class="latest-products">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-heading">
-                    <h2>Events</h2>
-                </div>
-            </div>
-
-            @foreach (var item in Model.UsersEvents)
-            {
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <a href="#"><img src="assets/images/product_01.jpg" alt=""></a>
-                        <div class="down-content">
-                            <a><h4>@item.EventTitle</h4></a>
-                            <h6>@item.PostalCode</h6>
-                            <p>Start date : @item.StartDate</p>
-                            <p>End date : @item.EndDate</p>
-                            <ul class="stars">
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                            </ul>
-                            <a class="btn btn-primary mt-3" asp-page="/Requests/Request_form"
-                           asp-route-id="@item.EventTitle">Request</a>
-                        </div>
-                    </div>
-                </div>
-            }
-
-
-        </div>
-    </div>
-</div>*@
 <nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="dashboard-button active" asp-page="/User/UserDashboard"><i class="fa-solid fa-user"></i> My Profile</a>
-            <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Rewards</a>
-            <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Events</a>
+            <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+            <a class="dashboard-button" asp-page="/User/Rewards"><i class="fa-solid fa-coins"></i> Rewards</a>
+
+
+            <a class="dashboard-button " asp-page="/OrganizerEvent/Index"><i class="fa-solid fa-calendar-days"></i> Events</a>
+
             <a class="dashboard-button" href="/Requests/UserRequestView">Your Requests</a>
+
         </div>
     </div>
 </nav>
@@ -56,6 +23,7 @@
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.AllRequests[0].Id)</th>
+            <th>Event</th>
             <th>@Html.DisplayNameFor(model => model.AllRequests[0].PostalCode)</th>
             <th>@Html.DisplayNameFor(model => model.AllRequests[0].BlockNumber)</th>
             <th>@Html.DisplayNameFor(model => model.AllRequests[0].UnitNumber)</th>
@@ -68,12 +36,12 @@
                 <tr>
 
                     <td>@item.Id</td>
+                    <td>@Model.currentEvent.EventTitle</td>
                     <td>@item.PostalCode</td>
                     <td>@item.BlockNumber</td>
                     <td>@item.UnitNumber</td>
                     <td>
-                        <a asp-page="/Requests/RequestsDetail"
-                   asp-route-id="@item.Id">View Details</a>
+                        <a asp-page="/Requests/RequestsDetail" asp-route-id="@item.Id" asp-route-EventId="@Model.currentEvent.Id">View Details</a>
                     </td>
                 </tr>
             }

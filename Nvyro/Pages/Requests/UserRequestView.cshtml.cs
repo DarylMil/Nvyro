@@ -10,19 +10,26 @@ namespace Nvyro.Pages.Requests
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RequestService _RequestService;
-        public UserRequestViewModel(RequestService requestService, UserManager<ApplicationUser> userManager)
+        private readonly EventService _EventService;
+        public UserRequestViewModel(RequestService requestService, UserManager<ApplicationUser> userManager, EventService eventService)
         {
             _userManager = userManager;
             _RequestService = requestService;
+            _EventService = eventService;
         }
         public List<Request> AllRequests { get; set; } = new();
-        /*        public List<Event> UsersEvents { get; set; } = new();*/
+        [BindProperty]
+        public Event currentEvent { get; set; }
 
         public async Task OnGetAsync()
         {
             var existingUser = await _userManager.GetUserAsync(User);
             AllRequests = _RequestService.GetAll(existingUser.Id);
-            /*            UsersEvents = _RequestService.GetEventsWithUserRequest(existingUser.Id);*/
+            foreach(var request in AllRequests)
+            {
+                Event? Event = _EventService.GetEventById(request.CopyEventId);
+                currentEvent = Event;
+            }
         }
     }
 }

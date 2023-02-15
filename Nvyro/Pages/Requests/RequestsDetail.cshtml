@@ -6,10 +6,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="dashboard-button active" asp-page="/User/UserDashboard"><i class="fa-solid fa-user"></i> My Profile</a>
-            <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Rewards</a>
-            <a class="dashboard-button " href="#"><i class="fa-solid fa-calendar-days"></i> Events</a>
+            <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+            <a class="dashboard-button" asp-page="/User/Rewards"><i class="fa-solid fa-coins"></i> Rewards</a>
+
+
+            <a class="dashboard-button " asp-page="/OrganizerEvent/Index"><i class="fa-solid fa-calendar-days"></i> Events</a>
+
             <a class="dashboard-button" href="/Requests/UserRequestView">Your Requests</a>
+
         </div>
     </div>
 </nav>
@@ -26,21 +30,42 @@
 </div>
 <div class="tab-content profile-tab" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <form id="Form" method="post">
+        <form method="post">
             <div class="mt-4 mx-0 row dashboard-height">
                 <!-- LEFT CARD -->
                 <div class="col-4 pl-0" style="padding-right:1rem;">
-                    <div class="card dashboard-card col-12 mb-3">
-                        <img style="" src="">
-
+                    <div class="card col-12 mb-3">
+                        @if (!string.IsNullOrEmpty(Model.currentEvent.ImageURL))
+                        {
+                            <img src="@Model.currentEvent.ImageURL" />
+                        }
                         <div class="card-body">
-                            <h5 class="card-title">Event Name</h5>
                             <h6 class="card-subtitle mb-2 text-muted">
                                 Event Details
                             </h6>
-
+                            <hr />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="card-subtitle mb-2 text-muted small-text">Event Location:</h5><br />
+                                    <h5 class="card-subtitle mb-2 text-muted small-text">Start Date:</h5><br />
+                                    <h5 class="card-subtitle mb-2 text-muted small-text">End Date:</h5><br />
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.EventTitle</h5><br />
+                                    <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.StartDate.ToString("dd-MM-yyyy")</h5><br />
+                                    <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.EndDate.ToString("dd-MM-yyyy")</h5><br />
+                                </div>
+                            </div>
+                            <hr />
+                            <h5 class="card-subtitle mb-2 text-muted small-text">Area Covered</h5><br />
+                            <h5 class="card-subtitle mb-2 text-muted small-text">The event will take place from addresses with postal code starting from <strong>@Model.currentEvent.StartPostalCode</strong> to <strong>@Model.currentEvent.EndPostalCode</strong>.</h5>
 
                             <hr />
+                            <h5 class="card-subtitle mb-2 text-muted small-text">Event Description</h5><br />
+                            <h5 class="card-subtitle mb-2 text-muted small-text"> @Model.currentEvent.Description </h5><br />
+
+
                         </div>
                     </div>
                 </div>
@@ -49,102 +74,75 @@
                 <div class="col-8 pr-0" style="padding-left:0;">
                     <!-- DETAILS -->
                     <div class="card-body">
-                        <h5 class="card-title">Your Details</h5>
-                        @*<h5 style="font-size : 13px;" class="card-title">Check if your details are correct</h5>*@
-                        @*<h5 style="font-size : 13px;" class="card-title">Not using your account to book ? Click < id="Clear" style="background:white;" class="btn-secondary btn" onclick="clear()" >here.</></h5>*@
-                        <hr />
+                        <div id="form1" class="form1" style="display : block;">
+                            <h5 class="card-title">Your Request Details</h5>
+                            <h9 class="card-title">
+                                Status:
+                                @if (Model.Request.isCollected)
+                                {
+                                    <span>Collected</span>
+                                }
+                                else
+                                {
+                                    <span>Not Collected</span>
+                                }
+                            </h9>
 
-                        <div class="row mb-3">
-                            @*                    <div class="form-floating col">
-                            <label>Full Name</label>
-                            <input class="form-control" aria-required="true" />
-                            <span class="text-danger"></span>
-                            </div>
-                            <div class="form-floating col">
-                            <label>Phone Number</label>
-                            <div class="input-group">
-                            <input class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
-                            <input class="form-control" aria-required="true" />
-                            </div>
-                            <span class="text-danger"></span>
-                            </div>*@
-                            @*<div class="form-floating col">
-                            <label id="register-name">@(Model.AppUser.Roles == "Organizer" ? "Organization Name" : Model.AppUser.Roles == "Recycler" ? "Full Name" : "Admin Name")</label>
-                            <input id="register-orgName" asp-for="AppUser.FullName" class="form-control" aria-required="true" />
-                            <span asp-validation-for="AppUser.FullName" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating col">
-                            <label asp-for="AppUser.PhoneNumber"></label>
-                            <div class="input-group">
-                            <input class="input-group-prepend form-control" style="max-width:60px;" value="+65" />
-                            <input  id="register-phone" asp-for="AppUser.PhoneNumber" class="form-control" aria-required="true" />
-                            </div>
-                            <span asp-validation-for="AppUser.PhoneNumber" class="text-danger"></span>
-                            </div>*@
-                        </div>
-
-                        <h5 class="card-title">Address</h5>
-                        @*                <div class="row mb-3">
-                        <div class="form-floating col-12">
-                        <label>Search Address</label>
-                        <input disabled id="search-full-address" class="form-control" aria-required="true" />
-                        <div id="select-address" class="show" style="position:relative;">
-                        </div>
-                        </div>
-                        </div>*@
-                        <div class="row mb-3">
-
-                            @*                    <div class="form-floating  col">
-                            <label asp-for="AppUser.UnitNumber"></label>
-                            <input id="register-unitNumber" asp-for="AppUser.UnitNumber" class="form-control" aria-required="true" />
-                            <span asp-validation-for="AppUser.UnitNumber" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating  col">
-                            <label asp-for="AppUser.BlockNumber"></label>
-                            <input id="register-blockNumber" asp-for="AppUser.BlockNumber" class="form-control" aria-required="true" />
-                            <span asp-validation-for="AppUser.BlockNumber" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating  col">
-                            <label asp-for="AppUser.PostalCode"></label>
-                            <input id="register-postalCode" asp-for="AppUser.PostalCode" class="form-control" aria-required="true"/>
-                            <span asp-validation-for="AppUser.PostalCode" class="text-danger"></span>
-                            </div>*@
-                            <div class="form-floating  col">
-                                <label>Unit Number</label>
-                                <input asp-for="MyRequest.UnitNumber" class="form-control" aria-required="true" />
-                                <span asp-validation-for="MyRequest.UnitNumber" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating  col">
-                                <label>Block Number</label>
-                                <input asp-for="MyRequest.BlockNumber" class="form-control" aria-required="true" />
-                                <span asp-validation-for="MyRequest.BlockNumber" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating  col">
-                                <label>Postal Code</label>
-                                <input asp-for="MyRequest.PostalCode" class="form-control" aria-required="true" />
-                                <span asp-validation-for="MyRequest.PostalCode" class="text-danger"></span>
-                            </div>
-@*                            <div class="form-floating  col">
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <input type="file" accept="image/*" asp-for="MyRequest.ImageURL" class="form-control" onchange="showImgPreview(this)" />
-                                        <span asp-validation-for="MyRequest.ImageURL" class="text-danger"></span>
-                                    </div>
-                                    <img id="imgPreview" class="rounded-circle"
-                                         style="height:300px;width:300px;object-fit:cover"
-                                         src="@(string.IsNullOrEmpty(Model.MyRequest.ImageURL) ?"/uploads/user.png" : Model.MyRequest.ImageURL)"
-                                         onerror="this.src='/uploads/user.png'" />
-                                    <input class="form-control d-none" asp-for="MyRequest.ImageURL" />
+                            <hr />
+                            <h5 class="card-title">Address</h5>
+                            <div class="row mb-3">
+                                <div class="form-floating  col">
+                                    <label>Unit Number</label>
+                                    <input id="register-unitNumber" asp-for="Request.UnitNumber" class="form-control" aria-required="true" disabled />
+                                    <input type="hidden" asp-for="Request.UnitNumber" />
+                                    <span asp-validation-for="Request.UnitNumber" class="text-danger"></span>
                                 </div>
-                            </div>*@
-                            <div class="form-floating  col">
-                                <input asp-for="MyRequest.Id" class="form-control" aria-required="true" hidden />
+                                <div class="form-floating  col">
+                                    <label>Block Number</label>
+                                    <input id="register-blockNumber" asp-for="Request.BlockNumber" class="form-control" aria-required="true" disabled />
+                                    <input type="hidden" asp-for="Request.BlockNumber" />
+                                    <span asp-validation-for="Request.BlockNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating  col">
+                                    <label>Postal Code</label>
+                                    <input id="register-postalCode" asp-for="Request.PostalCode" class="form-control" aria-required="true" disabled />
+                                    <input type="hidden" asp-for="Request.PostalCode" />
+                                    <span asp-validation-for="Request.PostalCode" class="text-danger"></span>
+                                </div>
                             </div>
-
+                            <div class="form-floating mb-3">
+                                <label asp-for="Request.RoadName"></label>
+                                <input id="register-roadName" asp-for="Request.RoadName" class="form-control" aria-required="true" disabled />
+                                <input type="hidden" asp-for="Request.RoadName" />
+                                <span asp-validation-for="Request.RoadName" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating  col">
+                                <input asp-for="currentEvent.StartPostalCode" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.EndPostalCode" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.EventTitle" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.StartDate" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.EndDate" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.Description" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.StartRoadName" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.EndRoadName" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.ImageURL" class="form-control" aria-required="true" hidden />
+                                <input id="EventId" asp-for="currentEvent.Id" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.StartBlockNumber" class="form-control" aria-required="true" hidden />
+                                <input asp-for="currentEvent.EndBlockNumber" class="form-control" aria-required="true" hidden />
+                                <input asp-for="Request.Img_Description" value="@Model.Request.Img_Description" class="form-control" aria-required="true" hidden />
+                                <input asp-for="Request.Id" value="@Model.Request.Id" class="form-control" aria-required="true" hidden />
+                                <input asp-for="Request.CopyEventId" value="@Model.Request.CopyEventId" class="form-control" aria-required="true" hidden />
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-md btn-outline-primary" id="edit-request">Edit Request</button>
+                            <div id="SecButton" style="display:none">
+                                <button type="submit" class="btn btn-md btn-outline-danger" asp-page-handler="Delete" id="delete">Delete Request</button>
+                                <button type="submit" class="btn btn-md btn-outline-primary" id="save-request">Save Changes</button>
+                                
+                            </div>
                         </div>
-                        <input type="submit" value="Save Changes" class="btn btn-primary" />
-                        <input style="background-color: gray" type="submit" value="Delete Request" asp-page-handler="Delete" class="btn btn-primary" />
                     </div>
+
                     <!-- END ADDRESS -->
 
                 </div>
@@ -154,53 +152,132 @@
         </form>
     </div>
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <form method="post" enctype="multipart/form-data">
+            <div class="image-gallery" id="img" style="display:block">
+                @foreach (var i in Model.Request_Images)
+                {
+                    @if (!string.IsNullOrEmpty(i.ImageURL))
+                    {
+                        <div style="display: inline-block; margin-right: 10px">
+                            <img style="height:250px; width:250px; object-fit:cover" src="@i.ImageURL" />
+                            <br />
+                            <button type="button" class="btn btn-primary edit-request-img" style="display:none">Edit this Image</button>
+                        </div>
 
-    
-    
+                    }
+                }
+                @if (Model.Request_Images.Count == 0)
+                {
+                    <h3>No images.</h3>
+                }
+            </div>
+            <div id="update-img" class="col-md-4" style="display:none">
+                <div class="mb-3">
+                    <div>
+                        <input type="file" accept="image/*" asp-for="Upload" class="form-control" onchange="showImgPreview(this)" multiple />
+                        <br />
+                        <button type="button" class="btn btn-md btn-outline-danger" onclick="clearFileInput(this)">Remove Image</button>
+                        <span asp-validation-for="Upload" class="text-danger"></span>
+                    </div>
+                </div>
+                <div style="display: flex;">
+                    <img id="imgPreview1" style="height:250px;width:250px;object-fit:cover; float: left; margin-right: 10px;" />
+                    <img id="imgPreview2" style="height:250px;width:250px;object-fit:cover; float: left; margin-right: 10px;" />
+                    <img id="imgPreview3" style="height:250px;width:250px;object-fit:cover; float: left;" />
+                </div>
+            </div>
+            <br />
+            <div>
+                <button type="button" class="btn btn-md btn-outline-primary" id="edit-request-img-toggle">Update Images</button>
+                <button type="submit" class="btn btn-md btn-outline-primary" id="Save_new_images" style="display:none" asp-page-handler="SaveImages">Save new images</button>
+            </div>
+            <div class="form-floating  col">
+                <input asp-for="currentEvent.StartPostalCode" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.EndPostalCode" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.EventTitle" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.StartDate" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.EndDate" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.Description" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.StartRoadName" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.EndRoadName" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.ImageURL" class="form-control" aria-required="true" hidden />
+                <input id="EventId" asp-for="currentEvent.Id" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.StartBlockNumber" class="form-control" aria-required="true" hidden />
+                <input asp-for="currentEvent.EndBlockNumber" class="form-control" aria-required="true" hidden />
+                <input asp-for="Request.Img_Description" value="@Model.Request.Img_Description" class="form-control" aria-required="true" hidden />
+                <input asp-for="Request.Id" value="@Model.Request.Id" class="form-control" aria-required="true" hidden />
+                <input asp-for="Request.CopyEventId" value="@Model.Request.CopyEventId" class="form-control" aria-required="true" hidden />
+            </div>
+        </form>
     </div>
+
+
 </div>
+
 
 @section Scripts {
     @{
+        <script>
+            function showImgPreview(input) {
+                if (input.files.length >= 1) {
+                    var uploadImg1 = new FileReader();
+                    uploadImg1.onload = function (displayImg1) {
+                        $("#imgPreview1").attr('src', displayImg1.target.result);
+                    }
+                    uploadImg1.readAsDataURL(input.files[0]);
+                }
+                if (input.files.length >= 2) {
+                    var uploadImg2 = new FileReader();
+                    uploadImg2.onload = function (displayImg2) {
+                        $("#imgPreview2").attr('src', displayImg2.target.result);
+                    }
+                    uploadImg2.readAsDataURL(input.files[1]);
+                }
+                if (input.files.length >= 3) {
+                    var uploadImg3 = new FileReader();
+                    uploadImg3.onload = function (displayImg3) {
+                        $("#imgPreview3").attr('src', displayImg3.target.result);
+                    }
+                    uploadImg3.readAsDataURL(input.files[2]);
+                }
+            }
+            function clearFileInput(element) {
+                var input = element.previousElementSibling;
+                input.value = "";
+                $("#imgPreview1").attr('src', ' ');
+                $("#imgPreview2").attr('src', ' ');
+                $("#imgPreview3").attr('src', ' ');
+            }
+        </script>
+    <script src="~/js/Requestform.js"></script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     }
 
     <style>
-        .emp-profile {
-            padding: 3%;
-            margin-top: 3%;
-            margin-bottom: 3%;
-            border-radius: 0.5rem;
-            background: #fff;
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: stretch;
+            justify-content: center;
+            margin-bottom: 50px;
         }
 
-        .profile-img {
-            text-align: center;
+        .image-gallery img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            margin-bottom: 10px;
         }
 
-            .profile-img img {
-                width: 70%;
-                height: 100%;
-            }
+        .edit-request-img {
+            margin-left: 55px;
+        }
 
-            .profile-img .file {
-                position: relative;
-                overflow: hidden;
-                margin-top: -20%;
-                width: 70%;
-                border: none;
-                border-radius: 0;
-                font-size: 15px;
-                background: #212529b8;
-            }
 
-                .profile-img .file input {
-                    position: absolute;
-                    opacity: 0;
-                    right: 0;
-                    top: 0;
-                }
+        .small-text {
+            font-size: 16.5px;
+        }
 
         .profile-head h5 {
             color: #333;
@@ -210,27 +287,17 @@
             color: #0062cc;
         }
 
-        .profile-edit-btn {
-            border: none;
-            border-radius: 1.5rem;
-            width: 70%;
-            padding: 2%;
-            font-weight: 600;
-            color: #6c757d;
-            cursor: pointer;
-        }
-
         .proile-rating {
             font-size: 12px;
             color: #818182;
             margin-top: 5%;
         }
 
-            .proile-rating span {
-                color: #495057;
-                font-size: 15px;
-                font-weight: 600;
-            }
+        .proile-rating span {
+            color: #495057;
+            font-size: 15px;
+            font-weight: 600;
+        }
 
         .profile-head .nav-tabs {
             margin-bottom: 5%;
@@ -277,4 +344,5 @@
             font-weight: 600;
             color: #0062cc;
         }
+
     </style>

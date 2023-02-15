@@ -1,14 +1,20 @@
 ﻿$(document).ready(function () {
-    const form1 = $("#form1");
-    const form2 = $("#form2");
     const registerPostal = $("#register-postalCode");
     const registerBlock = $("#register-blockNumber");
     const registerRoad = $("#register-roadName");
     const registerUnit = $("#register-unitNumber");
-    const saveChangesBtn = $("#save-changes-btn");
-    const form = document.getElementById("Form");
     const heading1 = document.getElementById("not-own-acc");
     const heading2 = document.getElementById("own-acc");
+    const edit = document.getElementById("edit-request");
+    const saveanddelete = document.getElementById("SecButton");
+    const update_img = document.getElementById("update-img");
+    const update_img_toggle = document.getElementById("edit-request-img-toggle");
+    const gallery_img = document.getElementById("img");
+    const save_new_img = document.getElementById("Save_new_images");
+    const save_new_desc = document.getElementById("Save_new_Desc");
+    const img_desc = $("#register-img_description");
+    const isUsingUserAddress = $("#isUsingUserAddress");
+
 
     var searchTrigger = null;
     var dataResults = [];
@@ -81,6 +87,7 @@
         registerBlock.prop("disabled", false);
         registerPostal.prop("disabled", false);
         registerRoad.prop("disabled", false);
+        isUsingUserAddress.val("false");
         registerBlock.val("")
         registerUnit.val("")
         registerPostal.val("")
@@ -88,6 +95,29 @@
         heading1.style.display = "none";
         heading2.style.display = "block";
     });
+
+    $("#edit-request").click(() => {
+        registerUnit.prop("disabled", false);
+        registerBlock.prop("disabled", false);
+        registerPostal.prop("disabled", false);
+        registerRoad.prop("disabled", false);
+        saveanddelete.style.display = "block";
+        edit.style.display = "none";
+    });
+
+    $("edit-request-img-desc").click(() => {
+        save_new_desc.style.display = "block";
+        img_desc.prop("disabled", false);
+    });
+
+
+    $("#edit-request-img-toggle").click(() => {
+        update_img_toggle.style.display = "none";
+        update_img.style.display = "block";
+        gallery_img.style.display = "none";
+        save_new_img.style.display = "block";
+
+    });  
 
     $("#using-acc-btn").click(() => {
         location.reload();
@@ -103,7 +133,7 @@
     })
 
     const continuefunction = () => {
-        console.log($("#register-postalCode").val(), $("#register-unitNumber").val());
+        console.log($("#register-postalCode").val(), $("#register-unitNumber").val(), $("#EventId").val(), $("#startpostal").val(), $("#endpostal").val() );
         $.ajax({
             type: "POST",
             url: '/api/request/1',
@@ -114,8 +144,11 @@
             dataType: "json",
             data: JSON.stringify
                 ({
+                    EventStartPostal: $("#startpostal").val(),
+                    EventEndPostal: $("#endpostal").val(),
                     PostalCode: $("#register-postalCode").val(),
-                    UnitNumber: $("#register-unitNumber").val()
+                    UnitNumber: $("#register-unitNumber").val(),
+                    EventId: $("#EventId").val()
                    
                 }),
             success: function (data) {

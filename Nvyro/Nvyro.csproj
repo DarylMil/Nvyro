@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.ReCaptcha" Version="1.6.0" />
     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+    <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.12" />
@@ -26,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\uploads\images\" />
+    <Folder Include="wwwroot\uploads\request\" />
   </ItemGroup>
 
 </Project>

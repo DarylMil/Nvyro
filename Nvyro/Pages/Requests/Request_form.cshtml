@@ -7,22 +7,37 @@
     <div class="mt-4 mx-0 row dashboard-height">
         <!-- LEFT CARD -->
         <div class="col-4 pl-0" style="padding-right:1rem;">
-            <div class="card dashboard-card col-12 mb-3">
-                <img style="" src="">
-
+            <div class="card col-12 mb-3">
+                @if (!string.IsNullOrEmpty(Model.currentEvent.ImageURL))
+                    {
+                        <img src="@Model.currentEvent.ImageURL" />
+                    }
                 <div class="card-body">
-                    @*<h5 class="card-title" >Event Location : @Model.currentEvent.EventTitle</h5>*@
                     <h6 class="card-subtitle mb-2 text-muted">
                         Event Details
                     </h6>
                     <hr />
-                    <br /><br />
-@*                    <h5 class="card-title">Postal Code : @Model.currentEvent.</h5>
-                    <input asp-for="currentEvent.PostalCode" class="form-control" aria-required="true" hidden />
-                    <h5 class="card-title">Start Date : @Model.currentEvent.StartDate.ToString("dd-MM-yyyy")</h5>
-                    <input asp-for="currentEvent.StartDate" class="form-control" aria-required="true" hidden />
-                    <h5 class="card-title">End Date : @Model.currentEvent.EndDate.ToString("dd-MM-yyyy")</h5>
-                    <input asp-for="currentEvent.EndDate" class="form-control" aria-required="true" hidden />*@
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-2 text-muted small-text">Event Location:</h5><br />
+                            <h5 class="card-subtitle mb-2 text-muted small-text">Start Date:</h5><br />
+                            <h5 class="card-subtitle mb-2 text-muted small-text">End Date:</h5><br />
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.EventTitle</h5><br />
+                            <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.StartDate.ToString("dd-MM-yyyy")</h5><br />
+                            <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.EndDate.ToString("dd-MM-yyyy")</h5><br />
+                        </div>
+                    </div>
+                    <hr />
+                    <h5 class="card-subtitle mb-2 text-muted small-text">Area Covered</h5><br />
+                    <h5 class="card-subtitle mb-2 text-muted small-text">The event will take place from addresses with postal code starting from <strong>@Model.currentEvent.StartPostalCode</strong> to <strong>@Model.currentEvent.EndPostalCode</strong>.</h5>
+
+                    <hr />
+                    <h5 class="card-subtitle mb-2 text-muted small-text">Event Description</h5><br />
+                    <h5 class="card-subtitle mb-2 text-muted small-text"> @Model.currentEvent.Description </h5><br />
+
 
                 </div>
             </div>
@@ -37,6 +52,7 @@
                     <h5 style="font-size : 13px;" class="card-title">Check if your details are correct</h5>
                     <h5 style="font-size : 13px; display : block;" class="card-title" id="not-own-acc">Not using your own account details ? Click <button type="button" id="not-using-acc-btn">here.</button> </h5>
                     <h5 style="font-size : 13px; display : none; " class="card-title" id="own-acc">Using your own account details ? To revert back, click <button type="button" id="using-acc-btn">here.</button> </h5>
+                    <input type="hidden" asp-for="newRequest.isUsingUserAddressString" value="true" id="isUsingUserAddress"/>
                     <hr />
                     <h5 class="card-title">Address</h5>
                     <div class="row mb-3">
@@ -74,7 +90,19 @@
                         <span asp-validation-for="newRequest.RoadName" class="text-danger"></span>
                     </div>
                     <div class="form-floating  col">
-                    <input asp-for="currentEvent.EventTitle" class="form-control" aria-required="true" hidden />
+                        <input id="startpostal" asp-for="currentEvent.StartPostalCode" class="form-control" aria-required="true" hidden />
+                        <input id="endpostal" asp-for="currentEvent.EndPostalCode" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.EventTitle" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.StartDate" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.EndDate" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.Description" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.StartRoadName" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.EndRoadName" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.ImageURL" class="form-control" aria-required="true" hidden />
+                        <input id="EventId" asp-for="currentEvent.Id" class="form-control" aria-required="true" hidden />
+                        <input asp-for="newRequest.CopyEventId" class="form-control" aria-required="true" hidden value="@Model.currentEvent.Id" />
+                        <input asp-for="currentEvent.StartBlockNumber" class="form-control" aria-required="true" hidden />
+                        <input asp-for="currentEvent.EndBlockNumber" class="form-control" aria-required="true" hidden />
                     </div>
                     <br>
                     <button type="button" class="btn btn-primary" id="continue">Continue</button>
@@ -98,6 +126,11 @@
                         </div>
                     </div>
                     <br />
+                    <label>Image Description</label>
+                    <input asp-for="newRequest.Img_Description" class="form-control" aria-required="true" />
+                    <input type="hidden" asp-for="newRequest.Img_Description" />
+                    <span asp-validation-for="newRequest.Img_Description" class="text-danger"></span>
+                    <br />
                     <div>
                         <button type="button" class="btn btn-secondary" id="GoBack">Go Back</button>
                         <input type="submit" value="Submit" class="btn btn-primary" />
@@ -113,6 +146,11 @@
     </div>
 </form>
 <style>
+
+    .small-text {
+        font-size: 16.5px; 
+    }
+
     .btn {
         font-size: 1rem;
         font-weight: 300;

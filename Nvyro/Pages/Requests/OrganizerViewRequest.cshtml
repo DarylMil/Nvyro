@@ -1,0 +1,104 @@
+﻿@page
+@model Nvyro.Pages.Requests.OrganizerViewRequestModel
+@{
+}
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="dashboard-button" asp-page="/User/Rewards"><i class="fa-solid fa-coins"></i> Rewards</a>
+ 
+
+      <a class="dashboard-button " asp-page="/OrganizerEvent/Index"><i class="fa-solid fa-calendar-days"></i> Events</a>
+
+      <a class="dashboard-button" href="/Requests/UserRequestView">Your Requests</a>
+
+        </div>
+  </div>
+</nav>
+<div class="container">
+    <h3 class="display-4">Request details</h3>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+
+                    @for (int i = 0; i < Model.Request_Images.Count(); i++)
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@(i==0 ? "active" : "") "></li>
+                    }
+                </ol>
+                <div class="carousel-inner">
+                    @for (int i = 0; i < Model.Request_Images.Count(); i++)
+                    {
+                        <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
+                            <img class="d-block w-100" src="@Model.Request_Images[i].ImageURL" style="height:350px;width:250px;" >
+                        </div>
+                    }
+
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-column">
+              <span>Image Description</span><hr />
+              <span>@Model.Request.Img_Description</span>
+            </li>
+        </div>
+        <div class="col-md-6">
+
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Request ID</span>
+                    <span>@Model.Request.Id</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Postal Code</span>
+                    <span>@Model.Request.PostalCode</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Block Number</span>
+                    <span>@Model.Request.BlockNumber</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Unit Number</span>
+                    <span>@Model.Request.UnitNumber</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Road Name</span>
+                    <span>@Model.Request.RoadName</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Status</span>
+                    <span></span>@(Model.Request.isCollected ? "Collected" : "Not Collected")
+                </li>
+            </ul>
+            <br />
+            <div class="row">
+                <form method="post">
+                    <div class="form-floating  col">
+                        <input asp-for="Request.Id" value="@Model.Request.Id" class="form-control" aria-required="true" hidden />
+                        <input asp-for="Request.CopyEventId" value="@Model.Request.CopyEventId" class="form-control" aria-required="true" hidden />
+                        <input asp-for="Request.PostalCode" value="@Model.Request.PostalCode" class="form-control" aria-required="true" hidden />
+                        <input asp-for="Request.BlockNumber" value="@Model.Request.BlockNumber" class="form-control" aria-required="true" hidden />
+                        <input asp-for="Request.UnitNumber" value="@Model.Request.UnitNumber" class="form-control" aria-required="true" hidden />
+                        <input asp-for="Request.RoadName" value="@Model.Request.RoadName" class="form-control" aria-required="true" hidden />
+                        <input asp-for="Request.isCollectedString" value="true" class="form-control" aria-required="true" hidden />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" value="Change Status" class="btn btn-outline-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+</div>

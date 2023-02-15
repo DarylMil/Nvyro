@@ -43,11 +43,17 @@ namespace Nvyro.Models
       
         public ApplicationUser? Applicationuser { get; set; }
         public Event? Event { get; set; }
+        public int CopyEventId { get; set; }
 
         private void UpdatePostalCodeAndUnit()
         {
             PostalCodeAndUnit = PostalCode + UnitNumber;
         }
+        public bool isCollected { get; set; } = false;
+        public string isCollectedString { get; set; } = string.Empty;
+        public bool isUsingUserAddress { get; set; }
+        public string isUsingUserAddressString { get; set; } = string.Empty;
+        public string? Img_Description { get; set; } = string.Empty; 
 
         public List<Request_Images>? Request_Images { get; set; }
     }

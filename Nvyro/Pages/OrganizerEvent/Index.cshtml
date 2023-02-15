@@ -50,6 +50,9 @@
                                     <td>
                                          <a asp-page="/OrganizerEvent/EventDetails" asp-route-id="@item.Id" class="text-decoration-none">Edit Event</a>
                                     </td>
+                                    <td>
+                                        <a asp-page="/Requests/OrganizerViewAllRequests" asp-route-id="@item.Id">View All Requests for this event</a>
+                                    </td>
                                     </tr>
             }
         }

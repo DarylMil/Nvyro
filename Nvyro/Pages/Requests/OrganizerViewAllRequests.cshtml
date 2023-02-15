@@ -1,0 +1,214 @@
+﻿@page
+@model Nvyro.Pages.Requests.OrganizerViewAllRequestsModel
+@{
+}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light full-wo-footer" style="padding:0;">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="dashboard-button active" asp-page="/User/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
+            <a class="dashboard-button" asp-page="/User/Rewards"><i class="fa-solid fa-coins"></i> Rewards</a>
+
+
+            <a class="dashboard-button " asp-page="/OrganizerEvent/Index"><i class="fa-solid fa-calendar-days"></i> Events</a>
+
+            <a class="dashboard-button" href="/Requests/UserRequestView">Your Requests</a>
+
+        </div>
+    </div>
+</nav>
+<br />
+<h1 class="display-4">@ViewData["Title"]</h1>
+<div class="mt-4 mx-0 row dashboard-height" >
+    <div class="col-3 pl-0" style="padding-right:1rem;">
+        <div class="card col-12 mb-3">
+            @if (!string.IsNullOrEmpty(Model.currentEvent.ImageURL))
+            {
+                <img src="@Model.currentEvent.ImageURL" />
+            }
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">
+                    Event Details
+                </h6>
+                <hr />
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="card-subtitle mb-2 text-muted small-text">Event Location:</h5><br />
+                        <h5 class="card-subtitle mb-2 text-muted small-text">Start Date:</h5><br />
+                        <h5 class="card-subtitle mb-2 text-muted small-text">End Date:</h5><br />
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.EventTitle</h5><br />
+                        <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.StartDate.ToString("dd-MM-yyyy")</h5><br />
+                        <h5 class="card-subtitle mb-2 text-muted small-text">@Model.currentEvent.EndDate.ToString("dd-MM-yyyy")</h5><br />
+                    </div>
+                </div>
+                <hr />
+                <h5 class="card-subtitle mb-2 text-muted small-text">Area Covered</h5><br />
+                <h5 class="card-subtitle mb-2 text-muted small-text">The event will take place from addresses with postal code starting from <strong>@Model.currentEvent.StartPostalCode</strong> to <strong>@Model.currentEvent.EndPostalCode</strong>.</h5>
+
+                <hr />
+                <h5 class="card-subtitle mb-2 text-muted small-text">Event Description</h5><br />
+                <h5 class="card-subtitle mb-2 text-muted small-text"> @Model.currentEvent.Description </h5><br />
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-8 pr-0" style="padding-left:0;">
+        <div class="fa-area-chart">
+            <canvas id="piechart"></canvas>
+        </div>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.AllRequestsForEvent[0].Id)</th>
+                    <th>@Html.DisplayNameFor(model => model.AllRequestsForEvent[0].PostalCode)</th>
+                    <th>@Html.DisplayNameFor(model => model.AllRequestsForEvent[0].BlockNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.AllRequestsForEvent[0].UnitNumber)</th>
+                    <th style="margin-left:1px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                                            @foreach (var item in Model.AllRequestsForEvent)
+                    {
+                                                <tr>
+                                                    <td>@item.Id</td>
+                                                    <td>@item.PostalCode</td>
+                                                    <td>@item.BlockNumber</td>
+                                                    <td>@item.UnitNumber</td>
+                                                    <td>
+                                                        @if (item.isCollected)
+                                {
+                                                            <span class="fa-stack">
+                                                                <i class="fas fa-recycle fa-stack-1x"></i>
+                                                                <i class="fas fa-check fa-stack-1x" style="position: relative; top: -0.4em; left: 1em;"></i>
+                                                            </span>
+                                                            <br />
+                                                            <span>Collected</span>
+                                    }
+                                    else
+                                    {
+                                                                <i class="fas fa-recycle"></i>
+                                                                <i class="fas fa-ban" style="position: relative; top: -0.4em; left: -0.3em;"></i>
+                                                                <span>Not Collected</span>
+                                    }
+                                                    </td>
+                                                    <td>
+                                                        <a asp-page="/Requests/OrganizerViewRequest" asp-route-id="@item.Id">View Details</a>
+                                                    </td>
+                                                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .small-text {
+        font-size: 16.5px;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script>
+    var NotCollected = @Model.NotCollected;
+    var Collected = @Model.Collected;
+    var doughnutchartCanvas = document.getElementById("piechart");
+    var studentname = ['Not Collected', 'Collected'];
+    var score = [NotCollected, Collected];
+
+    var doughnutChart = new Chart(doughnutchartCanvas, {
+      type: 'doughnut',
+      data: {
+        labels: studentname,
+        datasets: [{
+          data: score,
+          borderWidth: 0,
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(157, 230, 41)',
+            'rgb(41, 224, 230)',
+            'rgb(255, 255, 0)'
+          ],
+          hoverBackgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(157, 230, 41)',
+            'rgb(41, 224, 230)',
+            'rgb(255, 255, 0)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        legend: {
+          position: "bottom",
+          labels: {
+            boxWidth: 11,
+            fontColor: "#757681",
+            fontSize: 11
+          }
+        }
+      }
+    });
+</script>
+
+@*<script>
+    var NotCollected = @Model.NotCollected;
+    var Collected = @Model.Collected;
+    var doughnutchartCanvas = document.getElementById("piechart");
+    var studentname = [];
+    var score = [];
+    @if (Model.AllRequestsForEvent.Count > 0)
+    {
+        foreach (var item in Model.AllRequestsForEvent)
+        {
+            @:studentname.push(NotCollected);
+            @:score.push(Collected);
+        }
+    }
+        var doughnutChart = new Chart(doughnutchartCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: studentname,
+                datasets: [{
+                    data: score,
+                    borderWidth: 0,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(157, 230, 41)',
+                        'rgb(41, 224, 230)',
+                        'rgb(255, 255, 0)'
+                    ],
+                    hoverBackgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(157, 230, 41)',
+                        'rgb(41, 224, 230)',
+                        'rgb(255, 255, 0)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        boxWidth: 11,
+                        fontColor: "#757681",
+                        fontSize: 11
+                    }
+                }
+            }
+        });
+</script>*@
+
