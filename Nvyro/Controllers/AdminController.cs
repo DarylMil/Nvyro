@@ -3,28 +3,31 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nvyro.Models;
+using Nvyro.Services;
 
 namespace Nvyro.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly INotyfService _toastNotification;
+        private readonly CategoryService _categoryService;
 
-        public AdminController(UserManager<ApplicationUser> userManager, INotyfService toastNotification)
+        public AdminController(UserManager<ApplicationUser> userManager, INotyfService toastNotification, CategoryService categoryService)
         {
             _userManager = userManager;
             _toastNotification = toastNotification;
+            _categoryService = categoryService;
         }
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserAsync(string userId)
         {
             var existUser = await _userManager.FindByIdAsync(userId);
             var roles = await _userManager.GetRolesAsync(existUser);
-            if(existUser != null)
+            if (existUser != null)
             {
                 return Ok(new
                 {
@@ -51,7 +54,7 @@ namespace Nvyro.Controllers
                     _toastNotification.Error($"Email: {body.Email}, Already Exist.");
                     return Ok(new
                     {
-                        success= false,
+                        success = false,
                         message = $"Email: {body.Email}, Already Exist."
                     });
                 }
@@ -84,13 +87,14 @@ namespace Nvyro.Controllers
                             return Ok(new
                             {
                                 success = true,
-                                message=$"{existUser.FullName} is updated.",
-                                user = new {
+                                message = $"{existUser.FullName} is updated.",
+                                user = new
+                                {
                                     id = existUser.Id,
-                                    fullname= existUser.FullName,
+                                    fullname = existUser.FullName,
                                     email = existUser.Email,
                                     phoneNumber = existUser.PhoneNumber,
-                                    role = newRoles.Count > 0 ? newRoles[0]:null
+                                    role = newRoles.Count > 0 ? newRoles[0] : null
                                 }
                             });
                         }
@@ -112,7 +116,7 @@ namespace Nvyro.Controllers
             if (existUser != null)
             {
                 // Update the User
-                existUser.LockoutEnd = body.Locked=="Yes"?DateTime.Now + TimeSpan.FromDays(36500):DateTime.Now - TimeSpan.FromDays(1);
+                existUser.LockoutEnd = body.Locked == "Yes" ? DateTime.Now + TimeSpan.FromDays(36500) : DateTime.Now - TimeSpan.FromDays(1);
                 existUser.IsDisabled = body.Disabled == "Yes" ? true : false;
 
                 var updateRes = await _userManager.UpdateAsync(existUser);
@@ -139,7 +143,7 @@ namespace Nvyro.Controllers
                                 {
                                     id = existUser.Id,
                                     disabled = existUser.IsDisabled,
-                                    locked= isLocked,
+                                    locked = isLocked,
                                     role = newRoles.Count > 0 ? newRoles[0] : null
                                 }
                             });
@@ -154,6 +158,7 @@ namespace Nvyro.Controllers
                 message = $"Fail to update the user."
             });
         }
+
         [HttpGet("charts")]
         public async Task<IActionResult> GetChartsAsync()
         {
@@ -161,7 +166,7 @@ namespace Nvyro.Controllers
             var organizers = await _userManager.GetUsersInRoleAsync("Organizer");
 
             var currentDate = DateTime.Now;
-            
+
             var activeRec6mAgo = recyclers.Where(u => currentDate.AddMonths(-6) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-5)).Count();
             var activeOrg6mAgo = organizers.Where(u => currentDate.AddMonths(-6) <= u.LastActivityTimeStamp && u.LastActivityTimeStamp < currentDate.AddMonths(-5)).Count();
 
@@ -201,8 +206,9 @@ namespace Nvyro.Controllers
 
             return Ok(new
             {
-                success=true,
-                data =new {
+                success = true,
+                data = new
+                {
                     activeRec6mAgo,
                     activeOrg6mAgo,
                     activeRec5mAgo,
@@ -230,6 +236,39 @@ namespace Nvyro.Controllers
                 }
 
             });
+        }
+        [HttpPost("disable/{catId}")]
+        public async Task<IActionResult> PostDisablerAsync(string catId)
+        {
+            try
+            {
+                var isSuccess = await _categoryService.DisableRecycleCategoryAsync(catId);
+                if (isSuccess == 1)
+                {
+                    _toastNotification.Success($"Successfully Enabled Category");
+                }
+                else if (isSuccess == 2)
+                {
+                    _toastNotification.Success($"Successfully Disabled Category");
+                }
+                else
+                {
+                    _toastNotification.Error($"Failed To Disable Category");
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = isSuccess
+                });
+            }
+            catch (Exception)
+            {
+                _toastNotification.Error($"Failed To Disable Category");
+                return Ok(new
+                {
+                    success = false
+                });
+            }
         }
 
         public class UpdateRequestBody

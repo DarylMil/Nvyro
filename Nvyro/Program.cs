@@ -33,7 +33,7 @@ builder.Services.AddReCaptcha(options =>
     options.Version = ReCaptchaVersion.V3;
     options.ScoreThreshold = 0.5;
 });
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options=>{
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedEmail = true;
     options.Lockout.AllowedForNewUsers = true;
@@ -77,9 +77,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
+app.UseStatusCodePagesWithRedirects("/Errors/{0}");
 
 app.UseNToastNotify();
 app.UseNotyf();

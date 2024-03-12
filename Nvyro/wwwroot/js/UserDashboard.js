@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    
+
     const registerPostal = $("#register-postalCode");
     const registerBlock = $("#register-blockNumber");
     const registerRoad = $("#register-roadName");
@@ -20,7 +20,7 @@
         if ($("#search-full-address").val().length > 0) {
             searchTrigger = setTimeout(() => {
                 $.ajax({
-                    url: `https://developers.onemap.sg/commonapi/search?searchVal=${$('#search-full-address').val()}&returnGeom=N&getAddrDetails=Y`,
+                    url: `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${$('#search-full-address').val()}&returnGeom=N&getAddrDetails=Y`,
                     success: function (result) {
                         console.log(result)
                         dataResults = [];
@@ -82,7 +82,7 @@
             cancelOrEdit = 1;
             $("#edit-profile-btn").text("Cancel");
             saveChangesBtn.removeClass("invisible");
-            saveChangesBtn.prop("disabled",false);
+            saveChangesBtn.prop("disabled", false);
             registerOrgName.prop("disabled", false);
             registerPhone.prop("disabled", false);
             $("#search-full-address").prop("disabled", false);
@@ -102,7 +102,7 @@
             registerBlock.prop("disabled", true);
             registerPostal.prop("disabled", true);
             registerRoad.prop("disabled", true);
-            $("#dashboard-image").css("cursor", "none");
+            $("#dashboard-image").css("cursor", "default");
         }
     });
     //saveChangesBtn.click(() => {

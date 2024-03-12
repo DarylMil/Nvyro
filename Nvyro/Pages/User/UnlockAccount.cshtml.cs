@@ -28,18 +28,18 @@ namespace Nvyro.Pages.User
         }
         public async Task<IActionResult> OnGetAsync(string code = null, string id = null)
         {
-            if(code == null || id == null)
+            if (code == null || id == null)
             {
                 _toastNotification.Success("A code or email must be supplied for unlocking account.");
                 return RedirectToPage("./ForgotPassword");
             }
             var user = await _userManager.FindByIdAsync(id);
-            if(user == null)
+            if (user == null)
             {
                 _toastNotification.Success("A One Time Password (OTP) is sent to your email address");
                 return Page();
             }
-            var result = await _userManager.VerifyUserTokenAsync(user, "Email", "UnlockAccount",Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code)));
+            var result = await _userManager.VerifyUserTokenAsync(user, "Email", "UnlockAccount", Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code)));
             if (result)
             {
                 var providers = await _userManager.GetValidTwoFactorProvidersAsync(user);
@@ -54,6 +54,7 @@ namespace Nvyro.Pages.User
                 }
                 _toastNotification.Success("A One Time Password (OTP) is sent to your email address");
                 var token = _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+                Console.WriteLine(token.Result);
                 await _emailSender.SendEmailAsync(user.Email, "OTP Token",
                     $"Your One Time Password (OTP) is: <br><h2>{token.Result}</h2><br>The password is only valid for 6 minutes.");
                 return Page();
@@ -69,7 +70,8 @@ namespace Nvyro.Pages.User
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(UnlockAccountModel.UserId);
-                if (user == null) {
+                if (user == null)
+                {
                     _toastNotification.Error("Unlock Account Unsuccesfull");
                     return Page();
                 }
@@ -77,7 +79,7 @@ namespace Nvyro.Pages.User
                 if (result)
                 {
                     _toastNotification.Success("Succesfully Unlock Account");
-                    await _userManager.SetLockoutEndDateAsync(user, DateTime.MinValue);
+                    await _userManager.SetLockoutEndDateAsync(user, DateTime.Now - TimeSpan.FromDays(1));
                     return RedirectToPage("/User/Login");
                 }
                 _toastNotification.Error("Unlock Account Unsuccesfull");

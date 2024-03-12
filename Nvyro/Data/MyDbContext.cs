@@ -14,7 +14,7 @@ namespace Nvyro.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = _configuration.GetConnectionString("MyConnection");
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite(connectionString);
         }
         public DbSet<RecycleCategory> RecycleCategory { get; set; }
 

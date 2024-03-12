@@ -9,7 +9,7 @@ using Nvyro.Services;
 
 namespace Nvyro.Pages.Admin
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class Dashboard : PageModel
     {
         [BindProperty]
@@ -87,9 +87,9 @@ namespace Nvyro.Pages.Admin
                 }
                 else
                 {
-                    imgUrl = null;
+                    imgUrl = existingUser.ProfilePicURL;
                 }
-            
+
                 existingUser.Email = AppUser.Email;
                 existingUser.PostalCode = AppUser.PostalCode;
                 existingUser.BlockNumber = AppUser.BlockNumber;
@@ -113,7 +113,7 @@ namespace Nvyro.Pages.Admin
                 return RedirectToPage("./Dashboard");
             }
             _toastNotification.Error("Profile Update Failed");
-             return Page();
+            return Page();
         }
     }
 }

@@ -7,7 +7,7 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="dashboard-button " asp-page="/Admin/Dashboard"><i class="fa-solid fa-user"></i> My Profile</a>
-      <a class="dashboard-button " href=""><i class="fa-solid fa-coins"></i> Reward Management </a>
+      <a class="dashboard-button "  asp-page="/Admin/CreateRewards"><i class="fa-solid fa-coins"></i> Reward Management </a>
       <a class="dashboard-button active" asp-page="./UserManagement"><i class="fa-solid fa-users"></i> User Management </a>
       <a class="dashboard-button" asp-page="./Statistics"><i class="fa-solid fa-chart-pie"></i> Statistics</a>
       <a class="dashboard-button" asp-page="./Categories"><i class="fa-solid fa-recycle"></i> Categories</a>
@@ -29,7 +29,9 @@
     </div>
 
     <div id="left-dropdown" class="btn-group col" style="justify-content:flex-end;">
+        <form asp-page-handler="DownloadExcel" method="POST">
         <div class="btn-group" role="group">
+                <button class="btn btn-outline-theme" style="border-top-right-radius:0;border-right:0;border-bottom-right-radius:0;" type="submit"><i class="fa-solid fa-download"></i></button>
             <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle  btn-outline-theme" data-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-filter"></i></button>
             <div class="dropdown-menu" style="min-width:0;" aria-labelledby="btnGroupDrop1">
                 <div style="text-align:center; font-size:0.65rem; font-weight:bold;">Filter By:</div>
@@ -46,6 +48,7 @@
                 </ul>
             </div>
         </div>
+            </form>
     </div>
 </div>
 <div class="card px-3 mb-2">
@@ -364,5 +367,4 @@
 {
     <script src="~/js/UserDashboard.js"></script>
     <script src="~/js/AdminDashboard.js"></script>
-    
 }

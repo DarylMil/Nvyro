@@ -34,7 +34,7 @@ namespace Nvyro.Pages.User
         public async Task<IActionResult> OnGetAsync()
         {
             var existingUser = await _userManager.GetUserAsync(User);
-            if(await _userManager.IsInRoleAsync(existingUser, "Admin"))
+            if (await _userManager.IsInRoleAsync(existingUser, "Admin"))
             {
                 return RedirectToPage("/Admin/Dashboard");
             }
@@ -53,21 +53,22 @@ namespace Nvyro.Pages.User
             AppUser.FullName = existingUser.FullName;
             AppUser.Points = existingUser.Points;
 
-            for (var i=0; i < allRoles.Count; i++)
+            for (var i = 0; i < allRoles.Count; i++)
             {
                 AppUser.Roles += allRoles[i];
-                if(i != allRoles.Count-1)
+                if (i != allRoles.Count - 1)
                 {
                     AppUser.Roles += " | ";
                 }
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostAsync() {
+        public async Task<IActionResult> OnPostAsync()
+        {
             if (ModelState.IsValid)
             {
                 var existingUser = await _userManager.GetUserAsync(User);
-                if(existingUser == null)
+                if (existingUser == null)
                 {
                     _toastNotification.Error("User Not Found");
                     return RedirectToPage("./Login");
@@ -75,7 +76,7 @@ namespace Nvyro.Pages.User
                 var imgUrl = "";
                 if (Upload != null)
                 {
-                    if(Upload.ContentType=="image/jpeg" || Upload.ContentType == "image/jpg" || Upload.ContentType == "image/png")
+                    if (Upload.ContentType == "image/jpeg" || Upload.ContentType == "image/jpg" || Upload.ContentType == "image/png")
                     {
                         var uploadsFolder = "uploads/images";
                         var imageFile = Guid.NewGuid() + Path.GetExtension(Upload.FileName);
@@ -92,7 +93,7 @@ namespace Nvyro.Pages.User
                 }
                 else
                 {
-                    imgUrl = null;
+                    imgUrl = existingUser.ProfilePicURL;
                 }
                 existingUser.Email = AppUser.Email;
                 existingUser.PostalCode = AppUser.PostalCode;

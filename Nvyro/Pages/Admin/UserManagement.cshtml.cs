@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Nvyro.Models;
 using Nvyro.Models.DTO;
+using System.Text;
 
 namespace Nvyro.Pages.Admin
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserManagementModel : PageModel
     {
         private static List<ApplicationUser> PriorFilteredBank { get; set; } = new List<ApplicationUser>();
@@ -37,13 +38,13 @@ namespace Nvyro.Pages.Admin
             _toastNotification = toastNotification;
             _roleManager = roleManager;
         }
-        public async Task<IActionResult> OnGetAsync (int pageNumber = 1, bool refresh = true)
+        public async Task<IActionResult> OnGetAsync(int pageNumber = 1, bool refresh = true)
         {
-            if(refresh)
+            if (refresh)
             {
                 CurrentPage = pageNumber;
-                AllRoles = await _roleManager.Roles.Select(r=>r.Name).ToListAsync();
-            
+                AllRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+
                 TotalListOfUsers = await _userManager.Users.ToListAsync();
                 PriorFilteredBank = TotalListOfUsers;
 
@@ -51,12 +52,12 @@ namespace Nvyro.Pages.Admin
                 PageCount = Convert.ToInt32(roundUp);
 
                 var users = TotalListOfUsers.Skip((pageNumber - 1) * PageSize).Take(PageSize);
-            
-                foreach(var user in users)
+
+                foreach (var user in users)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
                     var userRole = "";
-                    if(roles.Count > 0)
+                    if (roles.Count > 0)
                     {
                         userRole = roles[0];
                     }
@@ -85,7 +86,7 @@ namespace Nvyro.Pages.Admin
             return Page();
         }
 
-        public async Task<IActionResult> OnGetFilterAsync (string role)
+        public async Task<IActionResult> OnGetFilterAsync(string role)
         {
             Filter = role;
             if (role == "None")
@@ -95,8 +96,9 @@ namespace Nvyro.Pages.Admin
             else
             {
                 var filteredUsers = new List<ApplicationUser>();
-                foreach (var u in PriorFilteredBank) { 
-                    if(await _userManager.IsInRoleAsync(u, role))
+                foreach (var u in PriorFilteredBank)
+                {
+                    if (await _userManager.IsInRoleAsync(u, role))
                     {
                         filteredUsers.Add(u);
                     }
@@ -119,8 +121,9 @@ namespace Nvyro.Pages.Admin
             Filter = "None";
             ListOfUsers = new List<AdminUserManagement>();
             CurrentPage = 1;
-            if (searchQuery?.Length > 0) {
-                
+            if (searchQuery?.Length > 0)
+            {
+
                 searchQuery = searchQuery.Trim().ToUpper();
                 TotalListOfUsers = await _userManager.Users.Where(u => u.NormalizedEmail.Contains(searchQuery) || u.FullName.ToUpper().Contains(searchQuery)).ToListAsync();
                 PriorFilteredBank = TotalListOfUsers;
@@ -162,6 +165,34 @@ namespace Nvyro.Pages.Admin
                 }
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostDownloadExcelAsync()
+        {
+            var fileName = "Nvyro Users_" + Guid.NewGuid() + ".csv";
+
+            StringBuilder csv = new StringBuilder("Full Name,Email,Phone Number,Role,Disabled,Locked");
+
+            foreach (var u in TotalListOfUsers)
+            {
+                var roles = await _userManager.GetRolesAsync(u);
+                var userRole = "";
+                if (roles.Count > 0)
+                {
+                    userRole = roles[0];
+                }
+                bool isLocked = u.LockoutEnd > DateTime.Now;
+                csv.Append($"\n{u.FullName},{u.Email},{u.PhoneNumber},{userRole},{u.IsDisabled},{isLocked}");
+            };
+
+            var memoryStream = new MemoryStream();
+            var writer = new StreamWriter(memoryStream);
+            writer.Write(csv);
+            writer.Flush();
+            memoryStream.Position = 0;
+
+            return File(memoryStream, "text/csv", $"{fileName}");
+
         }
     }
 }

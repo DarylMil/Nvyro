@@ -292,7 +292,7 @@
         if ($("#search-full-address").val().length > 0) {
             searchTrigger = setTimeout(() => {
                 $.ajax({
-                    url: `https://developers.onemap.sg/commonapi/search?searchVal=${$('#search-full-address').val()}&returnGeom=N&getAddrDetails=Y`,
+                    url: `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${$('#search-full-address').val()}&returnGeom=N&getAddrDetails=Y`,
                     success: function (result) {
                         dataResults = [];
                         //Set result to a variable for writing
